@@ -1,20 +1,40 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <div class="external-container">
+    <div class="login-page">
+      <div class="title-background">
+        <div class="white-background">
+        </div>
+        <div class="shape">
+          <img src="../../assets/svg/shape1.svg">
+        </div>
+      </div>
+      <div class="title-container">
+        <div class="icon">
+          <img src="../../assets/svg/logo.svg">
+        </div>
+        <div class="text">
+          <div class="softwareuno">Softwareuno</div>
+          <div class="pasti">Pasti</div>
+        </div>
+      </div>
+      <div class="login-form-container">
+        <h1>Login</h1>
+        <div class="input-container">
+          <ion-input placeholder="Email"></ion-input>
+        </div>
+        <div class="input-container">
+          <ion-input placeholder="Password"></ion-input>
+          <ion-button type="primary" mode="md" size="small" fill="clear" slot="end">DIMENTICATA?</ion-button>
+        </div>
+      </div>
+      <div class="submit-container">
+        <div class="shape-container">
+          <img src="../../assets/svg/shape2.svg">
+        </div>
+        <div class="button-container">
+          <ion-button mode="md">Accedi</ion-button>
+        </div>
+      </div>
+    </div>
   </div>
 </ion-content>

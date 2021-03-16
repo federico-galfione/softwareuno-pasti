@@ -24,3 +24,18 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+@import "mixins";
+
+html{
+    font-size: 8px;
+    @include respond-to('very-small') {
+        font-size: 7px;
+    }
+    h1{
+        font-size: 4rem;
+        font-weight: bold;
+        color: var(--default-dark-color);
+        margin-top: 0px;
+        margin-bottom: var(--space-3);
+      }
+}

@@ -37,5 +37,14 @@ html{
         color: var(--default-dark-color);
         margin-top: 0px;
         margin-bottom: var(--space-3);
-      }
+    }
+    ion-toast{
+        &::part(header){
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        &::part(message){
+            font-size: 1.8rem;
+        }
+    }
 }

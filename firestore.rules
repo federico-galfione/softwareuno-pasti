@@ -13,10 +13,10 @@ service cloud.firestore {
     	allow write: if getRole("RESTAURANT");
       allow read: if request.auth != null;
     }
-    match /users {
+    match /roles {
     	allow read, write: if request.auth != null && getRole("ADMIN");
     }
-    match /users/{userId} {
+    match /roles/{userId} {
     	allow read, update, delete: if request.auth != null && (request.auth.uid == userId || getRole("ADMIN"));
       allow create: if getRole("ADMIN");
     }

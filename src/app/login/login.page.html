@@ -1,5 +1,5 @@
 <ion-content [fullscreen]="true">
-  <div class="external-container">
+  <app-external-container>
     <div class="login-page">
       <div class="title-background">
         <div class="white-background">
@@ -17,14 +17,14 @@
           <div class="pasti">Pasti</div>
         </div>
       </div>
-      <div class="login-form-container">
+      <div [formGroup]="loginForm" class="login-form-container">
         <h1>Login</h1>
         <div class="input-container">
-          <ion-input placeholder="Email"></ion-input>
+          <ion-input formControlName="email" placeholder="Email"></ion-input>
         </div>
         <div class="input-container">
-          <ion-input placeholder="Password"></ion-input>
-          <ion-button type="primary" mode="md" size="small" fill="clear" slot="end">DIMENTICATA?</ion-button>
+          <ion-input formControlName="password" type="password" placeholder="Password"></ion-input>
+          <ion-button mode="md" size="small" fill="clear" slot="end">DIMENTICATA?</ion-button>
         </div>
       </div>
       <div class="submit-container">
@@ -32,9 +32,9 @@
           <img src="../../assets/svg/shape2.svg">
         </div>
         <div class="button-container">
-          <ion-button mode="md">Accedi</ion-button>
+          <ion-button mode="md" (click)="login()">Accedi</ion-button>
         </div>
       </div>
     </div>
-  </div>
+  </app-external-container>
 </ion-content>

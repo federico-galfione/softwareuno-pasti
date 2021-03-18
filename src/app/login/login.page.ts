@@ -22,7 +22,9 @@ export class LoginPage {
     try{
       const user = await this.authSvc.login(this.loginForm.get('email').value, this.loginForm.get('password').value);
       this.router.navigate([user.role.toLowerCase()]);
-    }catch(e){}
+    }catch(e){
+      console.log(e);
+    }
   }
 
 }

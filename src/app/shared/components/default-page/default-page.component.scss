@@ -2,6 +2,10 @@
 :host{
     position: relative;
     display: block;
+    min-height: 100vh;
+    @include respond-to('desktop'){
+        min-height: 100%;
+    }
     --base-display-width: 414;
     --starting-space: 8;
     --current-space-1: calc(var(--starting-space) * 100vw / var(--base-display-width));
@@ -97,6 +101,7 @@
     .footer-img{
         width: 35%;
         max-width: 224px;
+        max-height: 33%;
         position: absolute;
         bottom: 0;
         left: 0;

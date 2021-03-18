@@ -68,7 +68,7 @@ export class AuthService {
 
   // Get the currentUser's role
   currentUserRole(user?: firebase.User){
-    return (user) ? this.firestore.collection('roles').doc(user.uid).get() : of(null);
+    return (user) ? this.firestore.collection('users').doc(user.uid).get() : of(null);
   }
 
 }

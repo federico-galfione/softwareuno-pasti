@@ -1,5 +1,8 @@
 import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs/internal/Observable';
+import { User } from '../shared/models/user';
 import { AuthService } from '../shared/services/auth.service';
 
 @Component({
@@ -8,81 +11,13 @@ import { AuthService } from '../shared/services/auth.service';
   styleUrls: ['./admin.page.scss'],
 })
 export class AdminPage implements OnInit {
-
-  users = [
-    {
-      email: 'federico.galfione@gmail.com',
-      firstName: 'Federico',
-      lastName: 'Galfione'
-    },
-    {
-      email: 'federico.galfione@gmail.com',
-      firstName: 'Federico',
-      lastName: 'Galfione'
-    },
-    {
-      email: 'federico.galfione@gmail.com',
-      firstName: 'Federico',
-      lastName: 'Galfione'
-    },
-    {
-      email: 'federico.galfione@gmail.com',
-      firstName: 'Federico',
-      lastName: 'Galfione'
-    },
-    {
-      email: 'federico.galfione@gmail.com',
-      firstName: 'Federico',
-      lastName: 'Galfione'
-    },
-    {
-      email: 'federico.galfione@gmail.com',
-      firstName: 'Federico',
-      lastName: 'Galfione'
-    },
-    {
-      email: 'federico.galfione@gmail.com',
-      firstName: 'Federico',
-      lastName: 'Galfione'
-    },
-    {
-      email: 'federico.galfione@gmail.com',
-      firstName: 'Federico',
-      lastName: 'Galfione'
-    },
-    {
-      email: 'federico.galfione@gmail.com',
-      firstName: 'Federico',
-      lastName: 'Galfione'
-    },
-    {
-      email: 'federico.galfione@gmail.com',
-      firstName: 'Federico',
-      lastName: 'Galfione'
-    },
-    {
-      email: 'federico.galfione@gmail.com',
-      firstName: 'Federico',
-      lastName: 'Galfione'
-    },
-    {
-      email: 'federico.galfione@gmail.com',
-      firstName: 'Federico',
-      lastName: 'Galfione'
-    },
-    {
-      email: 'federico.galfione@gmail.com',
-      firstName: 'Federico',
-      lastName: 'Galfione'
-    },
-    {
-      email: 'federico.galfione@gmail.com',
-      firstName: 'Federico',
-      lastName: 'Galfione'
-    },
-  ]
-
-  constructor(private authSvc: AuthService, private router: Router, private el: ElementRef) { }
+  adminColors: {primary?: string, tint?: string} = {};
+  users$: Observable<User[]>;
+  constructor(private authSvc: AuthService, private router: Router, private firestore: AngularFirestore) { 
+    this.adminColors.primary = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-tertiary');
+    this.adminColors.tint = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-tertiary-tint');
+    this.users$ = this.firestore.collection('users').valueChanges() as Observable<User[]>;
+  }
 
   ngOnInit() {
   }

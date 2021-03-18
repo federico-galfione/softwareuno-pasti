@@ -34,9 +34,6 @@ html{
     @include respond-to('tablet'){
         font-size: 10px;
     }
-    @include respond-to('desktop'){
-        font-size: 12px;
-    }
     h1{
         font-size: 4rem;
         font-weight: bold;

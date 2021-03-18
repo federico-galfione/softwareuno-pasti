@@ -15,5 +15,24 @@ ion-content{
         ion-card-content{
             @include truncate('100%');
         }
+        .role-icon-container{
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            padding: calc(var(--space-3) + var(--space-1)) var(--space-2) var(--space-1) var(--space-3);
+            font-size: 2rem;
+            .wave-img{
+                position:absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+            }
+            ion-icon{
+                color: white;
+                font-weight: bold;
+                --ionicon-stroke-width: 5rem;
+            }
+        }
     }
 }

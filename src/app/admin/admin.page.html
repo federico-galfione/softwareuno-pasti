@@ -1,6 +1,6 @@
 <ion-content>
   <app-external-container class="desktop" [multiplier]="40">
-      <app-default-page title="Utenti" subtitle="Gestisci gli utenti dell'app">
+      <app-default-page title="Utenti" subtitle="Gestisci gli utenti dell'app" [showCountdown]="false" color="tertiary" sectionTitle="Admin console">
           <div class="users">
             <ion-card class="user" mode="ios" *ngFor="let user of users">
               <ion-card-header>

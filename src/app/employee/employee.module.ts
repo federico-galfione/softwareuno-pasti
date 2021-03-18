@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { EmployeePageRoutingModule } from './employee-routing.module';
 
 import { EmployeePage } from './employee.page';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    EmployeePageRoutingModule
+    EmployeePageRoutingModule,
+    SharedModule
   ],
   declarations: [EmployeePage]
 })

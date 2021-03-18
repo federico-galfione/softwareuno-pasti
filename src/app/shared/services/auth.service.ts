@@ -33,7 +33,7 @@ export class AuthService {
       this.toastSvc.addSuccessToast({header: 'Benvenuto!', message: 'Non dovrai più eseguire il login da questo dispositivo'})
       return this.currentUser;
     }catch(e: any){
-      if(e.code === 'auth/invalid-email' || e.code === 'auth/wrong-password')
+      if(e.code === 'auth/invalid-email' || e.code === 'auth/wrong-password' || e.code === 'auth/user-not-found')
         this.toastSvc.addErrorToast({message: 'Email o password sbagliati.'});
       else
         this.toastSvc.addErrorToast({message: 'C\'è stato un problema durante il login.'})

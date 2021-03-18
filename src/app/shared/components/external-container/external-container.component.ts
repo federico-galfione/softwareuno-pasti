@@ -1,14 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-external-container',
   templateUrl: './external-container.component.html',
   styleUrls: ['./external-container.component.scss'],
 })
-export class ExternalContainerComponent implements OnInit {
+export class ExternalContainerComponent implements OnChanges {
 
-  constructor() { }
+  // This value is gonna be multiplied by 32 and it will set the max width of the card. (default 23)
+  @Input()
+  multiplier: number = 23;
 
-  ngOnInit() {}
+  constructor(private elementRef: ElementRef) { }
+
+  ngOnChanges() {
+    this.elementRef.nativeElement.style.setProperty('--max-width-multiplier', this.multiplier)
+  }
 
 }

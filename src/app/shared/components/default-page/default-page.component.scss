@@ -1,0 +1,80 @@
+@import 'mixins';
+:host{
+    --base-display-width: 414;
+    --starting-space: 8;
+    --current-space-1: calc(var(--starting-space) * 100vw / var(--base-display-width));
+    @include respond-to('tablet') {
+        --current-space-1: var(--space-1);
+    }
+    --current-space-2: calc(var(--current-space-1) * 2);
+    --current-space-3: calc(var(--current-space-2) * 2);
+    --current-space-4: calc(var(--current-space-3) * 2);
+    .header{
+        display:grid;
+        grid-template-rows: auto auto auto;
+        grid-template-columns: auto max-content;
+        .logo{
+            grid-row: 1 / 2;
+            grid-column: 1 / 2;
+            padding: var(--current-space-3) var(--current-space-3) 0 var(--current-space-3);
+            @include respond-to('tablet'){
+                padding: var(--space-3) var(--space-3) 0 var(--space-4);
+            }
+            width: 100%;
+            flex: 1;
+            img{
+                max-width: 120px;
+            }
+        }
+        .right-corner{
+            @include flex($position: relative, $justify-content: flex-end);
+            grid-row: 1 / 3;
+            grid-column: 2 / 3;
+            .timer{
+                background-image: url('../../../../assets/svg/header.svg');
+                position: relative;
+                padding: var(--current-space-3) var(--current-space-3) calc(var(--current-space-4) + var(--current-space-1)) calc(var(--current-space-2) * 3);
+                @include respond-to('tablet'){
+                    padding-right: var(--space-4);
+                    padding-left: calc(var(--space-4) + var(--space-3))
+                }
+                color: var(--ion-color-primary-contrast);
+                font-weight: bold;
+                text-align: right;
+                height: fit-content;
+                .text{
+                    font-size: min(calc(var(--current-space-1) * 3), 3em);
+                }
+                .hour{
+                    font-size: min(calc(var(--current-space-1) * 5), 5em);
+                    font-weight: 900;
+                }
+            }
+        }
+        .title{
+            grid-row: 2 / 3;
+            grid-column: 1 / 2;
+            padding: var(--space-4) 0 0 var(--current-space-3);
+            margin: 0;
+            @include respond-to('tablet'){
+                padding-left: var(--space-4);
+            }
+        }
+        .subtitle{
+            grid-row: 3 / 4;
+            grid-column: 1 / 3;
+            margin: 0;
+            margin-top: var(--space-1);
+            padding-left: var(--current-space-3);
+            @include respond-to('tablet'){
+                padding-left: var(--space-4);
+            }
+        }
+    }
+    .content{
+        margin: var(--space-3) var(--current-space-3) var(--space-3) var(--current-space-3);
+        @include respond-to('tablet'){
+            margin: var(--space-3) var(--space-4) var(--space-3) var(--space-4);
+        }
+    }
+}

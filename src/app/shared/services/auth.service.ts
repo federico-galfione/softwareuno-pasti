@@ -7,7 +7,7 @@ import { combineLatest, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastService } from './toast.service';
 
-type Roles = 'ADMIN' | 'EMPLOYEE' | 'RESTAURANT';
+export type Roles = 'ADMIN' | 'EMPLOYEE' | 'RESTAURANT';
 
 @Injectable({
   providedIn: 'root'

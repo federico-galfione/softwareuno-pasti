@@ -21,7 +21,7 @@
   }
   &.tablet{
     @include respond-to('tablet') {
-      padding: 64px 64px 64px 64px;
+      padding: 64px;
     }
     .page{
       @include respond-to('tablet') {
@@ -34,7 +34,7 @@
   }
   &.desktop{
     @include respond-to('desktop') {
-      padding: 64px 64px 64px 64px;
+      padding: 64px;
     }
     .page{
       @include respond-to('desktop') {

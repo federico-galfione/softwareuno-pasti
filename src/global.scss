@@ -38,6 +38,10 @@ html{
         margin-top: 0px;
         margin-bottom: var(--space-3);
     }
+    h2{
+        font-size: 3rem;
+        color: #707070;
+    }
     ion-toast{
         &::part(header){
             font-size: 2rem;

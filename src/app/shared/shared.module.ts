@@ -5,16 +5,17 @@ import { AuthService } from './services/auth.service';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { ToastService } from './services/toast.service';
+import { DefaultPageComponent } from './components/default-page/default-page.component';
 
 
 
 @NgModule({
-  declarations: [ExternalContainerComponent],
+  declarations: [ExternalContainerComponent, DefaultPageComponent],
   imports: [
     CommonModule,
     AngularFireAuthModule,
     AngularFirestoreModule
   ],
-  exports: [ExternalContainerComponent, AuthService, ToastService]
+  exports: [ExternalContainerComponent, DefaultPageComponent, AuthService, ToastService]
 })
 export class SharedModule { }

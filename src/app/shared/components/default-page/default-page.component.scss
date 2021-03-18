@@ -1,5 +1,6 @@
 @import 'mixins';
 :host{
+    position: relative;
     --base-display-width: 414;
     --starting-space: 8;
     --current-space-1: calc(var(--starting-space) * 100vw / var(--base-display-width));
@@ -12,7 +13,7 @@
     .header{
         display:grid;
         grid-template-rows: auto auto auto;
-        grid-template-columns: auto max-content;
+        grid-template-columns: 1fr auto;
         .logo{
             grid-row: 1 / 2;
             grid-column: 1 / 2;

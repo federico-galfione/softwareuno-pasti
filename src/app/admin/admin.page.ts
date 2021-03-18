@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
 
@@ -9,7 +9,80 @@ import { AuthService } from '../shared/services/auth.service';
 })
 export class AdminPage implements OnInit {
 
-  constructor(private authSvc: AuthService, private router: Router) { }
+  users = [
+    {
+      email: 'federico.galfione@gmail.com',
+      firstName: 'Federico',
+      lastName: 'Galfione'
+    },
+    {
+      email: 'federico.galfione@gmail.com',
+      firstName: 'Federico',
+      lastName: 'Galfione'
+    },
+    {
+      email: 'federico.galfione@gmail.com',
+      firstName: 'Federico',
+      lastName: 'Galfione'
+    },
+    {
+      email: 'federico.galfione@gmail.com',
+      firstName: 'Federico',
+      lastName: 'Galfione'
+    },
+    {
+      email: 'federico.galfione@gmail.com',
+      firstName: 'Federico',
+      lastName: 'Galfione'
+    },
+    {
+      email: 'federico.galfione@gmail.com',
+      firstName: 'Federico',
+      lastName: 'Galfione'
+    },
+    {
+      email: 'federico.galfione@gmail.com',
+      firstName: 'Federico',
+      lastName: 'Galfione'
+    },
+    {
+      email: 'federico.galfione@gmail.com',
+      firstName: 'Federico',
+      lastName: 'Galfione'
+    },
+    {
+      email: 'federico.galfione@gmail.com',
+      firstName: 'Federico',
+      lastName: 'Galfione'
+    },
+    {
+      email: 'federico.galfione@gmail.com',
+      firstName: 'Federico',
+      lastName: 'Galfione'
+    },
+    {
+      email: 'federico.galfione@gmail.com',
+      firstName: 'Federico',
+      lastName: 'Galfione'
+    },
+    {
+      email: 'federico.galfione@gmail.com',
+      firstName: 'Federico',
+      lastName: 'Galfione'
+    },
+    {
+      email: 'federico.galfione@gmail.com',
+      firstName: 'Federico',
+      lastName: 'Galfione'
+    },
+    {
+      email: 'federico.galfione@gmail.com',
+      firstName: 'Federico',
+      lastName: 'Galfione'
+    },
+  ]
+
+  constructor(private authSvc: AuthService, private router: Router, private el: ElementRef) { }
 
   ngOnInit() {
   }

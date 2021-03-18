@@ -9,7 +9,7 @@ export class ExternalContainerComponent implements OnChanges {
 
   // This value is gonna be multiplied by 32 and it will set the max width of the card. (default 23)
   @Input()
-  multiplier: number = 23;
+  multiplier: number = 28;
 
   constructor(private elementRef: ElementRef) { }
 

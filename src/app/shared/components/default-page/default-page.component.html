@@ -5,7 +5,7 @@
   <div class="right-corner">
       <div class="timer">
           <div class="text">Fine ordinazioni</div>
-          <div class="hour">1h 30m</div>
+          <div class="hour" *ngIf="showCountdown">1h 30m</div>
       </div>
   </div>
   <h1 class="title">{{title}}</h1>

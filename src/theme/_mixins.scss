@@ -50,7 +50,7 @@ $breakpoints: (
   --padding-top: 2rem;
   --padding-bottom: 2rem;
   --border-radius: 10000px;
-  --background: linear-gradient(270deg, var(--ion-color-#{$type}-tint) 0%, var(--ion-color-#{$type}) 100%);
+  --background: radial-gradient(circle at left top, var(--ion-color-#{$type}) 0%, var(--ion-color-#{$type}-tint) 100%);
   --box-shadow: none;
 }
 
@@ -75,4 +75,11 @@ $breakpoints: (
   -moz-#{$element}: $content;
   -o-#{$element}: $content;
   -ms-#{$element}: $content;
+}
+
+@mixin truncate($truncation-boundary) {
+  max-width: $truncation-boundary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

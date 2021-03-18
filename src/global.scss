@@ -31,6 +31,12 @@ html{
     @include respond-to('very-small') {
         font-size: 7px;
     }
+    @include respond-to('tablet'){
+        font-size: 10px;
+    }
+    @include respond-to('desktop'){
+        font-size: 12px;
+    }
     h1{
         font-size: 4rem;
         font-weight: bold;
@@ -49,6 +55,26 @@ html{
         }
         &::part(message){
             font-size: 1.8rem;
+        }
+    }
+    ion-card{
+        position: relative;
+        border-radius: 30px;
+        padding: calc(var(--space-2) + var(--space-1));
+        margin: 0;
+        box-shadow: var(--default-box-shadow);
+        ion-card-header{
+            padding: 0 0 var(--space-1) 0;
+            ion-card-title{
+                font-size: 2rem;
+                font-weight: 900;
+                color: var(--default-dark-color);
+            }
+        }
+        ion-card-content{
+            font-size: 2rem !important;
+            color: var(--default-gray) !important;
+            padding: 0 !important;
         }
     }
 }

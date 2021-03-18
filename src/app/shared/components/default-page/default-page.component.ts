@@ -8,11 +8,13 @@ import { Roles } from '../../services/auth.service';
 })
 export class DefaultPageComponent implements OnInit {
   @Input()
-  role: Roles;
+  color: 'primary' | 'secondary' | 'tertiary';
   @Input()
   title: string;
   @Input()
   subtitle: string;
+  @Input()
+  showCountdown: boolean = true;
   constructor() { }
 
   ngOnInit() {}

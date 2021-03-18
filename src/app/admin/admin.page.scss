@@ -1,0 +1,19 @@
+@import 'mixins';
+ion-content{
+    .users{
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(calc(var(--space-3) * 9), 1fr));
+        grid-gap: var(--space-3);
+        @include respond-to('tablet'){
+            grid-gap: calc(var(--space-3) + var(--space-2));
+        }
+        align-items: flex-start;
+        ion-card-title{
+            @include truncate('100%');
+        }
+        ion-card-content{
+            @include truncate('100%');
+        }
+    }
+}

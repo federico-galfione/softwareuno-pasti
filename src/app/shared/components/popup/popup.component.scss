@@ -1,0 +1,29 @@
+@import 'mixins';
+:host{
+    --background-color-rgb: var(--ion-color-tertiary-rgb);
+    --background-opacity: 0.5;
+    position: fixed;
+    display: flex;
+    @include respond-to('tablet'){
+        align-items: center;
+    }
+    align-items: flex-end;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    transform-origin: center;
+    background-color: rgb(var(--background-color-rgb), var(--background-opacity));
+    z-index: 1000;
+    ion-card{
+        position: fixed;
+        z-index: 1001;
+        padding: var(--space-3);
+        border-radius: 30px 30px 0 0;
+        @include respond-to('tablet'){
+            border-radius: 30px;
+            margin: 0px var(--space-3) 0px var(--space-3);
+        }
+    }
+}

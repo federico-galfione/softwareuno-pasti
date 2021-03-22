@@ -1,14 +1,64 @@
 <ion-content>
   <app-external-container class="desktop" [multiplier]="40">
       <app-default-page title="Utenti" subtitle="Gestisci gli utenti dell'app" [showCountdown]="false" color="tertiary" sectionTitle="Admin console">
-          <div class="users">
-            <ion-card class="user" mode="ios" *ngFor="let user of (users$ | async)">
+        <div class="filter-title"><ion-icon name="filter-outline"></ion-icon><div class="text">Filtra</div></div>
+        <div [formGroup]="filterForm" class="filter-container">
+          <ion-input formControlName="text" placeholder="Nome o Email"></ion-input>
+          <div class="segment">
+              <div class="button admin-button" [@selectDeselect]="(filterByAdmin$ | async) ? 'select' : 'deselect'" (click)="toggleRole('ADMIN')">
+                <ion-icon [name]="'ADMIN' | roleIcon"></ion-icon>
+                <div class="text">Amministratori</div>
+              </div>
+              <div class="button employee-button" [@selectDeselect]="(filterByEmployee$ | async) ? 'select' : 'deselect'" (click)="toggleRole('EMPLOYEE')">
+                <ion-icon [name]="'EMPLOYEE' | roleIcon"></ion-icon>
+                <div class="text">Dipendenti</div>
+              </div>
+              <div class="button restaurant-button" [@selectDeselect]="(filterByRestaurant$ | async) ? 'select' : 'deselect'" (click)="toggleRole('RESTAURANT')">
+                <ion-icon [name]="'RESTAURANT' | roleIcon"></ion-icon>
+                <div class="text">Ristoratori</div>
+              </div>
+          </div>
+        </div>  
+        <div class="users">
+            <div class="new-user">
+              <ion-icon name="person-add-outline"></ion-icon>
+              <div class="text">Aggiungi utente</div>
+            </div>
+            <ion-card class="user" mode="ios" *ngFor="let user of (users$ | async)" (click)="selectUser(user)">
               <ion-card-header>
                 <ion-card-title>{{user.firstName}} {{user.lastName}}</ion-card-title>
               </ion-card-header>
               <ion-card-content>
                 {{user.email}}
               </ion-card-content>
+              <div class="menu" [@openClose]="(user?.email === selectedUser?.email) ? 'open' : 'closed'">
+                <div class="edit-container">
+                  <div class="info">
+                    <div class="text">Modifica</div>
+                    <ion-icon name="create-outline"></ion-icon>
+                  </div>
+                  <svg class="edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1">
+                    <radialGradient cx="80%" cy="20%" id="gradientEdit">
+                      <stop offset="0%" class="color1" />
+                      <stop offset="100%" class="color2" />
+                    </radialGradient>
+                    <rect width="1" height="1" fill="url(#gradientEdit)"/>
+                  </svg>
+                </div>
+                <div class="delete-container" (click)="deleteUser($event)">
+                  <div class="info">
+                    <div class="text">Cancella</div>
+                    <ion-icon name="trash-outline"></ion-icon>
+                  </div>
+                  <svg class="delete" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1">
+                    <radialGradient cx="80%" cy="20%" id="gradientDelete">
+                      <stop offset="0%" class="color1" />
+                      <stop offset="100%" class="color2" />
+                    </radialGradient>
+                    <rect width="1" height="1" fill="url(#gradientDelete)"/>
+                  </svg>
+                </div>
+              </div>
               <div class="role-icon-container">
                 <svg class="wave-img" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 60 60" preserveAspectRatio="none">
                   <defs>
@@ -26,4 +76,12 @@
           <ion-button (click)="logout()">Logout</ion-button>
       </app-default-page>
   </app-external-container>
+  <app-popup *ngIf="showDeleteUserPopup" [startingPoint]="popupConfig" (cancelEmitter)="cancelDelete()">
+    <h2>Elimina utente</h2>
+    <div>Vuoi davvero eliminare {{selectedUser?.firstName}} {{selectedUser?.lastName}}?</div>
+    <div class="button-container">
+      <ion-button class="cancel">Annulla</ion-button>
+      <ion-button class="delete">Elimina</ion-button>
+    </div>
+  </app-popup>
 </ion-content>

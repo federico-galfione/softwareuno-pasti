@@ -8,16 +8,17 @@ import { ToastService } from './services/toast.service';
 import { DefaultPageComponent } from './components/default-page/default-page.component';
 import { RoleIconPipe } from './pipes/role-icon.pipe';
 import { SvgIdPathPipe } from './pipes/svg-id-path.pipe';
+import { PopupComponent } from './components/popup/popup.component';
 
 
 
 @NgModule({
-  declarations: [ExternalContainerComponent, DefaultPageComponent, RoleIconPipe, SvgIdPathPipe],
+  declarations: [ExternalContainerComponent, DefaultPageComponent, RoleIconPipe, SvgIdPathPipe, PopupComponent],
   imports: [
     CommonModule,
     AngularFireAuthModule,
     AngularFirestoreModule
   ],
-  exports: [ExternalContainerComponent, RoleIconPipe, DefaultPageComponent, AuthService, ToastService, SvgIdPathPipe]
+  exports: [ExternalContainerComponent, RoleIconPipe, DefaultPageComponent, AuthService, ToastService, SvgIdPathPipe, PopupComponent]
 })
 export class SharedModule { }

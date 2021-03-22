@@ -1,5 +1,5 @@
 $breakpoints: (
-  'very-small':  ( max-width: 360px ),
+  'very-small':  ( max-width: 359px ),
   'tablet': ( min-width:  768px ),
   'desktop':  ( min-width: 1024px )
 ) !default;
@@ -41,16 +41,30 @@ $breakpoints: (
   }
 }
 
-@mixin ion-button-style($type: 'primary'){
-  font-size: 3rem;
+@mixin default-gradient($property, $first-color, $second-color){
+  #{$property}: radial-gradient(circle at right top, $first-color 0%, $second-color 100%);
+}
+
+@mixin ion-button-style($color: 'primary', $type: 'fill'){
+  @if $type == fill{
+    @include default-gradient('--background', var(--ion-color-#{$color}-tint), var(--ion-color-#{$color}));
+  } @else {
+    --background: white;
+  }
+  @if $type != fill{
+    color: var(--ion-color-#{$color});
+    --border-width: 2px;
+    --border-color: var(--ion-color-#{$color});
+    --border-style: solid;
+  }
+  font-size: 2rem;
   font-weight: bold;
   text-transform: none;
   letter-spacing: normal;
-  height: 7rem;
+  height: 6rem;
   --padding-top: 2rem;
   --padding-bottom: 2rem;
   --border-radius: 10000px;
-  --background: radial-gradient(circle at left top, var(--ion-color-#{$type}) 0%, var(--ion-color-#{$type}-tint) 100%);
   --box-shadow: none;
 }
 

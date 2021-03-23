@@ -1,4 +1,5 @@
 import { Component, HostBinding, Input, OnInit, Output, EventEmitter, HostListener, Host, ElementRef } from '@angular/core';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { popupAnimations } from './popup.animations';
 
 @Component({
@@ -13,9 +14,10 @@ export class PopupComponent implements OnInit {
   @Output()
   cancelEmitter: EventEmitter<void> = new EventEmitter<void>();
   state: 'smartphone' | 'display' | 'void' = 'display';
+  public closePopupTrigger: Subject<void> = new Subject<void>();
   @HostListener('click')
   onClick(){
-    this.state = 'void';
+    this.closePopupTrigger.next();
   }
   @HostBinding('@expandCollapse')
   get expand(){
@@ -35,6 +37,7 @@ export class PopupComponent implements OnInit {
 
   constructor() { 
     this.state = (window.innerWidth < 768) ? 'smartphone' : 'display';
+    this.closePopupTrigger.subscribe(_ => this.state = 'void');
   }
 
   ngOnInit(){

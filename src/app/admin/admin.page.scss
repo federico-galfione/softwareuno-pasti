@@ -21,48 +21,6 @@ ion-content{
         @include respond-to('tablet'){
             margin-bottom: var(--space-4);
         }
-        ion-input{
-             flex: 1;
-            --padding-start: 2rem;
-            --padding-top: 1rem;
-            --padding-bottom: 1rem;
-            --placeholder-color: #BEBBB6;
-            font-size: 2rem;
-            width: 100%;
-            border: 1px solid var(--ion-color-tertiary);
-            border-radius: 1000px;
-            margin-right: var(--space-2);
-        }
-        .segment{
-            display: flex;
-            border: 1px solid var(--ion-color-tertiary);
-            border-radius: 2000px;
-            overflow: hidden;
-            @include respond-to('very-small'){
-                margin-bottom: var(--space-1);
-            }
-            .button{
-                flex: 1;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: var(--space-2);
-                cursor: pointer;
-                @include respond-to('very-small'){
-                    padding: var(--space-1);
-                }
-                font-size: 2rem;
-                color: var(--ion-color-tertiary);
-                .text{
-                    font-weight: bold;
-                    margin-left: var(--space-1);
-                    display: none;
-                    @include respond-to('desktop'){
-                        display: block;
-                    }
-                }
-            }
-        }
     }
     .users{
         position: relative;
@@ -191,20 +149,68 @@ ion-content{
             font-weight: 900;
             margin-bottom: var(--space-2);
         }
+        .subtitle{
+            padding-bottom: var(--space-2);
+        }
+        ion-input{
+            margin-top: var(--space-2);
+        }
+        app-role-segment{
+            display: block;
+            margin-top: var(--space-2);
+        }
+        .error-message{
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--ion-color-danger);
+            margin-top: calc(var(--space-1) / 2);
+            margin-left: calc(var(--space-1) / 2);
+        }
         .button-container{
             margin-top: var(--space-2);
             display: flex;
             width: 100%;
             ion-button{
                 flex: 1;
-                margin: var(--space-1) var(--space-1) 0 0; 
+                margin-top: var(--space-1);
+                &:first-child{
+                    margin-right: var(--space-1);
+                } 
+                &:last-child{
+                    margin-left: var(--space-1);
+                }
                 &.cancel{
                     @include ion-button-style('tertiary', 'clean')
                 }
-                &.delete{
+                &.danger{
                     @include ion-button-style('danger');
                 }
+                &.tertiary{
+                    @include ion-button-style('tertiary');
+                }
             }
+        }
+    }
+    ion-input{
+        flex: 1;
+       --padding-start: 2rem;
+       --padding-top: 1rem;
+       --padding-bottom: 1rem;
+       --placeholder-color: #BEBBB6;
+       font-size: 2rem;
+       width: 100%;
+       border: 1px solid var(--ion-color-tertiary);
+       border-radius: 1000px;
+       margin-right: var(--space-2);
+    }
+    .ripple-parent{
+        position: relative;
+        overflow: hidden;
+        &.tertiary{
+            color: var(--ion-color-tertiary);
+        }
+        &.white{
+            color: white;
         }
     }
 }

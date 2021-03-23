@@ -9,16 +9,17 @@ import { DefaultPageComponent } from './components/default-page/default-page.com
 import { RoleIconPipe } from './pipes/role-icon.pipe';
 import { SvgIdPathPipe } from './pipes/svg-id-path.pipe';
 import { PopupComponent } from './components/popup/popup.component';
+import { RoleSegmentComponent } from './components/role-segment/role-segment.component';
 
 
 
 @NgModule({
-  declarations: [ExternalContainerComponent, DefaultPageComponent, RoleIconPipe, SvgIdPathPipe, PopupComponent],
+  declarations: [ExternalContainerComponent, DefaultPageComponent, RoleIconPipe, SvgIdPathPipe, PopupComponent, RoleSegmentComponent],
   imports: [
     CommonModule,
     AngularFireAuthModule,
     AngularFirestoreModule
   ],
-  exports: [ExternalContainerComponent, RoleIconPipe, DefaultPageComponent, AuthService, ToastService, SvgIdPathPipe, PopupComponent]
+  exports: [ExternalContainerComponent, RoleIconPipe, DefaultPageComponent, AuthService, ToastService, SvgIdPathPipe, PopupComponent, RoleSegmentComponent]
 })
 export class SharedModule { }

@@ -7,3 +7,11 @@ import * as functions from 'firebase-functions';
 //   functions.logger.info("Hello logs!", {structuredData: true});
 //   response.send("Hello from Firebase!");
 // });
+
+export const addUser = functions.auth.user().onCreate((user) => {
+
+})
+
+export const removeUser = functions.auth.user().onDelete((user) => {
+
+})

@@ -1,13 +1,14 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { debounceTime, map, skip, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, filter, map, skip, switchMap, takeUntil } from 'rxjs/operators';
+import { PopupComponent } from '../shared/components/popup/popup.component';
 import { User } from '../shared/models/user';
 import { AuthService, Roles } from '../shared/services/auth.service';
+import { menuAnimation } from './admin.animations';
 
 const autocomplete = (time, selector) => (source$) =>
   source$.pipe(
@@ -29,63 +30,45 @@ const autocomplete = (time, selector) => (source$) =>
   templateUrl: './admin.page.html',
   styleUrls: ['./admin.page.scss'],
   animations: [
-    trigger('openClose', [
-      state('open', style({
-        transform: 'translateX(0%)'
-      })),
-      state('closed', style({
-        transform: 'translateX(100%)'
-      })),
-      transition('* => closed', [
-        animate('0.2s ease-out')
-      ]),
-      transition('* => open', [
-        animate('0.2s ease-in')
-      ]),
-    ]),
-    trigger('selectDeselect', [
-      state('select', style({
-        backgroundColor: 'var(--ion-color-tertiary)',
-        color: 'var(--ion-color-tertiary-contrast)'
-      })),
-      state('deselect', style({
-        backgroundColor: 'var(--ion-color-tertiary-contrast)',
-        color: 'var(--ion-color-tertiary)'
-      })),
-      transition('* => select', [
-        animate('0.2s ease-out')
-      ]),
-      transition('* => deselect', [
-        animate('0.2s ease-in')
-      ]),
-    ]),
+    menuAnimation
   ]
 })
-export class AdminPage {
+export class AdminPage implements AfterViewInit {
   adminColors: {primary?: string, tint?: string} = {};
   showDeleteUserPopup: boolean = false;
+  showEditUserPopup: boolean = false;
+  showCreateUserPopup: boolean = false;
   popupConfig: {x: number, y: number};
   users$: Observable<User[]>;
+  filteredUsers$: Observable<User[]>;
+  userFormGroup: FormGroup = new FormGroup({
+    email: new FormControl('', [Validators.email, Validators.required]),
+    firstName: new FormControl('', [Validators.required]),
+    lastName: new FormControl('', [Validators.required]),
+    role: new FormControl('', [Validators.required])
+  })
   filterForm = new FormGroup({
-    text: new FormControl('')
+    text: new FormControl(''),
+    roles: new FormControl(['ADMIN', 'EMPLOYEE', 'RESTAURANT'])
   });
-  filter$: BehaviorSubject<{ text: string, roles: Roles[]}> = new BehaviorSubject({text: '', roles: ['ADMIN', 'EMPLOYEE', 'RESTAURANT']});
-  filterByAdmin$: Observable<boolean> = this.filter$.pipe(map(x => x.roles.includes('ADMIN')));
-  filterByEmployee$: Observable<boolean> = this.filter$.pipe(map(x => x.roles.includes('EMPLOYEE')));
-  filterByRestaurant$: Observable<boolean> = this.filter$.pipe(map(x => x.roles.includes('RESTAURANT')));
-  filterByText$: Observable<boolean>
   selectedUser: User;
 
   constructor(private authSvc: AuthService, private router: Router, private firestore: AngularFirestore) { 
     this.adminColors.primary = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-tertiary');
     this.adminColors.tint = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-tertiary-tint');
-    this.users$ = this.firestore.collection('users').valueChanges() as Observable<User[]>;
-    this.filterForm.get('text').valueChanges.pipe(
-      autocomplete(1000, term => this.filter$.next({
-        ...this.filter$.value,
-        text: term
-      }))
-    ).subscribe();
+    this.users$ = this.firestore
+      .collection('users').valueChanges() as Observable<User[]>;
+
+    this.filteredUsers$ = combineLatest([this.users$, this.filterForm.valueChanges]).pipe(map(([users, form]) => {
+      return users.filter(user => 
+        form.roles.includes(user.role) &&
+        (
+          user.email.toLowerCase().includes(form.text.toLowerCase()) ||
+          user.firstName.toLowerCase().includes(form.text.toLowerCase()) ||
+          user.lastName.toLowerCase().includes(form.text.toLowerCase()) 
+        )
+      );
+    }));
   }
 
 
@@ -96,6 +79,13 @@ export class AdminPage {
     }catch(e){}
   }
 
+  ngAfterViewInit(){
+    this.filterForm.setValue({
+      text: '',
+      roles: ['ADMIN', 'EMPLOYEE', 'RESTAURANT']
+    })
+  }
+
   selectUser(user: User){
     if(this.selectedUser?.email === user.email || user.email === this.authSvc.currentUser.email){
       this.selectedUser = null;
@@ -104,12 +94,16 @@ export class AdminPage {
     }
   }
 
-  toggleRole(role: Roles){
-    const currentValue = this.filter$.value;
-    this.filter$.next({
-      ...currentValue,
-      roles: (currentValue.roles.includes(role)) ? currentValue.roles.filter(x => x !== role) : [...currentValue.roles, role]
-    })
+  createUser(event: MouseEvent){
+    event.stopPropagation();
+    this.userFormGroup.setValue({
+      email: '',
+      firstName: '',
+      lastName: '',
+      role: 'EMPLOYEE'
+    });
+    this.popupConfig = {x: event.x, y: event.y};
+    this.showCreateUserPopup = true;
   }
 
   deleteUser(event: MouseEvent){
@@ -118,8 +112,30 @@ export class AdminPage {
     this.showDeleteUserPopup = true;
   }
 
+  editUser(event: MouseEvent){
+    event.stopPropagation();
+    this.userFormGroup.patchValue(this.selectedUser);
+    this.popupConfig = {x: event.x, y: event.y};
+    this.showEditUserPopup = true;
+  }
+
+  cancelCreate(){
+    this.showCreateUserPopup = false;
+    this.selectedUser = null;
+  }
+
   cancelDelete(){
     this.showDeleteUserPopup = false;
     this.selectedUser = null;
+  }
+
+  cancelEdit(){
+    this.showEditUserPopup = false;
+    this.selectedUser = null;
+  }
+
+  closePopup(e: MouseEvent, popup: PopupComponent){
+    e.stopPropagation();
+    popup.closePopupTrigger.next();
   }
 }

@@ -8,7 +8,8 @@ import { debounceTime, filter, map, skip, switchMap, takeUntil } from 'rxjs/oper
 import { PopupComponent } from '../shared/components/popup/popup.component';
 import { User } from '../shared/models/user';
 import { AuthService, Roles } from '../shared/services/auth.service';
-import { menuAnimation } from './admin.animations';
+import { MediaService } from '../shared/services/media.service';
+import { menuAnimation, usersAnimation } from './admin.animations';
 
 const autocomplete = (time, selector) => (source$) =>
   source$.pipe(
@@ -30,7 +31,8 @@ const autocomplete = (time, selector) => (source$) =>
   templateUrl: './admin.page.html',
   styleUrls: ['./admin.page.scss'],
   animations: [
-    menuAnimation
+    menuAnimation,
+    usersAnimation
   ]
 })
 export class AdminPage implements AfterViewInit {
@@ -41,6 +43,7 @@ export class AdminPage implements AfterViewInit {
   popupConfig: {x: number, y: number};
   users$: Observable<User[]>;
   filteredUsers$: Observable<User[]>;
+  filteredUsers: User[];
   userFormGroup: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.email, Validators.required]),
     firstName: new FormControl('', [Validators.required]),
@@ -53,7 +56,7 @@ export class AdminPage implements AfterViewInit {
   });
   selectedUser: User;
 
-  constructor(private authSvc: AuthService, private router: Router, private firestore: AngularFirestore) { 
+  constructor(private authSvc: AuthService, private router: Router, private firestore: AngularFirestore, public mediaSvc: MediaService) { 
     this.adminColors.primary = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-tertiary');
     this.adminColors.tint = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-tertiary-tint');
     this.users$ = this.firestore
@@ -69,6 +72,9 @@ export class AdminPage implements AfterViewInit {
         )
       );
     }));
+
+    this.filteredUsers$.subscribe(users => this.filteredUsers = users);
+
   }
 
 

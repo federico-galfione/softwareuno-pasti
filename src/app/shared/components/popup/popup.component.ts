@@ -1,5 +1,6 @@
 import { Component, HostBinding, Input, OnInit, Output, EventEmitter, HostListener, Host, ElementRef } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { MediaService } from '../../services/media.service';
 import { popupAnimations } from './popup.animations';
 
 @Component({
@@ -35,8 +36,8 @@ export class PopupComponent implements OnInit {
     this.state !== 'void' || this.cancel();
   }
 
-  constructor() { 
-    this.state = (window.innerWidth < 768) ? 'smartphone' : 'display';
+  constructor(private mediaSvc: MediaService) { 
+    this.state = (mediaSvc.isSmartphone) ? 'smartphone' : 'display';
     this.closePopupTrigger.subscribe(_ => this.state = 'void');
   }
 

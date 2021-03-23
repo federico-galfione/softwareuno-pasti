@@ -6,20 +6,20 @@
           <ion-input formControlName="text" placeholder="Nome o Email"></ion-input>
           <app-role-segment formControlName="roles"></app-role-segment>
         </div>  
-        <div class="users">
+        <div class="users" [@usersAnimation]="filteredUsers?.length">
             <div class="new-user ion-activatable ripple-parent tertiary" (click)="createUser($event)">
               <ion-icon name="person-add-outline"></ion-icon>
               <div class="text">Aggiungi utente</div>
               <ion-ripple-effect></ion-ripple-effect>
             </div>
-            <ion-card class="user" mode="ios" *ngFor="let user of (filteredUsers$ | async)" (click)="selectUser(user)">
+            <ion-card [ngClass]="{user: true, smartphone: mediaSvc?.isSmartphone, display: !(mediaSvc?.isSmartphone)}" mode="ios" *ngFor="let user of filteredUsers" (click)="selectUser(user)">
               <ion-card-header>
                 <ion-card-title>{{user.firstName}} {{user.lastName}}</ion-card-title>
               </ion-card-header>
               <ion-card-content>
                 {{user.email}}
               </ion-card-content>
-              <div class="menu" [@openClose]="(user?.email === selectedUser?.email) ? 'open' : 'closed'">
+              <div class="menu" *ngIf="user?.email === selectedUser?.email" @openClose>
                 <div class="edit-container ion-activatable ripple-parent white" (click)="editUser($event)">
                   <div class="info">
                     <div class="text">Modifica</div>

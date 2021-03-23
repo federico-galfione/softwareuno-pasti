@@ -1,15 +1,48 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { animate, query, stagger, state, style, transition, trigger } from '@angular/animations';
 export const menuAnimation = trigger('openClose', [
-    state('open', style({
-      transform: 'translateX(0%)'
-    })),
-    state('closed', style({
-      transform: 'translateX(100%)'
-    })),
-    transition('* => closed', [
-      animate('0.2s ease-out')
+    transition(':enter', [
+        style({
+            transform: 'translateX(100%)'
+        }),
+        animate('0.2s ease-out', style({
+            transform: 'translateX(0%)'
+        }))
     ]),
-    transition('* => open', [
-      animate('0.2s ease-in')
+    transition(':leave', [
+      animate('0.2s ease-in', style({
+            transform: 'translateX(100%)'
+        }))
+    ]),
+  ])
+
+export const usersAnimation = trigger('usersAnimation', [
+    transition('* => *', [
+        query(':enter.smartphone', style({ opacity: 0, transform: 'translateX(-100%)' }), { optional: true }),
+
+        query(':enter.smartphone', stagger('.1s', [
+            animate('.2s ease-in', style({
+                opacity: 1,
+                transform: 'translateX(0%)'
+            }))]), { optional: true }),
+
+        query(':leave.smartphone', stagger('.1s', [
+            animate('.2s ease-out', style({
+                opacity: 0,
+                transform: 'translateX(-100%)'
+            }))]), { optional: true }),
+
+        query(':enter.display', style({ opacity: 0, transform: 'translateY(-100%)' }), { optional: true }),
+
+        query(':enter.display', stagger('.1s', [
+            animate('.2s ease-in', style({
+                opacity: 1,
+                transform: 'translateY(0%)'
+            }))]), { optional: true }),
+
+        query(':leave.display', stagger('.1s', [
+            animate('.2s ease-out', style({
+                opacity: 0,
+                transform: 'translateY(-100%)'
+            }))]), { optional: true }) 
     ]),
   ])

@@ -10,6 +10,7 @@ import { RoleIconPipe } from './pipes/role-icon.pipe';
 import { SvgIdPathPipe } from './pipes/svg-id-path.pipe';
 import { PopupComponent } from './components/popup/popup.component';
 import { RoleSegmentComponent } from './components/role-segment/role-segment.component';
+import { MediaService } from './services/media.service';
 
 
 
@@ -20,6 +21,6 @@ import { RoleSegmentComponent } from './components/role-segment/role-segment.com
     AngularFireAuthModule,
     AngularFirestoreModule
   ],
-  exports: [ExternalContainerComponent, RoleIconPipe, DefaultPageComponent, AuthService, ToastService, SvgIdPathPipe, PopupComponent, RoleSegmentComponent]
+  exports: [ExternalContainerComponent, RoleIconPipe, DefaultPageComponent, AuthService, ToastService, SvgIdPathPipe, PopupComponent, RoleSegmentComponent, MediaService]
 })
 export class SharedModule { }

@@ -7,7 +7,7 @@
           <app-role-segment formControlName="roles"></app-role-segment>
         </div>  
         <div class="users" [@usersAnimation]="filteredUsers?.length">
-            <div class="new-user ion-activatable ripple-parent tertiary" (click)="createUser($event)">
+            <div class="new-user ion-activatable ripple-parent tertiary" (click)="showCreateUserPopup($event)">
               <ion-icon name="person-add-outline"></ion-icon>
               <div class="text">Aggiungi utente</div>
               <ion-ripple-effect></ion-ripple-effect>
@@ -20,7 +20,7 @@
                 {{user.email}}
               </ion-card-content>
               <div class="menu" *ngIf="user?.email === selectedUser?.email" @openClose>
-                <div class="edit-container ion-activatable ripple-parent white" (click)="editUser($event)">
+                <div class="edit-container ion-activatable ripple-parent white" (click)="showEditUserPopup($event)">
                   <div class="info">
                     <div class="text">Modifica</div>
                     <ion-icon name="create-outline"></ion-icon>
@@ -34,7 +34,7 @@
                     <rect width="1" height="1" fill="url(#gradientEdit)"/>
                   </svg>
                 </div>
-                <div class="delete-container ion-activatable ripple-parent white" (click)="deleteUser($event)">
+                <div class="delete-container ion-activatable ripple-parent white" (click)="showDeleteUserPopup($event)">
                   <div class="info">
                     <div class="text">Cancella</div>
                     <ion-icon name="trash-outline"></ion-icon>
@@ -66,15 +66,15 @@
           <ion-button (click)="logout()">Logout</ion-button>
       </app-default-page>
   </app-external-container>
-  <app-popup #deletePopup *ngIf="showDeleteUserPopup" [startingPoint]="popupConfig" (cancelEmitter)="cancelDelete()">
+  <app-popup #deletePopup *ngIf="isDeleteUserPopupInView" [startingPoint]="popupConfig" (cancelEmitter)="cancelDelete()">
     <h2>Elimina utente</h2>
     <div class="subtitle">Vuoi davvero eliminare {{selectedUser?.firstName}} {{selectedUser?.lastName}}?</div>
     <div class="button-container">
-      <ion-button mode="md" class="cancel" (click)="closePopup($event, deletePopup)">Annulla</ion-button>
-      <ion-button mode="md" class="danger delete">Elimina</ion-button>
+      <ion-button mode="md" class="cancel" (click)="closePopup(deletePopup, $event)">Annulla</ion-button>
+      <ion-button mode="md" class="danger delete" (click)="deleteUser()">Elimina</ion-button>
     </div>
   </app-popup>
-  <app-popup #editPopup [formGroup]="userFormGroup" *ngIf="showEditUserPopup" [startingPoint]="popupConfig" (cancelEmitter)="cancelEdit()">
+  <app-popup #editPopup [formGroup]="userFormGroup" *ngIf="isEditUserPopupInView" [startingPoint]="popupConfig" (cancelEmitter)="cancelEdit()">
     <h2>Modifica utente</h2>
     <div class="subtitle">Modifica l'utente {{selectedUser?.email}}.</div>
     <app-role-segment formControlName="role" [multipleValues]="false"></app-role-segment>
@@ -83,11 +83,11 @@
     <ion-input formControlName="lastName" placeholder="Cognome"></ion-input>
     <div class="error-message" *ngIf="userFormGroup.get('lastName').invalid && (userFormGroup.get('lastName').dirty || userFormGroup.get('lastName').touched) && userFormGroup.get('lastName').errors.required">Cognome obbligatorio.</div>
     <div class="button-container">
-      <ion-button mode="md" class="cancel" (click)="closePopup($event, editPopup)">Annulla</ion-button>
-      <ion-button mode="md" class="tertiary edit">Modifica</ion-button>
+      <ion-button mode="md" class="cancel" (click)="closePopup(editPopup, $event)">Annulla</ion-button>
+      <ion-button mode="md" class="tertiary edit" (click)="editUser()">Modifica</ion-button>
     </div>
   </app-popup>
-  <app-popup #createPopup [formGroup]="userFormGroup" *ngIf="showCreateUserPopup" [startingPoint]="popupConfig" (cancelEmitter)="cancelCreate()">
+  <app-popup #createPopup [formGroup]="userFormGroup" *ngIf="isCreateUserPopupInView" [startingPoint]="popupConfig" (cancelEmitter)="cancelCreate()">
     <h2>Aggiungi Utente</h2>
     <div class="subtitle">Crea un nuovo utente per l'app.</div>
     <app-role-segment formControlName="role" [multipleValues]="false"></app-role-segment>
@@ -99,8 +99,8 @@
     <ion-input formControlName="lastName" placeholder="Cognome"></ion-input>
     <div class="error-message" *ngIf="userFormGroup.get('lastName').invalid && (userFormGroup.get('lastName').dirty || userFormGroup.get('lastName').touched) && userFormGroup.get('lastName').errors.required">Cognome obbligatorio.</div>
     <div class="button-container">
-      <ion-button mode="md" class="cancel" (click)="closePopup($event, createPopup)">Annulla</ion-button>
-      <ion-button mode="md" class="tertiary add">Aggiungi</ion-button>
+      <ion-button mode="md" class="cancel" (click)="closePopup(createPopup, $event)">Annulla</ion-button>
+      <ion-button mode="md" class="tertiary add" (click)="createUser()" [disabled]="userFormGroup.invalid">Aggiungi</ion-button>
     </div>
   </app-popup>
 </ion-content>

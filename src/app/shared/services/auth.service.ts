@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { map, first, withLatestFrom, mergeMap } from 'rxjs/operators'
+import { map, first, withLatestFrom, mergeMap, take, tap, takeUntil, filter } from 'rxjs/operators'
 import  firebase  from 'firebase/app'
 import { AngularFirestore } from '@angular/fire/firestore';
-import { combineLatest, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastService } from './toast.service';
+import { User } from '../models/user';
+import { AngularFireFunctions } from '@angular/fire/functions';
 
 export type Roles = 'ADMIN' | 'EMPLOYEE' | 'RESTAURANT';
 
@@ -15,11 +17,14 @@ export type Roles = 'ADMIN' | 'EMPLOYEE' | 'RESTAURANT';
 export class AuthService {
 
   private _currentUser: firebase.User & {role: Roles} = null;
+  private isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public startLoading$: Observable<boolean> = this.isLoading$.asObservable().pipe(filter(x => x));
+  public stopLoading$: Observable<boolean> = this.isLoading$.asObservable().pipe(filter(x => !x), map(y => !y));
   get currentUser(){
     return this._currentUser;
   }
 
-  constructor(private auth: AngularFireAuth, private firestore: AngularFirestore, private router: Router, private toastSvc: ToastService) { }
+  constructor(private auth: AngularFireAuth, private firestore: AngularFirestore, private router: Router, private toastSvc: ToastService, private fns: AngularFireFunctions) { }
 
   // Login 
   async login(email: string, password: string){
@@ -71,4 +76,33 @@ export class AuthService {
     return (user) ? this.firestore.collection('users').doc(user.uid).get() : of(null);
   }
 
+  // Create a new user
+  createUser(user: User){
+    if(!this.isLoading$.value){
+      this.isLoading$.next(true);
+      const callable = this.fns.httpsCallable('createUser');
+      callable(user).pipe(take(1)).subscribe(
+        async res => {
+          await this.auth.sendPasswordResetEmail(res.email);
+          this.toastSvc.addSuccessToast({
+            header: 'Utente creato!',
+            message: `L'utente ${res.email} è stato creato con successo`
+          })
+          this.isLoading$.next(false);
+        },
+        err => {
+          this.toastSvc.addErrorToast({
+            message: 'Errore durante la creazione dell\'utente'
+          });
+          console.error(err);
+          this.isLoading$.next(false);
+        }
+      );
+    }
+  }
+
+  // Delete user
+  deleteUser(){
+
+  }
 }

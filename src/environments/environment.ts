@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  useEmulator: true,
   firebase: {
     apiKey: "AIzaSyA4TcEwzyOT0B60mAGJjkjdQWDwCtLMgXs",
     authDomain: "softwareuno-pasti.firebaseapp.com",

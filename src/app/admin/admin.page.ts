@@ -1,10 +1,10 @@
-import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { debounceTime, filter, map, skip, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, filter, map, skip, switchMap, take, takeUntil } from 'rxjs/operators';
 import { PopupComponent } from '../shared/components/popup/popup.component';
 import { User } from '../shared/models/user';
 import { AuthService, Roles } from '../shared/services/auth.service';
@@ -37,9 +37,9 @@ const autocomplete = (time, selector) => (source$) =>
 })
 export class AdminPage implements AfterViewInit {
   adminColors: {primary?: string, tint?: string} = {};
-  showDeleteUserPopup: boolean = false;
-  showEditUserPopup: boolean = false;
-  showCreateUserPopup: boolean = false;
+  isDeleteUserPopupInView: boolean = false;
+  isEditUserPopupInView: boolean = false;
+  isCreateUserPopupInView: boolean = false;
   popupConfig: {x: number, y: number};
   users$: Observable<User[]>;
   filteredUsers$: Observable<User[]>;
@@ -55,8 +55,14 @@ export class AdminPage implements AfterViewInit {
     roles: new FormControl(['ADMIN', 'EMPLOYEE', 'RESTAURANT'])
   });
   selectedUser: User;
+  @ViewChild('deletePopup')
+  deletePopup: PopupComponent;
+  @ViewChild('editPopup')
+  editPopup: PopupComponent;
+  @ViewChild('createPopup')
+  createPopup: PopupComponent;
 
-  constructor(private authSvc: AuthService, private router: Router, private firestore: AngularFirestore, public mediaSvc: MediaService) { 
+  constructor(public authSvc: AuthService, private router: Router, private firestore: AngularFirestore, public mediaSvc: MediaService) { 
     this.adminColors.primary = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-tertiary');
     this.adminColors.tint = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-tertiary-tint');
     this.users$ = this.firestore
@@ -100,7 +106,7 @@ export class AdminPage implements AfterViewInit {
     }
   }
 
-  createUser(event: MouseEvent){
+  showCreateUserPopup(event: MouseEvent){
     event.stopPropagation();
     this.userFormGroup.setValue({
       email: '',
@@ -109,39 +115,54 @@ export class AdminPage implements AfterViewInit {
       role: 'EMPLOYEE'
     });
     this.popupConfig = {x: event.x, y: event.y};
-    this.showCreateUserPopup = true;
+    this.isCreateUserPopupInView = true;
   }
 
-  deleteUser(event: MouseEvent){
+  showDeleteUserPopup(event: MouseEvent){
     event.stopPropagation();
     this.popupConfig = {x: event.x, y: event.y};
-    this.showDeleteUserPopup = true;
+    this.isDeleteUserPopupInView = true;
   }
 
-  editUser(event: MouseEvent){
+  showEditUserPopup(event: MouseEvent){
     event.stopPropagation();
     this.userFormGroup.patchValue(this.selectedUser);
     this.popupConfig = {x: event.x, y: event.y};
-    this.showEditUserPopup = true;
+    this.isEditUserPopupInView = true;
+  }
+
+  createUser(){
+    if(this.userFormGroup.valid){
+      this.authSvc.createUser(this.userFormGroup.value)
+      this.authSvc.stopLoading$.pipe(take(1)).subscribe(_ => this.closePopup(this.createPopup));
+    }
+  }
+
+  editUser(){
+
+  }
+
+  deleteUser(){
+
   }
 
   cancelCreate(){
-    this.showCreateUserPopup = false;
+    this.isCreateUserPopupInView = false;
     this.selectedUser = null;
   }
 
   cancelDelete(){
-    this.showDeleteUserPopup = false;
+    this.isDeleteUserPopupInView = false;
     this.selectedUser = null;
   }
 
   cancelEdit(){
-    this.showEditUserPopup = false;
+    this.isEditUserPopupInView = false;
     this.selectedUser = null;
   }
 
-  closePopup(e: MouseEvent, popup: PopupComponent){
-    e.stopPropagation();
+  closePopup(popup: PopupComponent, e?: MouseEvent){
+    e?.stopPropagation();
     popup.closePopupTrigger.next();
   }
 }

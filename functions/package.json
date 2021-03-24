@@ -3,7 +3,8 @@
   "scripts": {
     "lint": "eslint \"src/**/*\"",
     "build": "tsc",
-    "serve": "npm run build && firebase emulators:start --only functions",
+    "watch": "tsc --watch --preserveWatchOutput",
+    "serve": "npm run watch | firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
@@ -14,6 +15,8 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "@types/cors": "^2.8.10",
+    "cors": "2.8.5",
     "firebase-admin": "^8.10.0",
     "firebase-functions": "^3.6.1"
   },

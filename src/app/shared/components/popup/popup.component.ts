@@ -26,8 +26,8 @@ export class PopupComponent implements OnInit {
       value: this.state,
       params: {
         scale: Math.sqrt(Math.pow(window.innerHeight, 2) + Math.pow(window.innerWidth, 2)) / 2,
-        x: `${this.startingPoint.x - 2}px`,
-        y: `${this.startingPoint.y - 2}px`
+        x: `${this.startingPoint ? (this.startingPoint.x - 2) : window.innerWidth }px`,
+        y: `${this.startingPoint ? (this.startingPoint.y - 2) : window.innerHeight }px`
       }
     }
   }

@@ -40,7 +40,6 @@ export class AdminPage implements AfterViewInit {
   isDeleteUserPopupInView: boolean = false;
   isEditUserPopupInView: boolean = false;
   isCreateUserPopupInView: boolean = false;
-  popupConfig: {x: number, y: number};
   users$: Observable<User[]>;
   filteredUsers$: Observable<User[]>;
   filteredUsers: User[];
@@ -114,20 +113,17 @@ export class AdminPage implements AfterViewInit {
       lastName: '',
       role: 'EMPLOYEE'
     });
-    this.popupConfig = {x: event.x, y: event.y};
     this.isCreateUserPopupInView = true;
   }
 
   showDeleteUserPopup(event: MouseEvent){
     event.stopPropagation();
-    this.popupConfig = {x: event.x, y: event.y};
     this.isDeleteUserPopupInView = true;
   }
 
   showEditUserPopup(event: MouseEvent){
     event.stopPropagation();
     this.userFormGroup.patchValue(this.selectedUser);
-    this.popupConfig = {x: event.x, y: event.y};
     this.isEditUserPopupInView = true;
   }
 

@@ -66,7 +66,7 @@
           <ion-button (click)="logout()">Logout</ion-button>
       </app-default-page>
   </app-external-container>
-  <app-popup #deletePopup *ngIf="isDeleteUserPopupInView" [startingPoint]="popupConfig" (cancelEmitter)="cancelDelete()">
+  <app-popup #deletePopup *ngIf="isDeleteUserPopupInView" (cancelEmitter)="cancelDelete()">
     <h2>Elimina utente</h2>
     <div class="subtitle">Vuoi davvero eliminare {{selectedUser?.firstName}} {{selectedUser?.lastName}}?</div>
     <div class="button-container">
@@ -74,7 +74,7 @@
       <ion-button mode="md" class="danger delete" (click)="deleteUser()">Elimina</ion-button>
     </div>
   </app-popup>
-  <app-popup #editPopup [formGroup]="userFormGroup" *ngIf="isEditUserPopupInView" [startingPoint]="popupConfig" (cancelEmitter)="cancelEdit()">
+  <app-popup #editPopup [formGroup]="userFormGroup" *ngIf="isEditUserPopupInView" (cancelEmitter)="cancelEdit()">
     <h2>Modifica utente</h2>
     <div class="subtitle">Modifica l'utente {{selectedUser?.email}}.</div>
     <app-role-segment formControlName="role" [multipleValues]="false"></app-role-segment>
@@ -87,7 +87,7 @@
       <ion-button mode="md" class="tertiary edit" (click)="editUser()" [disabled]="userFormGroup.invalid">Modifica</ion-button>
     </div>
   </app-popup>
-  <app-popup #createPopup [formGroup]="userFormGroup" *ngIf="isCreateUserPopupInView" [startingPoint]="popupConfig" (cancelEmitter)="cancelCreate()">
+  <app-popup #createPopup [formGroup]="userFormGroup" *ngIf="isCreateUserPopupInView" (cancelEmitter)="cancelCreate()">
     <h2>Aggiungi Utente</h2>
     <div class="subtitle">Crea un nuovo utente per l'app.</div>
     <app-role-segment formControlName="role" [multipleValues]="false"></app-role-segment>

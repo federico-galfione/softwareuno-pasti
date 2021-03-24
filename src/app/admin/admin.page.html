@@ -84,7 +84,7 @@
     <div class="error-message" *ngIf="userFormGroup.get('lastName').invalid && (userFormGroup.get('lastName').dirty || userFormGroup.get('lastName').touched) && userFormGroup.get('lastName').errors.required">Cognome obbligatorio.</div>
     <div class="button-container">
       <ion-button mode="md" class="cancel" (click)="closePopup(editPopup, $event)">Annulla</ion-button>
-      <ion-button mode="md" class="tertiary edit" (click)="editUser()">Modifica</ion-button>
+      <ion-button mode="md" class="tertiary edit" (click)="editUser()" [disabled]="userFormGroup.invalid">Modifica</ion-button>
     </div>
   </app-popup>
   <app-popup #createPopup [formGroup]="userFormGroup" *ngIf="isCreateUserPopupInView" [startingPoint]="popupConfig" (cancelEmitter)="cancelCreate()">

@@ -124,4 +124,27 @@ export class AuthService {
       );
     }
   }
+
+  editUser(user: User){
+    if(!this.isLoading$.value){
+      this.isLoading$.next(true);
+      const callable = this.fns.httpsCallable('editUser');
+      callable(user).pipe(take(1)).subscribe(
+        async res => {
+          this.toastSvc.addSuccessToast({
+            header: 'Utente modificato!',
+            message: `L'utente ${res.email} è stato modificato con successo`
+          })
+          this.isLoading$.next(false);
+        },
+        err => {
+          this.toastSvc.addErrorToast({
+            message: 'Errore durante la modifica dell\'utente'
+          });
+          console.error(err);
+          this.isLoading$.next(false);
+        }
+      );
+    }
+  }
 }

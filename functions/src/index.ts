@@ -37,6 +37,27 @@ export const createUser = functions.https.onRequest(async (req, res) => {
     });
 })
 
+export const editUser = functions.https.onRequest(async (req, res) => {
+    return cors()(req, res, async () => {
+        try{
+            await authenticate(req);
+            const data = req.body.data;
+            const userToEdit = await admin.auth().getUserByEmail(data.email);
+            await admin.firestore().collection('users').doc(userToEdit.uid).update({
+                firstName: data.firstName,
+                lastName: data.lastName,
+                role: data.role
+            });
+            res.status(200).send({ data: userToEdit });
+            return;
+        }catch(e){
+            console.log(e);
+            res.status(403).send(e);
+            return;
+        }
+    });
+})
+
 export const deleteUser = functions.https.onRequest(async (req, res) => {
     return cors()(req, res, async () => {
         try{
@@ -55,6 +76,7 @@ export const deleteUser = functions.https.onRequest(async (req, res) => {
     });
 })
 
+//CHeck id the user is authenticated and an ADMIN
 async function authenticate(req: functions.https.Request): Promise<admin.auth.DecodedIdToken>{
     if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) {
         throw new Error();

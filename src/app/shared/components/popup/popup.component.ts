@@ -36,7 +36,7 @@ export class PopupComponent implements OnInit {
     this.state !== 'void' || this.cancel();
   }
 
-  constructor(private mediaSvc: MediaService) { 
+  constructor(mediaSvc: MediaService) { 
     this.state = (mediaSvc.isSmartphone) ? 'smartphone' : 'display';
     this.closePopupTrigger.subscribe(_ => this.state = 'void');
   }

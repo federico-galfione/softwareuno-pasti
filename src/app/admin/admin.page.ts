@@ -139,11 +139,15 @@ export class AdminPage implements AfterViewInit {
   }
 
   editUser(){
-
+    if(this.userFormGroup.valid){
+      // this.authSvc.editUser(this.userFormGroup.value)
+      this.authSvc.stopLoading$.pipe(take(1)).subscribe(_ => this.closePopup(this.editPopup));
+    }
   }
 
   deleteUser(){
-
+    this.authSvc.deleteUser(this.selectedUser.email);
+    this.authSvc.stopLoading$.pipe(take(1)).subscribe(_ => this.closePopup(this.deletePopup));
   }
 
   cancelCreate(){

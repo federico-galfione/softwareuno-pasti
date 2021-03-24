@@ -102,7 +102,26 @@ export class AuthService {
   }
 
   // Delete user
-  deleteUser(){
-
+  deleteUser(email: string){
+    if(!this.isLoading$.value){
+      this.isLoading$.next(true);
+      const callable = this.fns.httpsCallable('deleteUser');
+      callable({email}).pipe(take(1)).subscribe(
+        async res => {
+          this.toastSvc.addSuccessToast({
+            header: 'Utente eliminato!',
+            message: `L'utente ${res.email} è stato eliminato con successo`
+          })
+          this.isLoading$.next(false);
+        },
+        err => {
+          this.toastSvc.addErrorToast({
+            message: 'Errore durante l\'eliminazione dell\'utente'
+          });
+          console.error(err);
+          this.isLoading$.next(false);
+        }
+      );
+    }
   }
 }

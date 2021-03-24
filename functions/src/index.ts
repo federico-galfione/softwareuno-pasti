@@ -27,7 +27,6 @@ export const createUser = functions.https.onRequest(async (req, res) => {
                 lastName: data.lastName,
                 role: data.role
             })
-            console.log(newUser);
             res.status(200).send({ data: newUser });
             return;
         }catch(e){
@@ -38,8 +37,22 @@ export const createUser = functions.https.onRequest(async (req, res) => {
     });
 })
 
-export const removeUser = functions.auth.user().onDelete((user) => {
-
+export const deleteUser = functions.https.onRequest(async (req, res) => {
+    return cors()(req, res, async () => {
+        try{
+            await authenticate(req);
+            const data = req.body.data;
+            const userToDelete = await admin.auth().getUserByEmail(data.email);
+            await admin.auth().deleteUser(userToDelete.uid);
+            await admin.firestore().collection('users').doc(userToDelete.uid).delete();
+            res.status(200).send({ data: userToDelete });
+            return;
+        }catch(e){
+            console.log(e);
+            res.status(403).send(e);
+            return;
+        }
+    });
 })
 
 async function authenticate(req: functions.https.Request): Promise<admin.auth.DecodedIdToken>{

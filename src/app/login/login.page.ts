@@ -27,4 +27,11 @@ export class LoginPage {
     }
   }
 
+  ionViewDidEnter(){
+    this.loginForm.setValue({
+      email: '',
+      password: ''
+    })
+  }
+
 }

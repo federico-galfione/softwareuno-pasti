@@ -6,15 +6,6 @@
     @include respond-to('desktop'){
         min-height: 100%;
     }
-    --base-display-width: 414;
-    --starting-space: 8;
-    --current-space-1: calc(var(--starting-space) * 100vw / var(--base-display-width));
-    @include respond-to('tablet') {
-        --current-space-1: var(--space-1);
-    }
-    --current-space-2: calc(var(--current-space-1) * 2);
-    --current-space-3: calc(var(--current-space-2) * 2);
-    --current-space-4: calc(var(--current-space-3) * 2);
     .header{
         position: relative;
         z-index: 1;
@@ -93,9 +84,9 @@
     .content{
         position: relative;
         z-index: 1;
-        margin: var(--space-3) var(--current-space-3) var(--space-3) var(--current-space-3);
+        margin: calc(var(--space-2) * 5) var(--current-space-3) var(--space-3) var(--current-space-3);
         @include respond-to('tablet'){
-            margin: var(--space-3) var(--space-4) var(--space-3) var(--space-4);
+            margin: calc(var(--space-2) * 5) var(--space-4) var(--space-3) var(--space-4);
         }
     }
     .footer-img{

@@ -10,16 +10,19 @@ ion-content{
         ion-icon{
             margin-right: var(--space-1);
         }
+        @include respond-to('tablet'){
+            padding-top: var(--space-4);
+        }
     }
     .filter-container{
         display: flex;
-        margin-bottom: calc(var(--space-3) + var(--space-2));
         flex-direction: row;
         @include respond-to('very-small'){
             flex-direction: column-reverse;
         }
+        margin-bottom: var(--space-3);
         @include respond-to('tablet'){
-            margin-bottom: var(--space-4);
+            margin-bottom: calc(var(--space-3) + var(--space-2));
         }
     }
     .users{

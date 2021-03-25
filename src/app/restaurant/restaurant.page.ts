@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-restaurant',
@@ -7,9 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RestaurantPage implements OnInit {
 
-  constructor() { }
+  constructor(private authSvc: AuthService, private router: Router) { }
 
   ngOnInit() {
   }
+
+  async logout(){
+    try{
+      await this.authSvc.logout();
+      this.router.navigate(['']);
+    }catch(e){}
+  }
+
 
 }

@@ -1,4 +1,5 @@
-import { ApplicationRef, Component, ElementRef, Injector, Input, OnChanges, OnInit } from '@angular/core';
+import { AfterViewInit, ApplicationRef, Component, ElementRef, Injector, Input, OnChanges, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { Roles } from '../../services/auth.service';
 
 @Component({
@@ -6,7 +7,7 @@ import { Roles } from '../../services/auth.service';
   templateUrl: './default-page.component.html',
   styleUrls: ['./default-page.component.scss'],
 })
-export class DefaultPageComponent implements OnChanges {
+export class DefaultPageComponent implements AfterViewInit {
   @Input()
   color: 'primary' | 'secondary' | 'tertiary' = 'primary';
   @Input()
@@ -17,15 +18,15 @@ export class DefaultPageComponent implements OnChanges {
   sectionTitle: string;
   @Input()
   showCountdown: boolean = true;
-  private currentPrimaryColor: string;
-  private currentSecondaryColor: string;
+  currentPrimaryColor: BehaviorSubject<string> = new BehaviorSubject<string>('#000');
+  currentSecondaryColor: BehaviorSubject<string> = new BehaviorSubject<string>('#000');;
 
   constructor() { 
   }
 
-  ngOnChanges(){
-    this.currentPrimaryColor = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-'+this.color);
-    this.currentSecondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-'+this.color+'-tint');
+  ngAfterViewInit(){
+    this.currentPrimaryColor.next(getComputedStyle(document.documentElement).getPropertyValue('--ion-color-'+this.color));
+    this.currentSecondaryColor.next(getComputedStyle(document.documentElement).getPropertyValue('--ion-color-'+this.color+'-tint'));
   }
 
 }

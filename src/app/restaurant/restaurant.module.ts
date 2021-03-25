@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { RestaurantPageRoutingModule } from './restaurant-routing.module';
 
 import { RestaurantPage } from './restaurant.page';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedModule,
     RestaurantPageRoutingModule
   ],
   declarations: [RestaurantPage]

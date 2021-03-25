@@ -1,0 +1,17 @@
+@import 'mixins';
+:host{
+    .dishes{
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(calc(var(--space-3) * 9), 1fr));
+        grid-gap: var(--space-2);
+        align-items: flex-start;
+        @include respond-to('very-small'){
+            grid-template-columns: repeat(auto-fill, minmax(calc(var(--space-1) * 25), 1fr));
+        }
+        @include respond-to('tablet'){
+            grid-template-columns: repeat(auto-fill, minmax(calc(var(--space-4) * 6), 1fr));
+            grid-gap: calc(var(--space-4) + var(--space-2));
+        }
+    }
+}

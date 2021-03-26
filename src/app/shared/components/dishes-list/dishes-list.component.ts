@@ -11,6 +11,8 @@ export class DishesListComponent implements OnInit {
   title: string = 'Primi';
   @Input()
   rightText: string = 'Piatti ricorrenti';
+  @Input()
+  dishes: string[] = [];
 
   constructor() { }
 

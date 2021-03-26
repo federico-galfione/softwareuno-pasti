@@ -7,8 +7,8 @@
     <ion-icon name="add-outline"></ion-icon>
     <ion-ripple-effect></ion-ripple-effect>
   </div>
-  <ion-card class="card">Pasta alla carbonara</ion-card>
-  <ion-card class="card"></ion-card>
-  <ion-card class="card"></ion-card>
-  <ion-card class="card"></ion-card>
+  <div class="no-items-placeholder" *ngIf="dishes.length === 0">
+    Clicca '+' per aggiungere piatto.
+  </div>
+  <ion-card *ngFor="let dish of dishes" class="card"></ion-card>
 </div>

@@ -7,7 +7,7 @@ import { Roles } from '../../services/auth.service';
   templateUrl: './default-page.component.html',
   styleUrls: ['./default-page.component.scss'],
 })
-export class DefaultPageComponent implements AfterViewInit {
+export class DefaultPageComponent implements AfterViewInit, OnChanges {
   @Input()
   color: 'primary' | 'secondary' | 'tertiary' = 'primary';
   @Input()
@@ -18,15 +18,23 @@ export class DefaultPageComponent implements AfterViewInit {
   sectionTitle: string;
   @Input()
   showCountdown: boolean = true;
+  @Input()
+  removeMargins: boolean = false;
   currentPrimaryColor: BehaviorSubject<string> = new BehaviorSubject<string>('#000');
   currentSecondaryColor: BehaviorSubject<string> = new BehaviorSubject<string>('#000');;
 
-  constructor() { 
+  constructor(private el: ElementRef) { 
   }
 
   ngAfterViewInit(){
     this.currentPrimaryColor.next(getComputedStyle(document.documentElement).getPropertyValue('--ion-color-'+this.color));
     this.currentSecondaryColor.next(getComputedStyle(document.documentElement).getPropertyValue('--ion-color-'+this.color+'-tint'));
+  }
+
+  ngOnChanges(){
+    if(this.removeMargins){
+      this.el.nativeElement.style.setProperty('--border-margins', '0px');
+    }
   }
 
 }

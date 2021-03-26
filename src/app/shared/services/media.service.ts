@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class MediaService {
   get isSmartphone(): boolean{
-    return window.innerWidth < 768;
+    return (window.innerWidth < 768);
   }
   constructor() { }
 }

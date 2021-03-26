@@ -1,101 +1,107 @@
-@import 'mixins';
-:host{
+@import "mixins";
+:host {
+  --border-margins: var(--current-space-3);
+  position: relative;
+  display: block;
+  min-height: 100vh;
+  @include respond-to("desktop") {
+    min-height: 100%;
+  }
+  .header {
     position: relative;
-    display: block;
-    min-height: 100vh;
-    @include respond-to('desktop'){
-        min-height: 100%;
+    z-index: 1;
+    display: grid;
+    grid-template-rows: auto auto auto;
+    grid-template-columns: 1fr auto;
+    .logo {
+      grid-row: 1 / 2;
+      grid-column: 1 / 2;
+      padding: var(--current-space-3) var(--current-space-3) 0
+        var(--current-space-3);
+      @include respond-to("tablet") {
+        padding: var(--space-3) var(--space-3) 0 var(--space-4);
+      }
+      width: 100%;
+      flex: 1;
+      img {
+        max-width: 120px;
+      }
     }
-    .header{
+    .right-corner {
+      @include flex($position: relative, $justify-content: flex-end);
+      grid-row: 1 / 3;
+      grid-column: 2 / 3;
+      .timer {
         position: relative;
-        z-index: 1;
-        display:grid;
-        grid-template-rows: auto auto auto;
-        grid-template-columns: 1fr auto;
-        .logo{
-            grid-row: 1 / 2;
-            grid-column: 1 / 2;
-            padding: var(--current-space-3) var(--current-space-3) 0 var(--current-space-3);
-            @include respond-to('tablet'){
-                padding: var(--space-3) var(--space-3) 0 var(--space-4);
-            }
-            width: 100%;
-            flex: 1;
-            img{
-                max-width: 120px;
-            }
+        padding: var(--current-space-3) var(--current-space-3)
+          calc(var(--current-space-4) + var(--current-space-1))
+          calc(var(--current-space-2) * 3);
+        @include respond-to("tablet") {
+          padding-right: var(--space-4);
+          padding-left: calc(var(--space-4) + var(--space-3));
         }
-        .right-corner{
-            @include flex($position: relative, $justify-content: flex-end);
-            grid-row: 1 / 3;
-            grid-column: 2 / 3;
-            .timer{
-                position: relative;
-                padding: var(--current-space-3) var(--current-space-3) calc(var(--current-space-4) + var(--current-space-1)) calc(var(--current-space-2) * 3);
-                @include respond-to('tablet'){
-                    padding-right: var(--space-4);
-                    padding-left: calc(var(--space-4) + var(--space-3))
-                }
-                color: var(--ion-color-primary-contrast);
-                font-weight: bold;
-                text-align: right;
-                height: fit-content;
-                .text{
-                    position: relative;
-                    z-index: 1;
-                    font-size: min(calc(var(--current-space-1) * 3), 3em);
-                }
-                .hour{
-                    position: relative;
-                    font-size: min(calc(var(--current-space-1) * 5), 5em);
-                    z-index: 1;
-                    font-weight: 900;
-                }
-                .header-img{
-                    position: absolute;
-                    z-index: 0;
-                    top: 0;
-                    right: 0;
-                    height: 100%;
-                    width: 100%
-                }
-            }
+        color: var(--ion-color-primary-contrast);
+        font-weight: bold;
+        text-align: right;
+        height: fit-content;
+        .text {
+          position: relative;
+          z-index: 1;
+          font-size: min(calc(var(--current-space-1) * 3), 3em);
         }
-        .title{
-            grid-row: 2 / 3;
-            grid-column: 1 / 2;
-            padding: var(--space-4) 0 0 var(--current-space-3);
-            margin: 0;
-            @include respond-to('tablet'){
-                padding-left: var(--space-4);
-            }
+        .hour {
+          position: relative;
+          font-size: min(calc(var(--current-space-1) * 5), 5em);
+          z-index: 1;
+          font-weight: 900;
         }
-        .subtitle{
-            grid-row: 3 / 4;
-            grid-column: 1 / 3;
-            margin: 0;
-            margin-top: var(--space-1);
-            padding-left: var(--current-space-3);
-            @include respond-to('tablet'){
-                padding-left: var(--space-4);
-            }
+        .header-img {
+          position: absolute;
+          z-index: 0;
+          top: 0;
+          right: 0;
+          height: 100%;
+          width: 100%;
         }
+      }
     }
-    .content{
-        position: relative;
-        z-index: 1;
-        margin: calc(var(--space-2) * 5) var(--current-space-3) var(--space-3) var(--current-space-3);
-        @include respond-to('tablet'){
-            margin: calc(var(--space-2) * 5) var(--space-4) var(--space-3) var(--space-4);
-        }
+    .title {
+      grid-row: 2 / 3;
+      grid-column: 1 / 2;
+      padding: var(--space-4) 0 0 var(--current-space-3);
+      margin: 0;
+      @include respond-to("tablet") {
+        padding-left: var(--space-4);
+      }
     }
-    .footer-img{
-        width: 35%;
-        max-width: 224px;
-        max-height: 33%;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        z-index: 0
+    .subtitle {
+      grid-row: 3 / 4;
+      grid-column: 1 / 3;
+      margin: 0;
+      margin-top: var(--space-1);
+      padding-left: var(--current-space-3);
+      @include respond-to("tablet") {
+        padding-left: var(--space-4);
+      }
     }
+  }
+  .content {
+    position: relative;
+    z-index: 1;
+    margin: calc(var(--space-2) * 5) var(--border-margins) var(--space-3)
+      var(--border-margins);
+    @include respond-to("tablet") {
+      margin: calc(var(--space-2) * 5) var(--space-4) var(--space-3)
+        var(--space-4);
+    }
+  }
+  .footer-img {
+    width: 35%;
+    max-width: 224px;
+    max-height: 33%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+  }
 }

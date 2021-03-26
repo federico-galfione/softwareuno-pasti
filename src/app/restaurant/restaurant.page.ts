@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
+import { MediaService } from '../shared/services/media.service';
 
 @Component({
   selector: 'app-restaurant',
@@ -9,7 +10,8 @@ import { AuthService } from '../shared/services/auth.service';
 })
 export class RestaurantPage implements OnInit {
 
-  constructor(private authSvc: AuthService, private router: Router) { }
+  constructor(private authSvc: AuthService, private router: Router, public mediaSvc: MediaService) { 
+  }
 
   ngOnInit() {
   }

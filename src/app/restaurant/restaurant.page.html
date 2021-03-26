@@ -1,6 +1,6 @@
 <ion-content>
   <app-external-container class="desktop" [multiplier]="40">
-      <app-default-page color="secondary" sectionTitle="Fine ordinazioni" title="Menù" subtitle="Inserisci i piatti del giorno.">
+      <app-default-page [removeMargins]="mediaSvc.isSmartphone" color="secondary" sectionTitle="Fine ordinazioni" title="Menù" subtitle="Inserisci i piatti del giorno.">
         <div class="dishes">
           <app-dishes-list title="Primi" rightText="Piatti ricorrenti"></app-dishes-list>
           <app-dishes-list title="Secondi" rightText="Piatti ricorrenti"></app-dishes-list>

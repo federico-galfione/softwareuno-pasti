@@ -1,6 +1,6 @@
 <div class="title-container">
   <div class="title" *ngIf="title">{{title}}</div>
-  <div class="right-text" *ngIf="rightText">{{rightText}}</div>
+  <div class="right-text" *ngIf="rightText" (click)="rightButtonClicked.emit()">{{rightText}}</div>
 </div>
 <div class="dishes" scrollX="true">
   <div class="add-dish card ion-activatable">
@@ -8,7 +8,10 @@
     <ion-ripple-effect></ion-ripple-effect>
   </div>
   <div class="no-items-placeholder" *ngIf="dishes.length === 0">
-    Clicca '+' per aggiungere piatto.
+    <img class="placeholder-img" src="../../../../assets/svg/dish.svg">
+    <div class="text">
+      <div class="subtitle">Clicca '+' per aggiungere piatto.</div>
+    </div>
   </div>
   <ion-card *ngFor="let dish of dishes" class="card"></ion-card>
 </div>

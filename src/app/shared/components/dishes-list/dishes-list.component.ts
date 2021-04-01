@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-dishes-list',
@@ -13,6 +13,8 @@ export class DishesListComponent implements OnInit {
   rightText: string = 'Piatti ricorrenti';
   @Input()
   dishes: string[] = [];
+  @Output()
+  rightButtonClicked: EventEmitter<void> = new EventEmitter<void>();
 
   constructor() { }
 

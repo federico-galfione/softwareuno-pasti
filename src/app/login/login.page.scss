@@ -1,78 +1,78 @@
-@import 'mixins';
-ion-content{
+@import "mixins";
+ion-content {
   width: 100vw;
-  app-external-container{
-    .title-background{
+  app-external-container {
+    .title-background {
       @include flex($position: relative);
-      .white-background{
+      .white-background {
         position: relative;
         flex: 1;
       }
-      .shape{
+      .shape {
         @include flex($position: relative, $justify-content: flex-end);
         width: 50%;
         top: -2px;
         right: -2px;
-        @include respond-to('tablet') {
+        @include respond-to("tablet") {
           width: 20%;
         }
       }
     }
-    .title-container{
+    .title-container {
       position: absolute;
       width: 100%;
-      top: var(--space-3); 
+      top: var(--space-3);
       padding-left: var(--space-3);
       left: 0;
-      @include respond-to('tablet') {
+      @include respond-to("tablet") {
         padding-left: var(--space-4);
         display: flex;
       }
-      .icon{
+      .icon {
         width: 41.5%;
         padding-right: var(--space-3);
         margin-bottom: var(--space-2);
-        @include respond-to('tablet') {
+        @include respond-to("tablet") {
           padding-right: var(--space-4);
           width: 30%;
         }
-        img{
+        img {
           width: 100%;
         }
       }
-      .text{
+      .text {
         font-size: 5rem;
         font-weight: 900;
-        .softwareuno{
-          color: var(--ion-color-primary);;
+        .softwareuno {
+          color: var(--ion-color-primary);
         }
-        .pasti{
+        .pasti {
           color: var(--softwareuno-second-color);
         }
       }
     }
-    .login-form-container{
+    .login-form-container {
       padding: 6vh var(--space-3) 0 var(--space-3);
-      @include respond-to('tablet') {
+      @include respond-to("tablet") {
         padding: var(--space-1) var(--space-4) 0 var(--space-4);
       }
       width: 100%;
       align-self: center;
-      .input-container{
+      .input-container {
         @include flex($align-items: center, $justify-content: flex-end);
         margin-top: var(--space-2);
-        ion-input{
+        ion-input {
           --padding-start: 2rem;
           --padding-top: 2rem;
           --padding-bottom: 2rem;
-          --placeholder-color: #BEBBB6;
+          --placeholder-color: #bebbb6;
           font-size: 2rem;
           width: 100%;
           border: 1px solid var(--default-dark-color);
           border-radius: 1000px;
           z-index: 3;
         }
-        ion-button{
+        ion-button {
           position: absolute;
           font-size: 2rem;
           font-weight: bold;
@@ -82,28 +82,31 @@ ion-content{
         }
       }
     }
-    .submit-container{
+    .submit-container {
       @include flex($position: relative);
       margin-top: var(--space-3);
       flex: auto;
-      .shape-container{
+      .shape-container {
         @include flex($align-items: flex-end, $justify-content: left);
         width: 50%;
-        @include respond-to('tablet') {
-          img{
+        @include respond-to("tablet") {
+          img {
             width: 40%;
           }
         }
       }
-      .button-container{
+      .button-container {
+        @include flex($position: relative);
         position: relative;
         width: 50%;
         padding: 0 var(--space-3) 0 0;
-        @include respond-to('tablet') {
+        @include respond-to("tablet") {
           padding: 0 var(--space-4) 0 0;
         }
-        ion-button{
+        ion-button {
           width: 100%;
+          max-width: calc(var(--space-4) * 4);
+          margin-left: auto;
           @include ion-button-style;
         }
       }

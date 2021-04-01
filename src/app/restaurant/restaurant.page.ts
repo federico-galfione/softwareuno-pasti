@@ -23,5 +23,8 @@ export class RestaurantPage implements OnInit {
     }catch(e){}
   }
 
+  goToUsual(course: 'primi' | 'secondi' | 'contorni' | 'pizze'){
+    this.router.navigate(['restaurant', 'usual', course]);
+  }
 
 }

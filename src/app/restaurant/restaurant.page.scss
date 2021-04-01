@@ -11,4 +11,18 @@
       grid-gap: calc(var(--space-4) + var(--space-2));
     }
   }
+  .buttons-container {
+    display: flex;
+    padding: 0 var(--current-space-3) 0 var(--current-space-3);
+    @include respond-to("tablet") {
+      padding: 0;
+    }
+    justify-content: flex-end;
+    margin-top: calc(var(--space-2) * 2);
+    .send-button {
+      @include ion-button-style($color: "secondary");
+      width: calc(50% - var(--current-space-2));
+      max-width: calc(var(--space-4) * 4);
+    }
+  }
 }

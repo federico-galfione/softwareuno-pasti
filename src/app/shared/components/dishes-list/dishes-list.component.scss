@@ -79,19 +79,34 @@
       }
     }
     .no-items-placeholder {
+      position: relative;
       display: flex;
       align-items: center;
+      overflow: hidden;
       justify-content: center;
-      color: var(--ion-color-medium-tint);
-      border: 3px solid var(--ion-color-medium-tint);
+      color: var(--ion-color-dark);
+      box-shadow: var(--default-box-shadow);
+      font-weight: bold;
       padding: var(--space-2);
       border-radius: 30px;
       font-size: 2rem;
+      background-color: white;
       min-width: calc(var(--space-2) * 17);
       @include respond-to("tablet") {
         min-width: 0px;
         grid-column-start: 2;
         grid-column-end: -1;
+      }
+      .text {
+        position: relative;
+      }
+      .placeholder-img {
+        position: absolute;
+        justify-self: flex-start;
+        right: 0;
+        height: 200%;
+        transform: translateX(30%);
+        opacity: 0.05;
       }
     }
   }

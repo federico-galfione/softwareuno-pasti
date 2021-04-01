@@ -2,11 +2,18 @@
   <app-external-container class="desktop" [multiplier]="40">
       <app-default-page [removeMargins]="mediaSvc.isSmartphone" color="secondary" sectionTitle="Fine ordinazioni" title="Menù" subtitle="Inserisci i piatti del giorno.">
         <div class="dishes">
-          <app-dishes-list title="Primi" rightText="Piatti ricorrenti"></app-dishes-list>
-          <app-dishes-list title="Secondi" rightText="Piatti ricorrenti"></app-dishes-list>
-          <app-dishes-list title="Contorni" rightText="Piatti ricorrenti"></app-dishes-list>
+          <app-dishes-list title="Primi" rightText="Piatti ricorrenti" (rightButtonClicked)="goToUsual('primi')"></app-dishes-list>
+          <app-dishes-list title="Secondi" rightText="Piatti ricorrenti" (rightButtonClicked)="goToUsual('secondi')"></app-dishes-list>
+          <app-dishes-list title="Contorni" rightText="Piatti ricorrenti" (rightButtonClicked)="goToUsual('contorni')"></app-dishes-list>
         </div>  
-        <ion-button (click)="logout()">Logout</ion-button>
+        <div class="buttons-container">
+          <ion-button class="send-button">Invia</ion-button>
+        </div>
       </app-default-page>
   </app-external-container>
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button color="secondary" size="small">
+      <ion-icon name="settings-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

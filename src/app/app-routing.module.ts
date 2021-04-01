@@ -28,8 +28,7 @@ const routes: Routes = [
     path: 'employee',
     canActivate: [RoleGuard],
     loadChildren: () => import('./employee/employee.module').then( m => m.EmployeePageModule)
-  },
-
+  }
 ];
 
 @NgModule({

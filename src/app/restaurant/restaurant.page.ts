@@ -10,6 +10,8 @@ import { MediaService } from '../shared/services/media.service';
 })
 export class RestaurantPage implements OnInit {
 
+  showUsualDishes: 'primi' | 'secondi' | 'contorni' | 'pizze' = null;
+
   constructor(private authSvc: AuthService, private router: Router, public mediaSvc: MediaService) { 
   }
 
@@ -24,7 +26,7 @@ export class RestaurantPage implements OnInit {
   }
 
   goToUsual(course: 'primi' | 'secondi' | 'contorni' | 'pizze'){
-    this.router.navigate(['restaurant', 'usual', course]);
+    this.showUsualDishes = course;
   }
 
 }

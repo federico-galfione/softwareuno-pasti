@@ -8,6 +8,7 @@ import { RestaurantPageRoutingModule } from './restaurant-routing.module';
 
 import { RestaurantPage } from './restaurant.page';
 import { SharedModule } from '../shared/shared.module';
+import { UsualDishesComponent } from './usual-dishes/usual-dishes.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { SharedModule } from '../shared/shared.module';
     SharedModule,
     RestaurantPageRoutingModule
   ],
-  declarations: [RestaurantPage]
+  declarations: [RestaurantPage, UsualDishesComponent]
 })
 export class RestaurantPageModule {}

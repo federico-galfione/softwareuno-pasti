@@ -20,6 +20,9 @@ export class DefaultPageComponent implements AfterViewInit, OnChanges {
   showCountdown: boolean = true;
   @Input()
   removeMargins: boolean = false;
+  // Tell if it's a main page or a secondary page (back button)
+  @Input()
+  secondaryPage: boolean = false;
   currentPrimaryColor: BehaviorSubject<string> = new BehaviorSubject<string>('#000');
   currentSecondaryColor: BehaviorSubject<string> = new BehaviorSubject<string>('#000');;
 

@@ -1,35 +1,78 @@
-@import 'mixins';
-:host{
-    --background-color-rgb: var(--ion-color-tertiary-rgb);
-    --background-opacity: 0.5;
-    position: fixed;
+@import "mixins";
+:host {
+  --background-color-rgb: var(--ion-color-tertiary-rgb);
+  --background-opacity: 0.5;
+  --default-padding: var(--space-3);
+  --content-padding: var(--default-padding);
+  --button-padding: 0px;
+  position: fixed;
+  display: flex;
+  @include respond-to("tablet") {
+    align-items: center;
+  }
+  align-items: flex-end;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  transform-origin: center;
+  background-color: rgb(var(--background-color-rgb), var(--background-opacity));
+  z-index: 1000;
+  ion-card {
+    position: relative;
+    z-index: 1001;
+    padding: var(--content-padding);
     display: flex;
-    @include respond-to('tablet'){
-        align-items: center;
-    }
-    align-items: flex-end;
-    justify-content: center;
-    height: 100vh;
+    flex-direction: column;
+    overflow-y: auto;
+    border-radius: 30px 30px 0 0;
+    max-height: 100vh;
     width: 100vw;
-    top: 0;
-    left: 0;
-    transform-origin: center;
-    background-color: rgb(var(--background-color-rgb), var(--background-opacity));
-    z-index: 1000;
-    ion-card{
-        position: relative;
-        z-index: 1001;
-        padding: var(--space-3);
-        display: flex;
-        flex-direction: column;
-        overflow-y: scroll;
-        border-radius: 30px 30px 0 0;
-        max-height: 100vh;
-        width: 100vw;
-        @include respond-to('tablet'){
-            width: fit-content;
-            border-radius: 30px;
-            margin: 0px var(--space-3) 0px var(--space-3);
-        }
+    @include respond-to("tablet") {
+      width: fit-content;
+      border-radius: 30px;
+      margin: 0px var(--space-3) 0px var(--space-3);
     }
+    .button-container {
+      margin-top: var(--space-2);
+      display: flex;
+      width: 100%;
+      padding: var(--button-padding);
+      ion-button {
+        flex: 1;
+        margin-top: var(--space-1);
+        &:first-child {
+          margin-right: var(--space-1);
+        }
+        &:last-child {
+          margin-left: var(--space-1);
+        }
+        &.primary {
+          @include ion-button-style("primary", "clean");
+          &.fill {
+            @include ion-button-style("primary");
+          }
+        }
+        &.secondary {
+          @include ion-button-style("secondary", "clean");
+          &.fill {
+            @include ion-button-style("secondary");
+          }
+        }
+        &.tertiary {
+          @include ion-button-style("tertiary", "clean");
+          &.fill {
+            @include ion-button-style("tertiary");
+          }
+        }
+        &.danger {
+          @include ion-button-style("danger", "clean");
+          &.fill {
+            @include ion-button-style("danger");
+          }
+        }
+      }
+    }
+  }
 }

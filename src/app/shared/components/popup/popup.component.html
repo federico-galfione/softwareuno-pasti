@@ -1,5 +1,9 @@
-<ion-card (click)="$event.stopPropagation()">
+<ion-card class="popup" (click)="$event.stopPropagation()">
   <ion-card-content>
     <ng-content></ng-content>
+    <div *ngIf="cancelButton || successButton" class="button-container">
+      <ion-button *ngIf="cancelButton" mode="md" class="{{cancelButton.type}}" [ngClass]="{ fill: cancelButton.fill }" (click)="close('cancel', $event)" [disabled]="disableCancelButton">{{cancelButton.title}}</ion-button>
+      <ion-button *ngIf="successButton" mode="md" class="{{successButton.type}}" [ngClass]="{ fill: successButton.fill }" (click)="close('success', $event)" [disabled]="disableSuccessButton">{{successButton.title}}</ion-button>
+    </div>
   </ion-card-content>
 </ion-card>

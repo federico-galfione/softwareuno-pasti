@@ -16,7 +16,7 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@import "~@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
@@ -26,52 +26,59 @@
 @import "~@ionic/angular/css/flex-utils.css";
 @import "mixins";
 
-html{
-    font-size: 8px;
-    @include respond-to('very-small') {
-        font-size: 7px;
+html {
+  font-size: 8px;
+  @include respond-to("very-small") {
+    font-size: 7px;
+  }
+  @include respond-to("tablet") {
+    font-size: 10px;
+  }
+  h1 {
+    font-size: 4rem;
+    font-weight: bold;
+    color: var(--default-dark-color);
+    margin-top: 0px;
+    margin-bottom: var(--space-3);
+  }
+  h2 {
+    font-size: 3rem;
+    color: #707070;
+  }
+  h3 {
+    font-size: 3rem !important;
+    color: var(--default-dark-color);
+    font-weight: 900 !important;
+    line-height: 3rem;
+    margin: 0;
+  }
+  ion-toast {
+    &::part(header) {
+      font-size: 2rem;
+      font-weight: bold;
     }
-    @include respond-to('tablet'){
-        font-size: 10px;
+    &::part(message) {
+      font-size: 1.8rem;
     }
-    h1{
-        font-size: 4rem;
-        font-weight: bold;
+  }
+  ion-card {
+    position: relative;
+    border-radius: 30px;
+    padding: calc(var(--space-2) + var(--space-1));
+    margin: 0;
+    box-shadow: var(--default-box-shadow);
+    ion-card-header {
+      padding: 0 0 var(--space-1) 0;
+      ion-card-title {
+        font-size: 2rem;
+        font-weight: 900;
         color: var(--default-dark-color);
-        margin-top: 0px;
-        margin-bottom: var(--space-3);
+      }
     }
-    h2{
-        font-size: 3rem;
-        color: #707070;
+    ion-card-content {
+      font-size: 2rem !important;
+      color: var(--default-gray) !important;
+      padding: 0 !important;
     }
-    ion-toast{
-        &::part(header){
-            font-size: 2rem;
-            font-weight: bold;
-        }
-        &::part(message){
-            font-size: 1.8rem;
-        }
-    }
-    ion-card{
-        position: relative;
-        border-radius: 30px;
-        padding: calc(var(--space-2) + var(--space-1));
-        margin: 0;
-        box-shadow: var(--default-box-shadow);
-        ion-card-header{
-            padding: 0 0 var(--space-1) 0;
-            ion-card-title{
-                font-size: 2rem;
-                font-weight: 900;
-                color: var(--default-dark-color);
-            }
-        }
-        ion-card-content{
-            font-size: 2rem !important;
-            color: var(--default-gray) !important;
-            padding: 0 !important;
-        }
-    }
+  }
 }

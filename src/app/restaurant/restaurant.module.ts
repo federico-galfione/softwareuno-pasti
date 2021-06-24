@@ -6,10 +6,9 @@ import { IonicModule } from '@ionic/angular';
 
 import { RestaurantPageRoutingModule } from './restaurant-routing.module';
 
-import { RestaurantPage } from './restaurant.page';
+import { RestaurantPage } from './restaurant-page/restaurant.page';
 import { SharedModule } from '../shared/shared.module';
-import { UsualDishesComponent } from './usual-dishes/usual-dishes.component';
-
+import { RecurrentDishesPage } from './recurrent-dishes/recurrent-dishes.page';
 @NgModule({
   imports: [
     CommonModule,
@@ -18,6 +17,6 @@ import { UsualDishesComponent } from './usual-dishes/usual-dishes.component';
     SharedModule,
     RestaurantPageRoutingModule
   ],
-  declarations: [RestaurantPage, UsualDishesComponent]
+  declarations: [RestaurantPage, RecurrentDishesPage]
 })
 export class RestaurantPageModule {}

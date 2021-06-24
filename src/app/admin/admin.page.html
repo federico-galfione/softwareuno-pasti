@@ -66,15 +66,45 @@
           <ion-button (click)="logout()">Logout</ion-button>
       </app-default-page>
   </app-external-container>
-  <app-popup #deletePopup *ngIf="isDeleteUserPopupInView" (cancelEmitter)="cancelDelete()">
+  <app-popup 
+    #deletePopup 
+    *ngIf="showPopup == 'delete'" 
+    (popupClosed)="showPopup = null"
+    [cancelButton]="{
+      title: 'Annulla',
+      fill: false,
+      type: 'tertiary',
+      clickFunc: cancel
+    }"
+    [successButton]="{
+      title: 'Elimina',
+      fill: true,
+      type: 'danger',
+      clickFunc: editUser
+    }"
+  >
     <h2>Elimina utente</h2>
     <div class="subtitle">Vuoi davvero eliminare {{selectedUser?.firstName}} {{selectedUser?.lastName}}?</div>
-    <div class="button-container">
-      <ion-button mode="md" class="cancel" (click)="closePopup(deletePopup, $event)">Annulla</ion-button>
-      <ion-button mode="md" class="danger delete" (click)="deleteUser()">Elimina</ion-button>
-    </div>
   </app-popup>
-  <app-popup #editPopup [formGroup]="userFormGroup" *ngIf="isEditUserPopupInView" (cancelEmitter)="cancelEdit()">
+  <app-popup 
+    #editPopup 
+    [formGroup]="userFormGroup" 
+    *ngIf="showPopup == 'edit'" 
+    (popupClosed)="showPopup = null"
+    [cancelButton]="{
+      title: 'Annulla',
+      fill: false,
+      type: 'tertiary',
+      clickFunc: cancel
+    }"
+    [successButton]="{
+      title: 'Modifica',
+      fill: true,
+      type: 'tertiary',
+      clickFunc: editUser
+    }"
+    [disableSuccessButton]="userFormGroup.invalid"
+  >
     <h2>Modifica utente</h2>
     <div class="subtitle">Modifica l'utente {{selectedUser?.email}}.</div>
     <app-role-segment formControlName="role" [multipleValues]="false"></app-role-segment>
@@ -82,12 +112,26 @@
     <div class="error-message" *ngIf="userFormGroup.get('firstName').invalid && (userFormGroup.get('firstName').dirty || userFormGroup.get('firstName').touched) && userFormGroup.get('firstName').errors.required">Nome obbligatorio.</div>
     <ion-input formControlName="lastName" placeholder="Cognome"></ion-input>
     <div class="error-message" *ngIf="userFormGroup.get('lastName').invalid && (userFormGroup.get('lastName').dirty || userFormGroup.get('lastName').touched) && userFormGroup.get('lastName').errors.required">Cognome obbligatorio.</div>
-    <div class="button-container">
-      <ion-button mode="md" class="cancel" (click)="closePopup(editPopup, $event)">Annulla</ion-button>
-      <ion-button mode="md" class="tertiary edit" (click)="editUser()" [disabled]="userFormGroup.invalid">Modifica</ion-button>
-    </div>
   </app-popup>
-  <app-popup #createPopup [formGroup]="userFormGroup" *ngIf="isCreateUserPopupInView" (cancelEmitter)="cancelCreate()">
+  <app-popup 
+    #createPopup 
+    [formGroup]="userFormGroup" 
+    *ngIf="showPopup == 'create'" 
+    (popupClosed)="showPopup = null"
+    [cancelButton]="{
+      title: 'Annulla',
+      fill: false,
+      type: 'tertiary',
+      clickFunc: cancel
+    }"
+    [successButton]="{
+      title: 'Aggiungi',
+      fill: true,
+      type: 'tertiary',
+      clickFunc: createUser
+    }"
+    [disableSuccessButton]="userFormGroup.invalid"
+  >
     <h2>Aggiungi Utente</h2>
     <div class="subtitle">Crea un nuovo utente per l'app.</div>
     <app-role-segment formControlName="role" [multipleValues]="false"></app-role-segment>
@@ -98,9 +142,5 @@
     <div class="error-message" *ngIf="userFormGroup.get('firstName').invalid && (userFormGroup.get('firstName').dirty || userFormGroup.get('firstName').touched) && userFormGroup.get('firstName').errors.required">Nome obbligatorio.</div>
     <ion-input formControlName="lastName" placeholder="Cognome"></ion-input>
     <div class="error-message" *ngIf="userFormGroup.get('lastName').invalid && (userFormGroup.get('lastName').dirty || userFormGroup.get('lastName').touched) && userFormGroup.get('lastName').errors.required">Cognome obbligatorio.</div>
-    <div class="button-container">
-      <ion-button mode="md" class="cancel" (click)="closePopup(createPopup, $event)">Annulla</ion-button>
-      <ion-button mode="md" class="tertiary add" (click)="createUser()" [disabled]="userFormGroup.invalid">Aggiungi</ion-button>
-    </div>
   </app-popup>
 </ion-content>

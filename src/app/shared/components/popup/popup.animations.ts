@@ -11,6 +11,8 @@ export const popupAnimations = trigger('expandCollapse', [
           borderRadius: '2000px'
         }),
         query('ion-card', style({
+          height: 'fit-content',
+          width: 'fit-content',
           opacity: 0,
           transform: 'scale(0.7) translateY(-100vh)'
         })),
@@ -27,10 +29,14 @@ export const popupAnimations = trigger('expandCollapse', [
         }),
         query('ion-card', sequence([
           animate('0.1s ease-out', style({
+            height: 'fit-content',
+            width: 'fit-content',
             opacity: 1,
             transform: 'scale(0.7) translateY(0)'
           })),
           animate('0.1s ease-in', style({
+            height: 'fit-content',
+            width: 'fit-content',
             transform: 'scale(1) translateY(0)'
           }))
         ])),

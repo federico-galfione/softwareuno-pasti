@@ -1,9 +1,0 @@
-<app-second-page [removeMargins]="removeMargins" color="secondary" [title]="dishesType | titlecase" subtitle="Inserisci i {{dishesType}} ricorrenti.">
-  <div class="dishes">
-    <app-dishes-list title="Piatti fissi" rightText="Info" (rightButtonClicked)="openInfoPopup()"></app-dishes-list>
-    <app-dishes-list title="Piatti frequenti" rightText="Info" (rightButtonClicked)="openInfoPopup()"></app-dishes-list>
-  </div>  
-  <div class="buttons-container">
-    <ion-button class="send-button">Invia</ion-button>
-  </div>
-</app-second-page>

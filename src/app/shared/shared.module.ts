@@ -12,17 +12,17 @@ import { PopupComponent } from './components/popup/popup.component';
 import { RoleSegmentComponent } from './components/role-segment/role-segment.component';
 import { MediaService } from './services/media.service';
 import { DishesListComponent } from './components/dishes-list/dishes-list.component';
-import { SecondPageComponent } from './components/second-page/second-page.component';
-
+import { IonicModule } from '@ionic/angular';
 
 
 @NgModule({
-  declarations: [ExternalContainerComponent, DefaultPageComponent, RoleIconPipe, SvgIdPathPipe, PopupComponent, RoleSegmentComponent, DishesListComponent, SecondPageComponent],
+  declarations: [ExternalContainerComponent, DefaultPageComponent, RoleIconPipe, SvgIdPathPipe, PopupComponent, RoleSegmentComponent, DishesListComponent],
   imports: [
     CommonModule,
     AngularFireAuthModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    IonicModule
   ],
-  exports: [ExternalContainerComponent, RoleIconPipe, DefaultPageComponent, AuthService, ToastService, SvgIdPathPipe, PopupComponent, RoleSegmentComponent, MediaService, DishesListComponent, SecondPageComponent]
+  exports: [ExternalContainerComponent, RoleIconPipe, DefaultPageComponent, AuthService, ToastService, SvgIdPathPipe, PopupComponent, RoleSegmentComponent, MediaService, DishesListComponent]
 })
 export class SharedModule { }

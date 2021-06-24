@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BehaviorSubject, combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest, of } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { debounceTime, filter, map, skip, switchMap, take, takeUntil } from 'rxjs/operators';
 import { PopupComponent } from '../shared/components/popup/popup.component';
@@ -37,9 +37,7 @@ const autocomplete = (time, selector) => (source$) =>
 })
 export class AdminPage implements AfterViewInit {
   adminColors: {primary?: string, tint?: string} = {};
-  isDeleteUserPopupInView: boolean = false;
-  isEditUserPopupInView: boolean = false;
-  isCreateUserPopupInView: boolean = false;
+  showPopup: 'delete' | 'edit' | 'create' = null;
   users$: Observable<User[]>;
   filteredUsers$: Observable<User[]>;
   filteredUsers: User[];
@@ -113,56 +111,47 @@ export class AdminPage implements AfterViewInit {
       lastName: '',
       role: 'EMPLOYEE'
     });
-    this.isCreateUserPopupInView = true;
+    this.showPopup = 'create';
   }
 
   showDeleteUserPopup(event: MouseEvent){
     event.stopPropagation();
-    this.isDeleteUserPopupInView = true;
+    this.showPopup = 'delete';
   }
 
   showEditUserPopup(event: MouseEvent){
     event.stopPropagation();
     this.userFormGroup.patchValue(this.selectedUser);
-    this.isEditUserPopupInView = true;
+    this.showPopup = 'edit';
   }
 
   createUser(){
     if(this.userFormGroup.valid){
       this.authSvc.createUser(this.userFormGroup.value)
-      this.authSvc.stopLoading$.pipe(take(1)).subscribe(_ => this.closePopup(this.createPopup));
+      return this.authSvc.stopLoading$.pipe(take(1));
     }
+    return of(false);
   }
 
   editUser(){
     if(this.userFormGroup.valid){
       this.authSvc.editUser(this.userFormGroup.value)
-      this.authSvc.stopLoading$.pipe(take(1)).subscribe(_ => this.closePopup(this.editPopup));
+      return this.authSvc.stopLoading$.pipe(take(1));
     }
+    return of(false);
   }
 
   deleteUser(){
     this.authSvc.deleteUser(this.selectedUser.email);
-    this.authSvc.stopLoading$.pipe(take(1)).subscribe(_ => this.closePopup(this.deletePopup));
-  }
-
-  cancelCreate(){
-    this.isCreateUserPopupInView = false;
-    this.selectedUser = null;
-  }
-
-  cancelDelete(){
-    this.isDeleteUserPopupInView = false;
-    this.selectedUser = null;
-  }
-
-  cancelEdit(){
-    this.isEditUserPopupInView = false;
-    this.selectedUser = null;
+    return this.authSvc.stopLoading$.pipe(take(1));
   }
 
   closePopup(popup: PopupComponent, e?: MouseEvent){
     e?.stopPropagation();
-    popup.closePopupTrigger.next();
+    popup.closePopupTrigger.next('success');
+  }
+
+  cancel(){
+    this.selectedUser = null;
   }
 }

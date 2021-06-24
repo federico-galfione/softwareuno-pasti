@@ -2,12 +2,12 @@
   <div class="logo">
       <img src="../../assets/svg/logo.svg">
   </div>
-  <div class="right-corner">
+  <div [ngClass]="{'right-corner': true, 'secondary': secondaryPage}">
       <div class="timer">
           <div class="text">{{sectionTitle}}</div>
           <div class="hour" *ngIf="showCountdown">1h 30m</div>
           <div class="hour" *ngIf="!showCountdown">&nbsp;</div>
-          <svg class="header-img" fill="none" preserveAspectRatio="none" viewBox="0 0 262 172" xmlns="http://www.w3.org/2000/svg">
+          <svg *ngIf="!secondaryPage" class="header-img primary" fill="none" preserveAspectRatio="none" viewBox="0 0 262 172" xmlns="http://www.w3.org/2000/svg">
             <g filter="url(#a)">
             <path d="m206.51 161.2c-14.081-0.212-25.211 1.907-35.081 4.025-18.816 4.038-51.693 12.064-69.124-4.025-17.432-16.089-7.8079-39.992-28.007-56.458s-32.549-12.836-59.407-38.054c-25.034-23.507-11.243-62.3-9.9256-66.69h257.03v172c-18.144-5.874-38.858-10.548-55.486-10.798z" [attr.fill]="currentPrimaryColor | async"/>
             </g>
@@ -24,9 +24,26 @@
             </filter>
             </defs>
           </svg>
+          <svg *ngIf="secondaryPage" class="header-img secondary" viewBox="0 0 144 174" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g filter="url(#filter0_i)">
+            <path d="M143.57 172.001V0.000520587L5.07031 0.000427246C5.07031 0.000427246 -2.07031 23 1.5 46C5.07031 69 28.5 91 63 99C97.5 107 132.013 155.095 135.57 165.228C137.07 169.501 140.57 176.501 143.57 172.001Z" [attr.fill]="currentPrimaryColor | async"/>
+            </g>
+            <defs>
+            <filter id="filter0_i" x="0.500305" y="-1.99957" width="145.07" height="175.453" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feOffset dx="2" dy="-2"/>
+            <feGaussianBlur stdDeviation="4"/>
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0"/>
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow"/>
+            </filter>
+            </defs>
+            </svg>    
       </div>
   </div>
-  <h1 class="title">{{title}}</h1>
+  <h1 [ngClass]="{'title': true, 'secondary': secondaryPage}">{{title}}</h1>
   <h2 class="subtitle">{{subtitle}}</h2>
 </div>
 <div class="content">

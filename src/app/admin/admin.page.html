@@ -66,7 +66,7 @@
           <ion-button (click)="logout()">Logout</ion-button>
       </app-default-page>
   </app-external-container>
-  <app-popup 
+  <!-- <app-popup 
     #deletePopup 
     *ngIf="showPopup == 'delete'" 
     (popupClosed)="showPopup = null"
@@ -142,5 +142,5 @@
     <div class="error-message" *ngIf="userFormGroup.get('firstName').invalid && (userFormGroup.get('firstName').dirty || userFormGroup.get('firstName').touched) && userFormGroup.get('firstName').errors.required">Nome obbligatorio.</div>
     <ion-input formControlName="lastName" placeholder="Cognome"></ion-input>
     <div class="error-message" *ngIf="userFormGroup.get('lastName').invalid && (userFormGroup.get('lastName').dirty || userFormGroup.get('lastName').touched) && userFormGroup.get('lastName').errors.required">Cognome obbligatorio.</div>
-  </app-popup>
+  </app-popup> -->
 </ion-content>

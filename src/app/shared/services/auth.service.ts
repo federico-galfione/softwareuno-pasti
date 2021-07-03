@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { map, first, withLatestFrom, mergeMap, take, tap, takeUntil, filter } from 'rxjs/operators'
-import  firebase  from 'firebase/app'
 import { AngularFirestore } from '@angular/fire/firestore';
-import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
-import { Router } from '@angular/router';
-import { ToastService } from './toast.service';
-import { User } from '../models/user';
 import { AngularFireFunctions } from '@angular/fire/functions';
+import { Router } from '@angular/router';
+import firebase from 'firebase/app';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { filter, map, mergeMap, take, withLatestFrom } from 'rxjs/operators';
+import { User } from '../models/user';
+import { ToastService } from './toast.service';
 
 export type Roles = 'ADMIN' | 'EMPLOYEE' | 'RESTAURANT';
 

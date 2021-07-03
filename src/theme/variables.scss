@@ -2,7 +2,7 @@
 // http://ionicframework.com/docs/theming/
 
 /** Ionic CSS Variables **/
-@import 'mixins';
+@import "mixins";
 :root {
   /** primary **/
   --ion-color-primary: #f7ad45;
@@ -22,30 +22,30 @@
 
   /** tertiary **/
   --ion-color-tertiary: #354883;
-  --ion-color-tertiary-rgb: 53,72,131;
+  --ion-color-tertiary-rgb: 53, 72, 131;
   --ion-color-tertiary-contrast: #ffffff;
-  --ion-color-tertiary-contrast-rgb: 255,255,255;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
   --ion-color-tertiary-shade: #2f3f73;
   --ion-color-tertiary-tint: #495a8f;
 
   --ion-color-success: #2dd36f;
-  --ion-color-success-rgb: 45,211,111;
+  --ion-color-success-rgb: 45, 211, 111;
   --ion-color-success-contrast: #ffffff;
-  --ion-color-success-contrast-rgb: 255,255,255;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
   --ion-color-success-shade: #28ba62;
   --ion-color-success-tint: #42d77d;
 
   --ion-color-warning: #ffc409;
-  --ion-color-warning-rgb: 255,196,9;
+  --ion-color-warning-rgb: 255, 196, 9;
   --ion-color-warning-contrast: #000000;
-  --ion-color-warning-contrast-rgb: 0,0,0;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
   --ion-color-warning-shade: #e0ac08;
   --ion-color-warning-tint: #ffca22;
 
   --ion-color-danger: #eb445a;
-  --ion-color-danger-rgb: 235,68,90;
+  --ion-color-danger-rgb: 235, 68, 90;
   --ion-color-danger-contrast: #ffffff;
-  --ion-color-danger-contrast-rgb: 255,255,255;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
   --ion-color-danger-shade: #cf3c4f;
   --ion-color-danger-tint: #ed576b;
 
@@ -66,7 +66,7 @@
   --ion-color-medium-tint: #9d9fa6;
 
   /** light **/
-  --ion-color-light: #f4f5f8;
+  --ion-color-light: #fbfbfd;
   --ion-color-light-rgb: 244, 245, 248;
   --ion-color-light-contrast: #000000;
   --ion-color-light-contrast-rgb: 0, 0, 0;
@@ -76,22 +76,24 @@
   /** custom variables **/
   --default-dark-color: #4d330e;
   --default-dark-color-rgb: 77, 51, 14;
-  --softwareuno-second-color: #AF6E4E; 
+  --softwareuno-second-color: #af6e4e;
   --default-box-shadow: 0px 10px 30px rgba(var(--default-dark-color-rgb), 0.3);
   --default-gray: #707070;
   --space-1: 8px;
   --space-2: calc(var(--space-1) * 2);
   --space-3: calc(var(--space-2) * 2);
   --space-4: calc(var(--space-3) * 2);
+  --ion-modal-height: 200px;
 
   --base-display-width: 414;
   --starting-space: 8;
-  --current-space-1: calc(var(--starting-space) * 100vw / var(--base-display-width));
-  @include respond-to('tablet') {
-      --current-space-1: var(--space-1);
+  --current-space-1: calc(
+    var(--starting-space) * 100vw / var(--base-display-width)
+  );
+  @include respond-to("tablet") {
+    --current-space-1: var(--space-1);
   }
   --current-space-2: calc(var(--current-space-1) * 2);
   --current-space-3: calc(var(--current-space-2) * 2);
   --current-space-4: calc(var(--current-space-3) * 2);
 }
-

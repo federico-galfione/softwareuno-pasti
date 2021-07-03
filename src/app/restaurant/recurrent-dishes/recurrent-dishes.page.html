@@ -2,8 +2,26 @@
   <app-external-container class="desktop" [multiplier]="40">
       <app-default-page [secondaryPage]="true" [removeMargins]="mediaSvc.isSmartphone" color="secondary" sectionTitle="Fine ordinazioni"  title="{{dishType | titlecase}} ricorrenti" subtitle="Inserisci {{(dishType === 'pizze') ? 'le' : 'i'}} {{dishType}} ricorrenti.">
         <div class="dishes">
-          <app-dishes-list title="{{dishType | titlecase}} {{(dishType === 'pizze') ? 'fisse' : 'fissi'}}" rightText="Info" (rightButtonClicked)="toggleInfoPopup('fissiInfo')"></app-dishes-list>
-          <app-dishes-list title="{{dishType | titlecase}} frequenti" rightText="Info" (rightButtonClicked)="toggleInfoPopup('frequentiInfo')"></app-dishes-list>
+          <app-dishes-list 
+            title="{{dishType | titlecase}} {{(dishType === 'pizze') ? 'fisse' : 'fissi'}}" 
+            rightText="Info" 
+            (rightButtonClicked)="toggleInfoPopup('fissiInfo')"
+            [addDishesFormOptions]="{
+              title: 'Aggiungi i piatti',
+              subtitle: 'Inserisci '+ ((dishType === 'pizze') ? 'le ' : 'i ') + dishType +' ricorrenti',
+              info: 'Inserisci un piatto per riga. Questi saranno preinseriti nel menù ogni giorno.'
+            }"
+            ></app-dishes-list>
+          <app-dishes-list 
+            title="{{dishType | titlecase}} frequenti" 
+            rightText="Info" 
+            (rightButtonClicked)="toggleInfoPopup('frequentiInfo')"
+            [addDishesFormOptions]="{
+              title: 'Aggiungi i piatti',
+              subtitle: 'Inserisci '+ ((dishType === 'pizze') ? 'le ' : 'i ') + dishType +' frequenti',
+              info: 'Inserisci un piatto per riga. Questi verranno mostrati durante l\'inserimento di piatti nel menù'
+            }"
+            ></app-dishes-list>
         </div> 
         <div class="buttons-container">
           <ion-button class="cancel" (click)="cancel()" mode="md">Annulla</ion-button>
@@ -11,7 +29,7 @@
         </div>
       </app-default-page>
   </app-external-container>
-  <app-popup *ngIf="infoPopupType" [cancelButton]="infoPopupButton" (popupClosed)="infoPopupType = null">
+  <!-- <app-popup *ngIf="infoPopupType" [cancelButton]="infoPopupButton" (popupClosed)="infoPopupType = null">
     <h3 class="popup-title">{{infoPopupType === 'fissiInfo' ? 'Piatti fissi' : 'Piatti Frequenti'}}</h3>
     <div *ngIf="infoPopupType === 'fissiInfo'">
       I piatti fissi sono tutti quei piatti che si trovano ogni giorno all'interno del menù (Es. pasta in bianco).<br>
@@ -23,5 +41,5 @@
       Quando si proverà ad aggiungere un piatto, verranno proposti come scelta i piatti frequenti e saranno semplicemente selezionabili.<br>
       Questo per semplificarne l'inserimento nel menù.
     </div>
-  </app-popup>
+  </app-popup> -->
 </ion-content>

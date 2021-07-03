@@ -1,9 +1,9 @@
-<div class="title-container" *ngIf="showHeader">
+<div class="title-container">
   <h3 class="title" *ngIf="title">{{title}}</h3>
   <div class="right-text" *ngIf="rightText" (click)="rightButtonClicked.emit()">{{rightText}}</div>
 </div>
-<div [ngClass]="{'dishes': true, 'not-scrollable': dishes.length === 0}">
-  <ion-card *ngIf="editMode" class="add-dish card ion-activatable" (click)="addDish()">
+<div [@listAnimation]="dishes.length" [ngClass]="{'dishes': true, 'not-scrollable': dishes.length === 0}">
+  <ion-card *ngIf="editMode" class="add-dish card ion-activatable" (click)="openAddDishesModal()">
     <img src="../../../../assets/svg/add-outline.svg">
     <div class="text">Aggiungi<br>Piatti</div>
     <ion-ripple-effect></ion-ripple-effect>
@@ -16,25 +16,21 @@
     Es.<br>
     Pasta alla carbonara
   </ion-card>
-  <ion-card *ngFor="let dish of dishes" class="card"></ion-card>
+  <ion-card (click)="toggleDish(dish)" class="card dish ion-activatable" @itemsAnimation *ngFor="let dish of (dishes$ | async); trackBy: trackByName">
+    {{dish.name | firstCharUppercase}}
+    <ion-ripple-effect></ion-ripple-effect>
+    <svg *ngIf="dish.selected" @selectionAnimation class="selection-tick" viewBox="0 0 60 60">
+      <defs>
+        <linearGradient id="selection-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+          <stop offset="0" stop-color="#f7ad45"/>
+          <stop offset="0.415" stop-color="#f7ae47"/>
+          <stop offset="1" stop-color="#f6c074"/>
+        </linearGradient>
+      </defs>
+      <g id="select" transform="translate(-101.523 -354.903)">
+        <path id="left-corner-image" d="M-442.477-245.1c3.025-11.065,11.159-30.548,31.5-35.159,17.308-3.924,25.065-15.9,28.5-24.84v60Z" transform="translate(544 660)" fill="url(#selection-gradient)"/>
+        <path id="checkmark-outline" d="M114.951,128l-13.266,15.161L96,137.476" transform="translate(34.572 259.741)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      </g>
+    </svg>
+  </ion-card>
 </div>
-<app-popup 
-  #addDish 
-  *ngIf="showAddDishForm && editMode"
-  (popupClosed)="showAddDishForm = false"
-  [cancelButton]="cancelButton"
-  [successButton]="successButton"
-  >
-    <div class="title-container">
-      <h3>Aggiungi i piatti</h3>
-      <ion-icon name="information-circle-outline"></ion-icon>
-    </div>
-    <div class="recurrent-dishes" *ngIf="dishesHints?.length != 0">
-      <h4>Piatti frequenti</h4>
-      <div class="dishes">
-        <ion-card class="card" *ngFor="let dish of dishesHints">
-          {{dish}}
-        </ion-card>
-      </div>
-    </div>
-  </app-popup>

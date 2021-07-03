@@ -68,37 +68,24 @@
       &.placeholder {
         opacity: 0.15;
       }
-    }
-  }
-  app-popup {
-    --content-padding: 0;
-    --button-padding: 0 var(--space-3) var(--space-3) var(--space-3);
-    .title-container {
-      display: flex;
-      padding: var(--space-3) var(--space-3) 0 var(--space-3);
-      margin-bottom: var(--space-3);
-      ion-icon {
-        font-size: 2.5rem;
-        align-self: flex-start;
-        margin-left: var(--space-1);
-        color: var(--ion-color-secondary);
-        --ionicon-stroke-width: 4rem;
+      &.hidden {
+        opacity: 0;
+      }
+      &.dish {
+        .selection-tick {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          height: var(--space-4);
+        }
       }
     }
-    .recurrent-dishes {
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.05) inset,
-        2px 2px 5px rgba(0, 0, 0, 0.1) inset;
-      background: linear-gradient(
-        45deg,
-        var(--ion-color-secondary-shade),
-        var(--ion-color-secondary-tint)
-      );
-      h4 {
-        font-size: 2.3rem;
-        font-weight: bold;
-        color: white;
-        padding: var(--space-3) var(--space-3) 0 var(--space-3);
-      }
+    .fake-card {
+      height: calc(var(--space-4) + var(--space-3) + var(--space-2));
+      width: calc(var(--space-4) + var(--space-3) + var(--space-2));
+    }
+    .no-items-placeholder {
+      height: calc(var(--space-4) + var(--space-3) + var(--space-2));
     }
   }
 }

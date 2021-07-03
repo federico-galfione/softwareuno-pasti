@@ -2,10 +2,46 @@
   <app-external-container class="desktop" [multiplier]="40">
       <app-default-page [removeMargins]="mediaSvc.isSmartphone" color="secondary" sectionTitle="Fine ordinazioni" title="Menù" subtitle="Inserisci i piatti del giorno.">
         <div class="dishes">
-          <app-dishes-list title="Primi" rightText="Piatti ricorrenti" (rightButtonClicked)="goToUsual('primi')"></app-dishes-list>
-          <app-dishes-list title="Secondi" rightText="Piatti ricorrenti" (rightButtonClicked)="goToUsual('secondi')"></app-dishes-list>
-          <app-dishes-list title="Contorni" rightText="Piatti ricorrenti" (rightButtonClicked)="goToUsual('contorni')"></app-dishes-list>
-          <app-dishes-list title="Pizze" rightText="Piatti ricorrenti" (rightButtonClicked)="goToUsual('pizze')"></app-dishes-list>
+          <app-dishes-list 
+            #primiList
+            title="Primi" 
+            rightText="Piatti ricorrenti" 
+            (rightButtonClicked)="goToUsual('primi')"
+            [addDishesFormOptions]="{
+              title: 'Aggiungi i primi',
+              subtitle: 'Inserisci i primi nel menù del giorno',
+              showUsualDishes: true
+            }"></app-dishes-list>
+          <app-dishes-list 
+            #secondiList
+            title="Secondi" 
+            rightText="Piatti ricorrenti" 
+            (rightButtonClicked)="goToUsual('secondi')"
+            [addDishesFormOptions]="{
+              title: 'Aggiungi i secondi',
+              subtitle: 'Inserisci i secondi nel menù del giorno',
+              showUsualDishes: true
+            }"></app-dishes-list>
+          <app-dishes-list 
+            #contorniList
+            title="Contorni" 
+            rightText="Piatti ricorrenti" 
+            (rightButtonClicked)="goToUsual('contorni')"
+            [addDishesFormOptions]="{
+              title: 'Aggiungi i contorni',
+              subtitle: 'Inserisci i contorni nel menù del giorno',
+              showUsualDishes: true
+            }"></app-dishes-list>
+          <app-dishes-list 
+            #pizzeList
+            title="Pizze" 
+            rightText="Piatti ricorrenti" 
+            (rightButtonClicked)="goToUsual('pizze')"
+            [addDishesFormOptions]="{
+              title: 'Aggiungi le pizze',
+              subtitle: 'Inserisci le pizze nel menù del giorno',
+              showUsualDishes: true
+            }"></app-dishes-list>
         </div>  
         <div class="buttons-container">
           <ion-button class="send-button">Invia</ion-button>
@@ -15,6 +51,16 @@
   <ion-fab vertical="bottom" horizontal="start" slot="fixed">
     <ion-fab-button color="secondary" size="small">
       <ion-icon name="settings-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-fab *ngIf="
+    primiList.selectedDishes.length || secondiList.selectedDishes.length || contorniList.selectedDishes.length || pizzeList.selectedDishes.length
+  "
+  @fabAnimation
+  (click)="deleteSelectedDishes()"
+  vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="danger">
+      <ion-icon name="trash-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>

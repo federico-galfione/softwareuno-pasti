@@ -1,0 +1,90 @@
+@import "mixins";
+
+:host {
+  font-size: 2rem;
+  .title-container {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    padding: var(--space-3) var(--space-3) var(--space-2) var(--space-3);
+    .main-title {
+      display: flex;
+      margin-bottom: var(--space-1);
+      ion-icon {
+        font-size: 2.5rem;
+        align-self: flex-start;
+        margin-left: var(--space-1);
+        color: var(--ion-color-secondary);
+        --ionicon-stroke-width: 4rem;
+      }
+    }
+  }
+  .recurrent-dishes {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05) inset,
+      2px 2px 5px rgba(0, 0, 0, 0.1) inset;
+    background: linear-gradient(
+      45deg,
+      var(--ion-color-secondary-shade),
+      var(--ion-color-secondary-tint)
+    );
+    margin-bottom: var(--space-3);
+    h4 {
+      color: white;
+      padding: var(--space-3) var(--space-3) 0 var(--space-3);
+    }
+    .dishes {
+      position: relative;
+      width: 100vw;
+      display: inline-flex;
+      overflow: auto;
+      &.not-scrollable {
+        overflow: hidden;
+      }
+      padding: var(--space-2) var(--space-3)
+        calc(var(--space-3) + var(--space-1)) var(--current-space-3);
+      .card {
+        flex: 0 0 auto;
+        font-weight: 800;
+        padding: 16px;
+        height: calc(var(--space-4) + var(--space-3) + var(--space-2));
+        width: calc(var(--space-4) + var(--space-3) + var(--space-2));
+        margin-right: var(--space-2);
+        float: left;
+        &:last-child {
+          margin-right: 0;
+        }
+        &.placeholder {
+          opacity: 0.15;
+        }
+        &.hidden {
+          opacity: 0;
+        }
+        &.dish {
+          .selection-tick {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            height: var(--space-4);
+          }
+        }
+      }
+      .fake-card {
+        height: calc(var(--space-4) + var(--space-3) + var(--space-2));
+        width: calc(var(--space-4) + var(--space-3) + var(--space-2));
+      }
+      .no-items-placeholder {
+        height: calc(var(--space-4) + var(--space-3) + var(--space-2));
+      }
+    }
+  }
+
+  .new-dishes {
+    padding: 0 var(--space-3) var(--space-3) var(--space-3);
+    ion-textarea {
+      --background: white;
+      padding: var(--space-1) var(--space-2) var(--space-1) var(--space-2);
+      border-radius: 30px;
+      border: 2px solid var(--ion-color-secondary);
+    }
+  }
+}

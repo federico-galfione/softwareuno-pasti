@@ -1,0 +1,37 @@
+<div modal-default-content 
+  [successButton]="{
+    title: 'Aggiungi',
+    fill: true,
+    type: 'secondary'
+  }"
+  [cancelButton]="{
+    title: 'Cancella',
+    fill: false,
+    type: 'secondary'
+  }"
+  (buttonClicked)="closeModal($event)"
+  >
+  <div class="title-container">
+    <div class="main-title">
+      <h3>{{addDishesFormOptions?.title}}</h3>
+      <ion-icon (click)="presentPopover($event)" name="information-circle-outline"></ion-icon>
+    </div>
+    <div>{{addDishesFormOptions?.subtitle}}</div>
+  </div>
+  <div class="recurrent-dishes" *ngIf="showRecurrentDishes">
+    <h4>Piatti frequenti</h4>
+    <div *ngIf="(filteredHints$ | async).length > 0; else cardPlaceholder" [@listAnimation] (@listAnimation.done)="listAnimationDone$.next()" class="dishes">
+      <ion-card @itemsAnimation  class="card ion-activatable" (click)="addToTextarea(dish.name)" *ngFor="let dish of (filteredHints$ | async)">
+        {{dish.name | firstCharUppercase}}          
+      </ion-card>
+    </div>
+    <ng-template #cardPlaceholder>
+      <div *ngIf="(showPlaceholder$ | async)" class="dishes placeholder">
+        <div class="fake-card"></div>
+      </div>
+    </ng-template>
+  </div>
+  <div class="new-dishes">
+    <ion-textarea [(ngModel)]="textareaValue" (ionChange)="valueChanged($event)" [rows]="5" placeholder="Inserisci un piatto per riga"></ion-textarea>
+  </div>
+</div>

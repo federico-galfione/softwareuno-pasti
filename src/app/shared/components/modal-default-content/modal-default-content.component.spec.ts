@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { PopupComponent } from './popup.component';
+import { ModalDefaultContentComponent } from './modal-default-content.component';
 
-describe('PopupComponent', () => {
-  let component: PopupComponent;
-  let fixture: ComponentFixture<PopupComponent>;
+describe('ModalDefaultContentComponent', () => {
+  let component: ModalDefaultContentComponent;
+  let fixture: ComponentFixture<ModalDefaultContentComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PopupComponent ],
+      declarations: [ ModalDefaultContentComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PopupComponent);
+    fixture = TestBed.createComponent(ModalDefaultContentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

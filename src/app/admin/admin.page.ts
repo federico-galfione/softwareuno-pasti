@@ -1,13 +1,12 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BehaviorSubject, combineLatest, of } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { debounceTime, filter, map, skip, switchMap, take, takeUntil } from 'rxjs/operators';
-import { PopupComponent } from '../shared/components/popup/popup.component';
+import { debounceTime, map, skip, switchMap, take, takeUntil } from 'rxjs/operators';
 import { User } from '../shared/models/user';
-import { AuthService, Roles } from '../shared/services/auth.service';
+import { AuthService } from '../shared/services/auth.service';
 import { MediaService } from '../shared/services/media.service';
 import { menuAnimation, usersAnimation } from './admin.animations';
 
@@ -52,12 +51,12 @@ export class AdminPage implements AfterViewInit {
     roles: new FormControl(['ADMIN', 'EMPLOYEE', 'RESTAURANT'])
   });
   selectedUser: User;
-  @ViewChild('deletePopup')
-  deletePopup: PopupComponent;
-  @ViewChild('editPopup')
-  editPopup: PopupComponent;
-  @ViewChild('createPopup')
-  createPopup: PopupComponent;
+  // @ViewChild('deletePopup')
+  // deletePopup: PopupComponent;
+  // @ViewChild('editPopup')
+  // editPopup: PopupComponent;
+  // @ViewChild('createPopup')
+  // createPopup: PopupComponent;
 
   constructor(public authSvc: AuthService, private router: Router, private firestore: AngularFirestore, public mediaSvc: MediaService) { 
     this.adminColors.primary = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-tertiary');
@@ -146,10 +145,10 @@ export class AdminPage implements AfterViewInit {
     return this.authSvc.stopLoading$.pipe(take(1));
   }
 
-  closePopup(popup: PopupComponent, e?: MouseEvent){
-    e?.stopPropagation();
-    popup.closePopupTrigger.next('success');
-  }
+  // closePopup(popup: PopupComponent, e?: MouseEvent){
+  //   e?.stopPropagation();
+  //   popup.closePopupTrigger$.next('success');
+  // }
 
   cancel(){
     this.selectedUser = null;

@@ -4,6 +4,7 @@
   position: relative;
   display: block;
   min-height: 100vh;
+  background-color: var(--ion-color-light);
   @include respond-to("desktop") {
     min-height: 100%;
   }

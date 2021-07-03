@@ -1,28 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import { PopupButton } from '../../shared/models/popupButton';
+import { DishesListComponent } from 'src/app/shared/components/dishes-list/dishes-list.component';
+import { ModalDefaultContentButton } from '../../shared/models/ModalDefaultContentButton';
 import { AuthService } from '../../shared/services/auth.service';
 import { MediaService } from '../../shared/services/media.service';
+import { fabAnimation } from './restaurant.animations';
 
 @Component({
   selector: 'app-restaurant',
   templateUrl: './restaurant.page.html',
   styleUrls: ['./restaurant.page.scss'],
+  animations: [fabAnimation]
 })
 export class RestaurantPage implements OnInit {
 
   showUsualDishes: 'primi' | 'secondi' | 'contorni' | 'pizze' = null;
-  cancelButton: PopupButton = {
+  
+  @ViewChild('primiList')
+  primiList: DishesListComponent;
+  @ViewChild('secondiList')
+  secondiList: DishesListComponent;
+  @ViewChild('contorniList')
+  contorniList: DishesListComponent;
+  @ViewChild('pizzeList')
+  pizzeList: DishesListComponent;
+
+  cancelButton: ModalDefaultContentButton = {
     title: 'Annulla',
     fill: false,
     type: 'secondary'
   };
-  successButton: PopupButton = {
+  successButton: ModalDefaultContentButton = {
     title: 'Salva',
     fill: true,
-    type: 'secondary',
-    clickFunc: () => this.saveDishes('brum brum')
+    type: 'secondary'
   }
 
   constructor(private authSvc: AuthService, private router: Router, public mediaSvc: MediaService) { 
@@ -40,6 +52,13 @@ export class RestaurantPage implements OnInit {
 
   goToUsual(course: 'primi' | 'secondi' | 'contorni' | 'pizze'){
     this.router.navigate(['restaurant', 'recurrent-dishes', course])
+  }
+
+  deleteSelectedDishes(){
+    this.primiList.deleteSelectedDishes();
+    this.secondiList.deleteSelectedDishes();
+    this.contorniList.deleteSelectedDishes();
+    this.pizzeList.deleteSelectedDishes();
   }
 
   saveDishes(test: string){

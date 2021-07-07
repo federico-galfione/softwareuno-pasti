@@ -54,6 +54,10 @@ export class RestaurantPage implements OnInit {
     this.router.navigate(['restaurant', 'recurrent-dishes', course])
   }
 
+  goToSettings(){
+    this.router.navigate(['restaurant', 'settings'])
+  }
+
   deleteSelectedDishes(){
     this.primiList.deleteSelectedDishes();
     this.secondiList.deleteSelectedDishes();

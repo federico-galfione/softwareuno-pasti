@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
-import { ModalDefaultContentComponent } from './modal-default-content.component';
 
+import { InfoModalComponent } from './info-modal.component';
 
-describe('ModalDefaultContentComponent', () => {
-  let component: ModalDefaultContentComponent;
-  let fixture: ComponentFixture<ModalDefaultContentComponent>;
+describe('InfoModalComponent', () => {
+  let component: InfoModalComponent;
+  let fixture: ComponentFixture<InfoModalComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ModalDefaultContentComponent ],
+      declarations: [ InfoModalComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ModalDefaultContentComponent);
+    fixture = TestBed.createComponent(InfoModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

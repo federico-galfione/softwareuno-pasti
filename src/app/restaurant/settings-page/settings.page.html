@@ -1,0 +1,15 @@
+<ion-content>
+  <app-external-container class="desktop" [multiplier]="40">
+      <app-default-page [secondaryPage]="true" [removeMargins]="mediaSvc.isSmartphone" color="secondary" sectionTitle="Fine ordinazioni"  title="Impostazioni" subtitle="Modifica le impostazioni">
+        <div class="container">
+          <h3>Fine ordinazioni</h3>
+          <ion-list lines="none">
+            <ion-item>
+              <ion-label>Cambia orario</ion-label>
+              <ion-datetime displayFormat="HH:mm" placeholder="Orario"></ion-datetime>
+            </ion-item>
+          </ion-list>
+        </div>
+      </app-default-page>
+  </app-external-container>
+</ion-content>

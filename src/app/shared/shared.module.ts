@@ -10,12 +10,9 @@ import { DishesListComponent } from './components/dishes-list/dishes-list.compon
 import { ExternalContainerComponent } from './components/external-container/external-container.component';
 import { ModalDefaultContentComponent } from './components/modal-default-content/modal-default-content.component';
 import { RoleSegmentComponent } from './components/role-segment/role-segment.component';
+import { FirstCharUppercasePipe } from './pipes/first-char-uppercase.pipe';
 import { RoleIconPipe } from './pipes/role-icon.pipe';
 import { SvgIdPathPipe } from './pipes/svg-id-path.pipe';
-import { AuthService } from './services/auth.service';
-import { MediaService } from './services/media.service';
-import { ToastService } from './services/toast.service';
-import { FirstCharUppercasePipe } from './pipes/first-char-uppercase.pipe';
 
 
 @NgModule({
@@ -27,6 +24,6 @@ import { FirstCharUppercasePipe } from './pipes/first-char-uppercase.pipe';
     IonicModule,
     FormsModule
   ],
-  exports: [ExternalContainerComponent, RoleIconPipe, DefaultPageComponent, AuthService, ToastService, SvgIdPathPipe, RoleSegmentComponent, MediaService, DishesListComponent]
+  exports: [ExternalContainerComponent, RoleIconPipe, DefaultPageComponent, SvgIdPathPipe, RoleSegmentComponent, DishesListComponent, ModalDefaultContentComponent]
 })
 export class SharedModule { }

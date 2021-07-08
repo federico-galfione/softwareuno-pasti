@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '../shared/shared.module';
 import { InfoModalComponent } from './recurrent-dishes-page/components/info-modal/info-modal.component';
@@ -15,6 +15,7 @@ import { SettingsPage } from './settings-page/settings.page';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     IonicModule,
     SharedModule,
     RestaurantPageRoutingModule

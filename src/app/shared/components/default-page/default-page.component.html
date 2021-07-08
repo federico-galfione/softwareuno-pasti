@@ -5,7 +5,11 @@
   <div [ngClass]="{'right-corner': true, 'secondary': secondaryPage}">
       <div class="timer">
           <div class="text">{{sectionTitle}}</div>
-          <div class="hour" *ngIf="showCountdown">1h 30m</div>
+          <div class="hour" *ngIf="showCountdown">
+            <ng-container *ngIf="(timer$ | async) as timer">
+              {{timer.hours}}h {{timer.minutes}}m
+            </ng-container>
+          </div>
           <div class="hour" *ngIf="!showCountdown">&nbsp;</div>
           <svg *ngIf="!secondaryPage" class="header-img primary" fill="none" preserveAspectRatio="none" viewBox="0 0 262 172" xmlns="http://www.w3.org/2000/svg">
             <g filter="url(#a)">
@@ -48,6 +52,10 @@
 </div>
 <div class="content">
   <ng-content></ng-content>
+  <div class="buttons-container" *ngIf="secondaryPage">
+    <ion-button class="cancel" mode="md" (click)="cancelClicked.emit()">Annulla</ion-button>
+    <ion-button [disabled]="disableSaveButton" class="save" mode="md" (click)="saveClicked.emit()">Salva</ion-button>
+  </div>
 </div>
 <svg preserveAspectRatio="none" class="footer-img" viewBox="0 0 157 342" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g filter="url(#filter0_i)">

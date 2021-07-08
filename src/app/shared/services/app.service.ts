@@ -3,16 +3,29 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AppSettings } from '@shared/models';
 import { combineLatest, interval, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppService {
 
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private firestore: AngularFirestore, private toastSvc: ToastService) { }
 
-  changeStopOrdersTime(stopOrdersTime: Date){
-    this.firestore.collection('app').doc('settings').update({ stopOrdersTime });
+  async changeSettings(appSettings: AppSettings){
+    try{
+      await this.firestore.collection('app').doc('settings').update(appSettings);
+      this.toastSvc.addSuccessToast({
+        header: "Impostazioni salvate",
+        message: "Le impostazioni sono state salvate con successo"
+      })
+      return true;
+    } catch(e){
+      this.toastSvc.addErrorToast({
+        message: "Errore durante il salvataggio delle impostazioni"
+      })
+    }
+    return false;
   }
 
   getStopOrdersTime(){
@@ -32,10 +45,8 @@ export class AppService {
         if (currentTime > settedTime)
           return { hours: 0, minutes: 0 };
         let diff = Math.abs(settedTime.getTime() - currentTime.getTime());
-        const hours = Math.floor(diff / 3600) % 24;
-        diff -= hours * 3600;
-        const minutes = Math.floor(diff / 60) % 60;
-        diff -= minutes * 60;
+        const hours = Math.floor((diff % 86400000) / 3600000)
+        const minutes = Math.round(((diff % 86400000) % 3600000) / 60000);
         return { hours, minutes }
       })
      )

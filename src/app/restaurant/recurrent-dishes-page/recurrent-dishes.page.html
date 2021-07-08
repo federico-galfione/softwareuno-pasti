@@ -1,6 +1,6 @@
 <ion-content>
   <app-external-container class="desktop" [multiplier]="40">
-      <app-default-page [secondaryPage]="true" [removeMargins]="mediaSvc.isSmartphone" color="secondary" sectionTitle="Fine ordinazioni"  title="{{dishType | titlecase}} ricorrenti" subtitle="Inserisci {{(dishType === 'pizze') ? 'le' : 'i'}} {{dishType}} ricorrenti.">
+      <app-default-page (cancelClicked)="cancel()" [secondaryPage]="true" [removeMargins]="mediaSvc.isSmartphone" color="secondary" sectionTitle="Fine ordinazioni"  title="{{dishType | titlecase}} ricorrenti" subtitle="Inserisci {{(dishType === 'pizze') ? 'le' : 'i'}} {{dishType}} ricorrenti.">
         <div class="dishes">
           <app-dishes-list 
             title="{{dishType | titlecase}} {{(dishType === 'pizze') ? 'fisse' : 'fissi'}}" 
@@ -22,24 +22,7 @@
               info: 'Inserisci un piatto per riga. Questi verranno mostrati durante l\'inserimento di piatti nel menù'
             }"
             ></app-dishes-list>
-        </div> 
-        <div class="buttons-container">
-          <ion-button class="cancel" (click)="cancel()" mode="md">Annulla</ion-button>
-          <ion-button class="save" mode="md">Salva</ion-button>
         </div>
       </app-default-page>
   </app-external-container>
-  <!-- <app-popup *ngIf="infoPopupType" [cancelButton]="infoPopupButton" (popupClosed)="infoPopupType = null">
-    <h3 class="popup-title">{{infoPopupType === 'fissiInfo' ? 'Piatti fissi' : 'Piatti Frequenti'}}</h3>
-    <div *ngIf="infoPopupType === 'fissiInfo'">
-      I piatti fissi sono tutti quei piatti che si trovano ogni giorno all'interno del menù (Es. pasta in bianco).<br>
-      Questi verranno inseriti automaticamente nel menù ogni giorno.<br>
-      Nel caso non fossero disponibili, è comunque possibile eliminarli durante la creazione del menù.
-    </div>
-    <div *ngIf="infoPopupType === 'frequentiInfo'">
-      I piatti frequenti sono piatti che vengono riproposti non ogni giorno, ma comunque con una certa frequenza.<br>
-      Quando si proverà ad aggiungere un piatto, verranno proposti come scelta i piatti frequenti e saranno semplicemente selezionabili.<br>
-      Questo per semplificarne l'inserimento nel menù.
-    </div>
-  </app-popup> -->
 </ion-content>

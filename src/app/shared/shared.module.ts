@@ -10,13 +10,14 @@ import { DishesListComponent } from './components/dishes-list/dishes-list.compon
 import { ExternalContainerComponent } from './components/external-container/external-container.component';
 import { ModalDefaultContentComponent } from './components/modal-default-content/modal-default-content.component';
 import { RoleSegmentComponent } from './components/role-segment/role-segment.component';
+import { BaseDirective } from './directives';
 import { FirstCharUppercasePipe } from './pipes/first-char-uppercase.pipe';
 import { RoleIconPipe } from './pipes/role-icon.pipe';
 import { SvgIdPathPipe } from './pipes/svg-id-path.pipe';
 
 
 @NgModule({
-  declarations: [ExternalContainerComponent, DefaultPageComponent, RoleIconPipe, SvgIdPathPipe, RoleSegmentComponent, DishesListComponent, AddDishComponent, ModalDefaultContentComponent, FirstCharUppercasePipe],
+  declarations: [ExternalContainerComponent, DefaultPageComponent, RoleIconPipe, SvgIdPathPipe, RoleSegmentComponent, DishesListComponent, AddDishComponent, ModalDefaultContentComponent, FirstCharUppercasePipe, BaseDirective],
   imports: [
     CommonModule,
     AngularFireAuthModule,
@@ -24,6 +25,6 @@ import { SvgIdPathPipe } from './pipes/svg-id-path.pipe';
     IonicModule,
     FormsModule
   ],
-  exports: [ExternalContainerComponent, RoleIconPipe, DefaultPageComponent, SvgIdPathPipe, RoleSegmentComponent, DishesListComponent, ModalDefaultContentComponent]
+  exports: [ExternalContainerComponent, RoleIconPipe, DefaultPageComponent, SvgIdPathPipe, RoleSegmentComponent, DishesListComponent, ModalDefaultContentComponent, BaseDirective]
 })
 export class SharedModule { }

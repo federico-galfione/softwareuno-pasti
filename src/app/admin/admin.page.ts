@@ -1,13 +1,11 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { User } from '@shared/models';
+import { AuthService, MediaService } from '@shared/services';
 import { combineLatest, of } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { debounceTime, map, skip, switchMap, take, takeUntil } from 'rxjs/operators';
-import { User } from '../shared/models/user';
-import { AuthService } from '../shared/services/auth.service';
-import { MediaService } from '../shared/services/media.service';
 import { menuAnimation, usersAnimation } from './admin.animations';
 
 const autocomplete = (time, selector) => (source$) =>
@@ -58,11 +56,10 @@ export class AdminPage implements AfterViewInit {
   // @ViewChild('createPopup')
   // createPopup: PopupComponent;
 
-  constructor(public authSvc: AuthService, private router: Router, private firestore: AngularFirestore, public mediaSvc: MediaService) { 
+  constructor(public authSvc: AuthService, private router: Router, public mediaSvc: MediaService) { 
     this.adminColors.primary = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-tertiary');
     this.adminColors.tint = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-tertiary-tint');
-    this.users$ = this.firestore
-      .collection('users').valueChanges() as Observable<User[]>;
+    this.users$ = this.authSvc.getUsers();
 
     this.filteredUsers$ = combineLatest([this.users$, this.filterForm.valueChanges]).pipe(map(([users, form]) => {
       return users.filter(user => 

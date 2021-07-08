@@ -17,6 +17,7 @@ export class RestaurantPage implements OnInit {
 
   showUsualDishes: 'primi' | 'secondi' | 'contorni' | 'pizze' = null;
   
+  
   @ViewChild('primiList')
   primiList: DishesListComponent;
   @ViewChild('secondiList')
@@ -37,7 +38,7 @@ export class RestaurantPage implements OnInit {
     type: 'secondary'
   }
 
-  constructor(private authSvc: AuthService, private router: Router, public mediaSvc: MediaService) { 
+  constructor(private authSvc: AuthService, private router: Router, public mediaSvc: MediaService) {
   }
 
   ngOnInit() {
@@ -52,6 +53,10 @@ export class RestaurantPage implements OnInit {
 
   goToUsual(course: 'primi' | 'secondi' | 'contorni' | 'pizze'){
     this.router.navigate(['restaurant', 'recurrent-dishes', course])
+  }
+
+  goToSettings(){
+    this.router.navigate(['restaurant', 'settings'])
   }
 
   deleteSelectedDishes(){

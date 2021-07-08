@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { RecurrentDishesPage } from './recurrent-dishes/recurrent-dishes.page';
-
+import { RouterModule, Routes } from '@angular/router';
+import { RecurrentDishesPage } from './recurrent-dishes-page/recurrent-dishes.page';
 import { RestaurantPage } from './restaurant-page/restaurant.page';
+import { SettingsPage } from './settings-page/settings.page';
+
 
 const routes: Routes = [
   {
@@ -12,6 +13,10 @@ const routes: Routes = [
   {
     path: 'recurrent-dishes/:dish',
     component: RecurrentDishesPage
+  },
+  {
+    path: 'settings',
+    component: SettingsPage
   }
 ];
 

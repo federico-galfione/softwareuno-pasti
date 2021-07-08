@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import firebase from 'firebase/app';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { filter, map, mergeMap, take, withLatestFrom } from 'rxjs/operators';
-import { User } from '../models/user';
+import { User } from '../models/User';
 import { ToastService } from './toast.service';
 
 export type Roles = 'ADMIN' | 'EMPLOYEE' | 'RESTAURANT';
@@ -146,5 +146,9 @@ export class AuthService {
         }
       );
     }
+  }
+
+  getUsers(): Observable<User[]>{
+    return this.firestore.collection('users').valueChanges() as Observable<User[]>;
   }
 }

@@ -2,7 +2,8 @@
 :host {
   --border-margins: var(--current-space-3);
   position: relative;
-  display: block;
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background-color: var(--ion-color-light);
   @include respond-to("desktop") {
@@ -102,6 +103,9 @@
   }
   .content {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
     z-index: 1;
     margin: calc(var(--space-4) + var(--space-1)) var(--border-margins)
       var(--space-3) var(--border-margins);
@@ -109,9 +113,36 @@
       margin: calc(var(--space-2) * 5) var(--space-4) var(--space-3)
         var(--space-4);
     }
+    .buttons-container {
+      margin-top: var(--space-3);
+      display: flex;
+      align-items: flex-end;
+      flex: 1;
+      width: 100%;
+      padding: 0 var(--current-space-3) 0 var(--current-space-3);
+      @include respond-to("tablet") {
+        padding: 0;
+      }
+      ion-button {
+        flex: 1;
+        margin-top: var(--space-1);
+        &:first-child {
+          margin-right: var(--space-1);
+        }
+        &:last-child {
+          margin-left: var(--space-1);
+        }
+        &.save {
+          @include ion-button-style("secondary");
+        }
+        &.cancel {
+          @include ion-button-style("secondary", "clean");
+        }
+      }
+    }
   }
   .footer-img {
-    width: 35%;
+    width: 30%;
     max-width: 224px;
     max-height: 33%;
     position: absolute;

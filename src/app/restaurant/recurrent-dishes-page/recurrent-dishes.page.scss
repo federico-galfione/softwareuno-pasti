@@ -1,0 +1,6 @@
+@import "mixins";
+app-popup {
+  .popup-title {
+    margin-bottom: var(--space-2);
+  }
+}

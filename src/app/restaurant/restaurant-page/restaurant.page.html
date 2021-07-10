@@ -1,9 +1,11 @@
 <ion-content>
   <app-external-container class="desktop" [multiplier]="40">
       <app-default-page [removeMargins]="mediaSvc.isSmartphone" color="secondary" sectionTitle="Fine ordinazioni" title="Menù" subtitle="Inserisci i piatti del giorno.">
-        <div class="dishes">
+        <div class="dishes" [formGroup]="menuForm">
           <app-dishes-list 
             #primiList
+            formControlName="primi"
+            [dishesHints]="(primiUsualDishes$ | async)?.hints"
             title="Primi" 
             rightText="Piatti ricorrenti" 
             (rightButtonClicked)="goToUsual('primi')"
@@ -14,6 +16,8 @@
             }"></app-dishes-list>
           <app-dishes-list 
             #secondiList
+            formControlName="secondi"
+            [dishesHints]="(secondiUsualDishes$ | async)?.hints"
             title="Secondi" 
             rightText="Piatti ricorrenti" 
             (rightButtonClicked)="goToUsual('secondi')"
@@ -24,6 +28,8 @@
             }"></app-dishes-list>
           <app-dishes-list 
             #contorniList
+            formControlName="contorni"
+            [dishesHints]="(contorniUsualDishes$ | async)?.hints"
             title="Contorni" 
             rightText="Piatti ricorrenti" 
             (rightButtonClicked)="goToUsual('contorni')"
@@ -34,6 +40,8 @@
             }"></app-dishes-list>
           <app-dishes-list 
             #pizzeList
+            formControlName="pizze"
+            [dishesHints]="(pizzeUsualDishes$ | async)?.hints"
             title="Pizze" 
             rightText="Piatti ricorrenti" 
             (rightButtonClicked)="goToUsual('pizze')"

@@ -1,5 +1,6 @@
+export type DishType = "primi" | "secondi" | "contorni" | "pizze"
+
 export interface Dish {
-    id: string;
     name: string;
     selected?: boolean;
-  }
+}

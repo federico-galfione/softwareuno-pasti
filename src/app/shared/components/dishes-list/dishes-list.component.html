@@ -2,17 +2,17 @@
   <h3 class="title" *ngIf="title">{{title}}</h3>
   <div class="right-text" *ngIf="rightText" (click)="rightButtonClicked.emit()">{{rightText}}</div>
 </div>
-<div [@listAnimation]="dishes.length" [ngClass]="{'dishes': true, 'not-scrollable': dishes.length === 0}">
+<div [@listAnimation]="value.length" [ngClass]="{'dishes': true, 'not-scrollable': value.length === 0}">
   <ion-card *ngIf="editMode" class="add-dish card ion-activatable" (click)="openAddDishesModal()">
     <img src="../../../../assets/svg/add-outline.svg">
     <div class="text">Aggiungi<br>Piatti</div>
     <ion-ripple-effect></ion-ripple-effect>
   </ion-card>
-  <ion-card class="card placeholder" *ngIf="dishes.length === 0">
+  <ion-card class="card placeholder" *ngIf="value.length === 0">
     Es.<br>
     Pasta alla carbonara
   </ion-card>
-  <ion-card class="card placeholder" *ngIf="dishes.length === 0">
+  <ion-card class="card placeholder" *ngIf="value.length === 0">
     Es.<br>
     Pasta alla carbonara
   </ion-card>

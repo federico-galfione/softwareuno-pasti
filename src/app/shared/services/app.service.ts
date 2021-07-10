@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AppSettings } from '@shared/models';
-import { combineLatest, interval, Observable } from 'rxjs';
+import { combineLatest, interval } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { ToastService } from './toast.service';
 
@@ -14,7 +14,7 @@ export class AppService {
 
   async changeSettings(appSettings: AppSettings){
     try{
-      await this.firestore.collection('app').doc('settings').update(appSettings);
+      await this.firestore.collection('app').doc<AppSettings>('settings').update(appSettings);
       this.toastSvc.addSuccessToast({
         header: "Impostazioni salvate",
         message: "Le impostazioni sono state salvate con successo"
@@ -53,6 +53,6 @@ export class AppService {
   }
 
   getAppSettings(){
-    return this.firestore.collection('app').doc('settings').valueChanges() as Observable<AppSettings>;
+    return this.firestore.collection('app').doc<AppSettings>('settings').valueChanges();
   }
 }

@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
+import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { itemsAnimation, listAnimation, selectionAnimation } from '../../animations/list.animations';
@@ -11,10 +12,19 @@ import { AddDishComponent } from '../add-dish/add-dish.component';
   templateUrl: './dishes-list.component.html',
   styleUrls: ['./dishes-list.component.scss'],
   animations: [selectionAnimation, listAnimation, itemsAnimation],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{
+    provide: NG_VALUE_ACCESSOR, // Is an InjectionToken required by the ControlValueAccessor interface to provide a form value
+    useExisting: forwardRef(() => DishesListComponent), // tells Angular to use the existing instance
+    multi: true,
+  },
+  {
+    provide: NG_VALIDATORS, // Is an InjectionToken required by this class to be able to be used as an Validator
+    useExisting: forwardRef(() => DishesListComponent),
+    multi: true,
+  }]
 })
-export class DishesListComponent{
-
+export class DishesListComponent implements ControlValueAccessor, Validator{
   @Input()
   title: string = 'Primi';
   @Input()
@@ -32,14 +42,6 @@ export class DishesListComponent{
   /**
    * The current dishes in the list
    */
-  @Input()
-  set dishes(val: Dish[]){
-    val = Array.from(val.reduce((m, t) => m.set(t.name.makeComparable(), t), new Map()).values());
-    this.dishes$.next(val);
-  }
-  get dishes(){
-    return this.dishes$.value;
-  }
   dishes$ = new BehaviorSubject<Dish[]>([]);
   /**
    * Default dishes which can be selected while adding new dishes 
@@ -52,13 +54,15 @@ export class DishesListComponent{
   get dishesHints(){
     return this.dishesHints$.value;
   }
-  dishesHints$ = new BehaviorSubject<Dish[]>([{ id: '1', name: 'Pasta in bianco'}, {id: '2', name:'Pasta al pomodoro'}]);
+  dishesHints$ = new BehaviorSubject<Dish[]>([]);
+
+
   
   /**
    * The currently selected dishes
    */
   get selectedDishes(){
-    return this.dishes.filter(x => x.selected);
+    return this.value.filter(x => x.selected);
   }
  
   @Output()
@@ -70,7 +74,7 @@ export class DishesListComponent{
    * Add the selected dishes to the list
    */
   addDishes(dishes: Dish[]){
-    this.dishes = [...this.dishes, ...dishes];
+    this.value = [...this.value, ...dishes];
   }
 
   /**
@@ -79,6 +83,7 @@ export class DishesListComponent{
    */
   toggleDish(dish: Dish){
     dish.selected = !dish.selected
+    this.value = [...this.dishes$.value]
   }
 
   /**
@@ -92,7 +97,7 @@ export class DishesListComponent{
       mode: "ios",
       componentProps: {
         addDishesFormOptions: this.addDishesFormOptions,
-        dishes: this.dishes,
+        dishes: this.value,
         dishesHints$: this.dishesHints$
       }
     });
@@ -107,7 +112,56 @@ export class DishesListComponent{
    * Delete the selected dishes
    */
   deleteSelectedDishes(){
-    this.dishes = this.dishes.filter(x => !x.selected);
+    this.value = this.value.filter(x => !x.selected);
   }
+
+
+  /**
+   * START FORMARRAY METHODS AND PROPERTIES
+   */
+
+  set value(val: Dish[]){
+    val = Array.from(val.reduce((m, t) => m.set(t.name.makeComparable(), t), new Map()).values());
+    this.dishes$.next(val);
+    this.onChange(this.dishes$.value);
+    this.onValidatorChange();
+  }
+  get value(){
+    return this.dishes$.value;
+  }
+  onChange = (_: any) => {}; // Called on a value change
+  onTouched = () => {}; // Called if you care if the form was touched
+  onValidatorChange = () => {}; // Called on a validator change or re-validation;
+
+
+  registerOnChange(fn: any): void {
+      this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+      this.onTouched = fn;
+  }
+
+  writeValue(obj: Dish[]): void {
+      this.value = obj;
+  }
+
+  validate(control: AbstractControl): ValidationErrors | null {
+      let valid = true;
+
+      if (!!this.dishes$.value && this.dishes$.value.length > 0) {
+          this.dishes$.value.forEach(yourEntry => valid = valid && !!yourEntry); // Perform here your single item validation
+      }
+
+      return valid ? null : {invalid: true};
+  }
+
+  registerOnValidatorChange?(fn: () => void): void {
+      this.onValidatorChange = fn;
+  }
+
+  /**
+   * END FORMARRAY METHODS AND PROPERTIES
+   */
 
 }

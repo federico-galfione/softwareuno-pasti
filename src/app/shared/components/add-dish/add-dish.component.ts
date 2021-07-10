@@ -97,7 +97,7 @@ export class AddDishComponent implements OnInit {
    */
   closeModal(ev: 'success' | 'cancel'){
     this.modalCtrl.dismiss({
-      newDishes: (ev === 'success') ? this.currentValue$.value.map(name => {return {id: "0", name}}) : null,
+      newDishes: (ev === 'success') ? this.currentValue$.value.map(name => ({ name })) : null,
       status: ev
     })
   }

@@ -1,8 +1,9 @@
 <ion-content>
   <app-external-container class="desktop" [multiplier]="40">
-      <app-default-page (cancelClicked)="cancel()" [secondaryPage]="true" [removeMargins]="mediaSvc.isSmartphone" color="secondary" sectionTitle="Fine ordinazioni"  title="{{dishType | titlecase}} ricorrenti" subtitle="Inserisci {{(dishType === 'pizze') ? 'le' : 'i'}} {{dishType}} ricorrenti.">
-        <div class="dishes">
+      <app-default-page (saveClicked)="saveTemplate()" (cancelClicked)="cancel()" [secondaryPage]="true" [removeMargins]="mediaSvc.isSmartphone" color="secondary" sectionTitle="Fine ordinazioni"  title="{{dishType | titlecase}} ricorrenti" subtitle="Inserisci {{(dishType === 'pizze') ? 'le' : 'i'}} {{dishType}} ricorrenti.">
+        <div class="dishes" [formGroup]="recurrentDishesForm">
           <app-dishes-list 
+            formControlName="defaults"
             title="{{dishType | titlecase}} {{(dishType === 'pizze') ? 'fisse' : 'fissi'}}" 
             rightText="Info" 
             (rightButtonClicked)="toggleInfoPopup('fissiInfo')"
@@ -14,6 +15,7 @@
             ></app-dishes-list>
           <app-dishes-list 
             title="{{dishType | titlecase}} frequenti" 
+            formControlName="hints"
             rightText="Info" 
             (rightButtonClicked)="toggleInfoPopup('frequentiInfo')"
             [addDishesFormOptions]="{

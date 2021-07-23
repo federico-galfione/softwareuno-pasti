@@ -15,8 +15,8 @@ export class RestaurantService {
 
   getTemplate(dishType: DishType){
     return this.firestore.collection('templates').doc<UsualDishesStrings>(dishType).valueChanges().pipe(map(templates => ({
-      defaults: templates.defaults.map(name => ({name})),
-      hints: templates.hints.map(name => ({name}))
+      defaults: templates.defaults.map(name => ({name, selected: false})),
+      hints: templates.hints.map(name => ({name, selected: false}))
     })));
   }
 

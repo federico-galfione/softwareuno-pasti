@@ -1,8 +1,9 @@
 <ion-content>
   <app-external-container class="desktop" [multiplier]="40">
       <app-default-page (saveClicked)="saveTemplate()" (cancelClicked)="cancel()" [secondaryPage]="true" [removeMargins]="mediaSvc.isSmartphone" color="secondary" sectionTitle="Fine ordinazioni"  title="{{dishType | titlecase}} ricorrenti" subtitle="Inserisci {{(dishType === 'pizze') ? 'le' : 'i'}} {{dishType}} ricorrenti.">
-        <div class="dishes" [formGroup]="recurrentDishesForm">
+        <div class="dishes" [formGroup]="pageForm">
           <app-dishes-list 
+            #defaultsList
             formControlName="defaults"
             title="{{dishType | titlecase}} {{(dishType === 'pizze') ? 'fisse' : 'fissi'}}" 
             rightText="Info" 
@@ -14,6 +15,7 @@
             }"
             ></app-dishes-list>
           <app-dishes-list 
+            #hintsList
             title="{{dishType | titlecase}} frequenti" 
             formControlName="hints"
             rightText="Info" 
@@ -27,4 +29,14 @@
         </div>
       </app-default-page>
   </app-external-container>
+  <ion-fab *ngIf="
+  defaultsList.selectedDishes.length || hintsList.selectedDishes.length
+  "
+  @fabAnimation
+  (click)="deleteSelectedDishes()"
+  vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="danger">
+      <ion-icon name="trash-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

@@ -10,14 +10,16 @@ import { DishesListComponent } from './components/dishes-list/dishes-list.compon
 import { ExternalContainerComponent } from './components/external-container/external-container.component';
 import { ModalDefaultContentComponent } from './components/modal-default-content/modal-default-content.component';
 import { RoleSegmentComponent } from './components/role-segment/role-segment.component';
+import { UnsavedChangesComponent } from './components/unsaved-changes/unsaved-changes.component';
 import { BaseDirective } from './directives';
+import { BasePageFormDirective } from './directives/base-page-form/base-page-form.directive';
 import { FirstCharUppercasePipe } from './pipes/first-char-uppercase.pipe';
 import { RoleIconPipe } from './pipes/role-icon.pipe';
 import { SvgIdPathPipe } from './pipes/svg-id-path.pipe';
 
 
 @NgModule({
-  declarations: [ExternalContainerComponent, DefaultPageComponent, RoleIconPipe, SvgIdPathPipe, RoleSegmentComponent, DishesListComponent, AddDishComponent, ModalDefaultContentComponent, FirstCharUppercasePipe, BaseDirective],
+  declarations: [ExternalContainerComponent, DefaultPageComponent, RoleIconPipe, SvgIdPathPipe, RoleSegmentComponent, DishesListComponent, AddDishComponent, ModalDefaultContentComponent, FirstCharUppercasePipe, BaseDirective, BasePageFormDirective, UnsavedChangesComponent],
   imports: [
     CommonModule,
     AngularFireAuthModule,

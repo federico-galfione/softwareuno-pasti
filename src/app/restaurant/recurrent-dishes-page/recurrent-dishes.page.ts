@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { BaseDirective } from '@shared/directives';
+import { DishesListComponent } from '@shared/components/dishes-list/dishes-list.component';
+import { BasePageFormDirective } from '@shared/directives';
 import { DishType } from '@shared/models';
 import { BehaviorSubject } from 'rxjs';
-import { filter, switchMap, takeUntil } from 'rxjs/operators';
+import { filter, switchMap, take, takeUntil } from 'rxjs/operators';
 import { MediaService } from 'src/app/shared/services/media.service';
+import { fabAnimation } from '../restaurant-page/restaurant.animations';
 import { RestaurantService } from '../restaurant.service';
 import { InfoModalComponent } from './components/info-modal/info-modal.component';
 
@@ -14,23 +16,33 @@ import { InfoModalComponent } from './components/info-modal/info-modal.component
   selector: 'app-recurrent-dishes',
   templateUrl: './recurrent-dishes.page.html',
   styleUrls: ['./recurrent-dishes.page.scss'],
+  animations: [fabAnimation]
 })
-export class RecurrentDishesPage extends BaseDirective{
+export class RecurrentDishesPage extends BasePageFormDirective {
+
+  @ViewChild('defaultsList')
+  defaultsList: DishesListComponent;
+  @ViewChild('hintsList')
+  hintsList: DishesListComponent;
   
   dishType: DishType;
   infoModalType$ = new BehaviorSubject<"fissiInfo" | "frequentiInfo">(null);
-  recurrentDishesForm: FormGroup = new FormGroup({
-    defaults: new FormControl([]),
-    hints: new FormControl([])
-  })
+  
 
-  constructor(public mediaSvc: MediaService, private router: Router, private route: ActivatedRoute, private modalCtrl: ModalController, private restaurantSvc: RestaurantService) { 
+  constructor(public mediaSvc: MediaService, private router: Router, private route: ActivatedRoute, private modalCtrl: ModalController, private restaurantSvc: RestaurantService, private activatedRoute: ActivatedRoute) { 
     super();
+    this.pageForm = new FormGroup({
+      defaults: new FormControl([]),
+      hints: new FormControl([])
+    });
     this.route.paramMap.pipe(switchMap(params => {
       this.dishType = params.get("dish") as DishType;
-      return this.restaurantSvc.getTemplate(this.dishType);
+      this.pageDefaultFormValue$ = this.restaurantSvc.getTemplate(this.dishType);
+      return this.pageDefaultFormValue$;
     }), takeUntil(this.destroy$))
-    .subscribe(templates => this.recurrentDishesForm.patchValue(templates))
+    .subscribe(templates =>  this.pageForm.patchValue(templates) )
+
+    
     this.infoModalType$.pipe(filter(x => !!x)).subscribe(async infoModalType => {
       const modal = await this.modalCtrl.create({
         component: InfoModalComponent,
@@ -46,13 +58,18 @@ export class RecurrentDishesPage extends BaseDirective{
   }
 
   cancel(){
-    this.router.navigate(['']);
+    this.router.navigate(['../..'], {relativeTo: this.activatedRoute});
   }
 
   async saveTemplate(){
     !(
-      await this.restaurantSvc.setTemplate(this.dishType, this.recurrentDishesForm.value)
-    ) || this.cancel();
+       await this.restaurantSvc.setTemplate(this.dishType, this.pageForm.value)
+    ) || this.isDirty$.pipe(filter(x => !x), take(1)).subscribe(_ => this.cancel());
+  }
+
+  deleteSelectedDishes(){
+    this.defaultsList.deleteSelectedDishes();
+    this.hintsList.deleteSelectedDishes();
   }
 
   toggleInfoPopup(popupType: "fissiInfo" | "frequentiInfo"){

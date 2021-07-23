@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BaseDirective } from '@shared/directives';
 import { UsualDishes } from '@shared/models/UsualDishes';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DishesListComponent } from 'src/app/shared/components/dishes-list/dishes-list.component';
 import { ModalDefaultContentButton } from '../../shared/models/ModalDefaultContentButton';
@@ -84,7 +84,7 @@ export class RestaurantPage extends BaseDirective implements OnInit {
   }
 
   goToSettings(){
-    this.router.navigate(['restaurant', 'settings'])
+    this.router.navigate(['settings'])
   }
 
   deleteSelectedDishes(){
@@ -94,9 +94,8 @@ export class RestaurantPage extends BaseDirective implements OnInit {
     this.pizzeList.deleteSelectedDishes();
   }
 
-  saveDishes(test: string){
-    console.log(test, this.showUsualDishes);
-    return of(true);
+  saveMenu(){
+    
   }
 
 }

@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BaseDirective } from '@shared/directives';
+import { BasePageFormDirective } from '@shared/directives';
+import { Dishes } from '@shared/models/Dishes';
 import { UsualDishes } from '@shared/models/UsualDishes';
-import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import { DishesListComponent } from 'src/app/shared/components/dishes-list/dishes-list.component';
-import { ModalDefaultContentButton } from '../../shared/models/ModalDefaultContentButton';
 import { AuthService } from '../../shared/services/auth.service';
 import { MediaService } from '../../shared/services/media.service';
 import { RestaurantService } from '../restaurant.service';
@@ -18,7 +18,7 @@ import { fabAnimation } from './restaurant.animations';
   styleUrls: ['./restaurant.page.scss'],
   animations: [fabAnimation]
 })
-export class RestaurantPage extends BaseDirective implements OnInit {
+export class RestaurantPage extends BasePageFormDirective implements OnInit {
 
   showUsualDishes: 'primi' | 'secondi' | 'contorni' | 'pizze' = null;
   
@@ -36,37 +36,39 @@ export class RestaurantPage extends BaseDirective implements OnInit {
   secondiUsualDishes$: Observable<UsualDishes>;
   contorniUsualDishes$: Observable<UsualDishes>;
   pizzeUsualDishes$: Observable<UsualDishes>;
+  defaultValue$: Observable<Dishes>;
 
-  menuForm = new FormGroup({
-    primi: new FormControl([]),
-    secondi: new FormControl([]),
-    contorni: new FormControl([]),
-    pizze: new FormControl([])
-  })
-
-
-
-  cancelButton: ModalDefaultContentButton = {
-    title: 'Annulla',
-    fill: false,
-    type: 'secondary'
-  };
-  successButton: ModalDefaultContentButton = {
-    title: 'Salva',
-    fill: true,
-    type: 'secondary'
+  get cleanMenuData(): Dishes{
+    return {
+      primi: this.pageForm.get('primi').value.map(x => x.name),
+      secondi: this.pageForm.get('secondi').value.map(x => x.name),
+      contorni: this.pageForm.get('contorni').value.map(x => x.name),
+      pizze: this.pageForm.get('pizze').value.map(x => x.name)
+    }
   }
+
 
   constructor(private authSvc: AuthService, private router: Router, public mediaSvc: MediaService, private restaurantSvc: RestaurantService) {
     super();
+    this.pageForm = new FormGroup({
+      primi: new FormControl([]),
+      secondi: new FormControl([]),
+      contorni: new FormControl([]),
+      pizze: new FormControl([])
+    })
     this.primiUsualDishes$ = this.restaurantSvc.getTemplate('primi');
     this.secondiUsualDishes$ = this.restaurantSvc.getTemplate('secondi');
     this.contorniUsualDishes$ = this.restaurantSvc.getTemplate('contorni');
     this.pizzeUsualDishes$ = this.restaurantSvc.getTemplate('pizze');
-    this.primiUsualDishes$.pipe(takeUntil(this.destroy$)).subscribe(value => this.menuForm.get('primi').setValue([...value.defaults, ...this.menuForm.value.primi]));
-    this.secondiUsualDishes$.pipe(takeUntil(this.destroy$)).subscribe(value => this.menuForm.get('secondi').setValue([...value.defaults, ...this.menuForm.value.secondi]));
-    this.contorniUsualDishes$.pipe(takeUntil(this.destroy$)).subscribe(value => this.menuForm.get('contorni').setValue([...value.defaults, ...this.menuForm.value.contorni]));
-    this.pizzeUsualDishes$.pipe(takeUntil(this.destroy$)).subscribe(value => this.menuForm.get('pizze').setValue([...value.defaults, ...this.menuForm.value.pizze]));
+    this.defaultValue$ = combineLatest([this.primiUsualDishes$, this.secondiUsualDishes$, this.contorniUsualDishes$, this.pizzeUsualDishes$]).pipe(takeUntil(this.destroy$), 
+      map(([primi, secondi, contorni, pizze]) => ({
+        primi: [...primi.defaults, ...this.pageForm.get('primi').value],
+        secondi: [...secondi.defaults, ...this.pageForm.get('secondi').value],
+        contorni: [...contorni.defaults, ...this.pageForm.get('contorni').value],
+        pizze: [...pizze.defaults, ...this.pageForm.get('pizze').value],
+      })))
+    this.pageDefaultFormValue$ = this.defaultValue$;
+    this.defaultValue$.subscribe(x => this.pageForm.patchValue(x));
   }
 
   ngOnInit() {
@@ -94,8 +96,11 @@ export class RestaurantPage extends BaseDirective implements OnInit {
     this.pizzeList.deleteSelectedDishes();
   }
 
-  saveMenu(){
-    
+  sendMenu(){
+    this.restaurantSvc.addTodayMenu({
+      date: new Date(),
+      dishes: this.cleanMenuData
+    });
   }
 
 }

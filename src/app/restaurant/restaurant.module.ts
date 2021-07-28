@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '../shared/shared.module';
 import { InfoModalComponent } from './recurrent-dishes-page/components/info-modal/info-modal.component';
 import { RecurrentDishesPage } from './recurrent-dishes-page/recurrent-dishes.page';
+import { AddMenuWarnComponent } from './restaurant-page/components/add-menu-warn/add-menu-warn.component';
 import { RestaurantPage } from './restaurant-page/restaurant.page';
 import { RestaurantPageRoutingModule } from './restaurant-routing.module';
 import { SettingsPage } from './settings-page/settings.page';
@@ -20,6 +21,6 @@ import { SettingsPage } from './settings-page/settings.page';
     SharedModule,
     RestaurantPageRoutingModule
   ],
-  declarations: [RestaurantPage, RecurrentDishesPage, SettingsPage, InfoModalComponent]
+  declarations: [RestaurantPage, RecurrentDishesPage, SettingsPage, InfoModalComponent, AddMenuWarnComponent]
 })
 export class RestaurantPageModule {}

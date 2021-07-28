@@ -1,0 +1,18 @@
+<div modal-default-content 
+  [successButton]="{
+    type: 'secondary',
+    fill: true,
+    title: 'Invia'
+  }"
+  [cancelButton]="{
+    type: 'secondary',
+    fill: false,
+    title: 'Annulla'
+  }"
+  (buttonClicked)="closeModal($event)"
+  >
+  <h3 class="popup-title">Invia menù</h3>
+  <div>
+    Sicuro di voler inviare il menù? Una volta inviato non sarà possibile effettuare modifiche per questa giornata.
+  </div>
+</div>

@@ -1,7 +1,7 @@
 <ion-content>
   <app-external-container class="desktop" [multiplier]="40">
       <app-default-page [removeMargins]="mediaSvc.isSmartphone" color="secondary" sectionTitle="Fine ordinazioni" title="Menù" subtitle="Inserisci i piatti del giorno.">
-        <div class="dishes" [formGroup]="menuForm">
+        <div class="dishes" [formGroup]="pageForm">
           <app-dishes-list 
             #primiList
             formControlName="primi"
@@ -52,7 +52,7 @@
             }"></app-dishes-list>
         </div>  
         <div class="buttons-container">
-          <ion-button class="send-button">Invia</ion-button>
+          <ion-button class="send-button" (click)="sendMenu()">Invia</ion-button>
         </div>
       </app-default-page>
   </app-external-container>

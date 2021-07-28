@@ -74,7 +74,7 @@ export class DishesListComponent implements ControlValueAccessor, Validator{
    * Add the selected dishes to the list
    */
   addDishes(dishes: Dish[]){
-    this.value = [...this.value, ...dishes];
+    this.value = [...dishes, ...this.value];
   }
 
   /**
@@ -82,8 +82,10 @@ export class DishesListComponent implements ControlValueAccessor, Validator{
    * @param dish 
    */
   toggleDish(dish: Dish){
-    dish.selected = !dish.selected
-    this.value = [...this.dishes$.value]
+    if(this.editMode){
+      dish.selected = !dish.selected
+      this.value = [...this.dishes$.value]
+    }
   }
 
   /**

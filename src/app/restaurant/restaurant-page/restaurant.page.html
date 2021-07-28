@@ -4,6 +4,7 @@
         <div class="dishes" [formGroup]="pageForm">
           <app-dishes-list 
             #primiList
+            [editMode]="!(this.todayMenu$ | async)"
             formControlName="primi"
             [dishesHints]="(primiUsualDishes$ | async)?.hints"
             title="Primi" 
@@ -16,6 +17,7 @@
             }"></app-dishes-list>
           <app-dishes-list 
             #secondiList
+            [editMode]="!(this.todayMenu$ | async)"
             formControlName="secondi"
             [dishesHints]="(secondiUsualDishes$ | async)?.hints"
             title="Secondi" 
@@ -28,6 +30,7 @@
             }"></app-dishes-list>
           <app-dishes-list 
             #contorniList
+            [editMode]="!(this.todayMenu$ | async)"
             formControlName="contorni"
             [dishesHints]="(contorniUsualDishes$ | async)?.hints"
             title="Contorni" 
@@ -40,6 +43,7 @@
             }"></app-dishes-list>
           <app-dishes-list 
             #pizzeList
+            [editMode]="!(this.todayMenu$ | async)"
             formControlName="pizze"
             [dishesHints]="(pizzeUsualDishes$ | async)?.hints"
             title="Pizze" 
@@ -51,7 +55,7 @@
               showUsualDishes: true
             }"></app-dishes-list>
         </div>  
-        <div class="buttons-container">
+        <div *ngIf="!(this.todayMenu$ | async)" class="buttons-container">
           <ion-button class="send-button" (click)="sendMenu()">Invia</ion-button>
         </div>
       </app-default-page>

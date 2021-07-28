@@ -8,14 +8,16 @@
     <div class="text">Aggiungi<br>Piatti</div>
     <ion-ripple-effect></ion-ripple-effect>
   </ion-card>
-  <ion-card class="card placeholder" *ngIf="value.length === 0">
-    Es.<br>
-    Pasta alla carbonara
-  </ion-card>
-  <ion-card class="card placeholder" *ngIf="value.length === 0">
-    Es.<br>
-    Pasta alla carbonara
-  </ion-card>
+  <ng-container>
+    <ion-card class="card placeholder {{editMode ? '' : 'no-edit'}}" *ngIf="value.length === 0">
+      Es.<br>
+      Pasta alla carbonara
+    </ion-card>
+    <ion-card class="card placeholder {{editMode ? '' : 'no-edit'}}" *ngIf="value.length === 0">
+      Es.<br>
+      Pasta alla carbonara
+    </ion-card>
+  </ng-container>
   <ion-card (click)="toggleDish(dish)" class="card dish ion-activatable" @itemsAnimation *ngFor="let dish of (dishes$ | async); trackBy: trackByName">
     {{dish.name | firstCharUppercase}}
     <ion-ripple-effect></ion-ripple-effect>

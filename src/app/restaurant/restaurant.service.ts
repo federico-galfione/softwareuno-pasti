@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Timestamp } from '@google-cloud/firestore';
 import { ModalController } from '@ionic/angular';
 import { Dish, DishType } from '@shared/models';
+import { Dishes, DishesForm } from '@shared/models/Dishes';
 import { Menu } from '@shared/models/Menu';
 import { UsualDishesStrings } from '@shared/models/UsualDishes';
 import { ToastService } from '@shared/services';
@@ -50,6 +52,17 @@ export class RestaurantService {
       this.toastSvc.addErrorToast({message: 'Errore durante l\'inserimento del menù'});
     }
       
+  }
+
+  getTodaysMenu(): Observable<DishesForm>{
+    let currDate = new Date();
+    return this.firestore.collection('menus').doc<{date: Timestamp, dishes: Dishes}>(`${currDate.getFullYear()}-${currDate.getMonth()}-${currDate.getDate()}`).valueChanges()
+    .pipe(map(menu => menu ? ({
+      primi: menu.dishes.primi.map(name => ({name, selected: false})),
+      secondi: menu.dishes.secondi.map(name => ({name, selected: false})),
+      contorni: menu.dishes.contorni.map(name => ({name, selected: false})),
+      pizze: menu.dishes.pizze.map(name => ({name, selected: false})),
+    }) : null ));
   }
 
   async setTemplate(dishType: DishType, usualDishes: { defaults: Dish[], hints: Dish[] }){

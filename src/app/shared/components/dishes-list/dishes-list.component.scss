@@ -67,6 +67,9 @@
       }
       &.placeholder {
         opacity: 0.15;
+        &.no-edit {
+          opacity: 0;
+        }
       }
       &.hidden {
         opacity: 0;

@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BasePageFormDirective } from '@shared/directives';
-import { Dishes } from '@shared/models/Dishes';
+import { DishesForm } from '@shared/models/Dishes';
 import { UsualDishes } from '@shared/models/UsualDishes';
 import { combineLatest, Observable } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { DishesListComponent } from 'src/app/shared/components/dishes-list/dishes-list.component';
 import { AuthService } from '../../shared/services/auth.service';
 import { MediaService } from '../../shared/services/media.service';
@@ -18,7 +18,7 @@ import { fabAnimation } from './restaurant.animations';
   styleUrls: ['./restaurant.page.scss'],
   animations: [fabAnimation]
 })
-export class RestaurantPage extends BasePageFormDirective implements OnInit {
+export class RestaurantPage extends BasePageFormDirective {
 
   showUsualDishes: 'primi' | 'secondi' | 'contorni' | 'pizze' = null;
   
@@ -36,9 +36,10 @@ export class RestaurantPage extends BasePageFormDirective implements OnInit {
   secondiUsualDishes$: Observable<UsualDishes>;
   contorniUsualDishes$: Observable<UsualDishes>;
   pizzeUsualDishes$: Observable<UsualDishes>;
-  defaultValue$: Observable<Dishes>;
+  defaultValue$: Observable<DishesForm>;
+  todayMenu$: Observable<DishesForm>;
 
-  get cleanMenuData(): Dishes{
+  get cleanMenuData(){
     return {
       primi: this.pageForm.get('primi').value.map(x => x.name),
       secondi: this.pageForm.get('secondi').value.map(x => x.name),
@@ -60,18 +61,23 @@ export class RestaurantPage extends BasePageFormDirective implements OnInit {
     this.secondiUsualDishes$ = this.restaurantSvc.getTemplate('secondi');
     this.contorniUsualDishes$ = this.restaurantSvc.getTemplate('contorni');
     this.pizzeUsualDishes$ = this.restaurantSvc.getTemplate('pizze');
-    this.defaultValue$ = combineLatest([this.primiUsualDishes$, this.secondiUsualDishes$, this.contorniUsualDishes$, this.pizzeUsualDishes$]).pipe(takeUntil(this.destroy$), 
+
+    this.todayMenu$ = this.restaurantSvc.getTodaysMenu();
+
+    let editDefaultValue$ = combineLatest([this.primiUsualDishes$, this.secondiUsualDishes$, this.contorniUsualDishes$, this.pizzeUsualDishes$]).pipe(
       map(([primi, secondi, contorni, pizze]) => ({
         primi: [...primi.defaults, ...this.pageForm.get('primi').value],
         secondi: [...secondi.defaults, ...this.pageForm.get('secondi').value],
         contorni: [...contorni.defaults, ...this.pageForm.get('contorni').value],
         pizze: [...pizze.defaults, ...this.pageForm.get('pizze').value],
       })))
+
+    this.defaultValue$ = combineLatest([this.todayMenu$, editDefaultValue$]).pipe(
+      switchMap(([menu, value]) => menu ? this.todayMenu$ : editDefaultValue$),
+      takeUntil(this.destroy$)
+    )
     this.pageDefaultFormValue$ = this.defaultValue$;
     this.defaultValue$.subscribe(x => this.pageForm.patchValue(x));
-  }
-
-  ngOnInit() {
   }
 
   async logout(){

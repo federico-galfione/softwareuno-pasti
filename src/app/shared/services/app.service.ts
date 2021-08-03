@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Timestamp } from '@google-cloud/firestore';
 import { AppSettings } from '@shared/models';
-import { combineLatest, interval } from 'rxjs';
+import { Dishes, DishesForm } from '@shared/models/Dishes';
+import { combineLatest, interval, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { ToastService } from './toast.service';
 
@@ -50,6 +52,17 @@ export class AppService {
         return { hours, minutes }
       })
      )
+  }
+
+  getTodaysMenu(): Observable<DishesForm>{
+    let currDate = new Date();
+    return this.firestore.collection('menus').doc<{date: Timestamp, dishes: Dishes}>(`${currDate.getFullYear()}-${currDate.getMonth()}-${currDate.getDate()}`).valueChanges()
+    .pipe(map(menu => menu ? ({
+      primi: menu.dishes.primi.map(name => ({name, selected: false})),
+      secondi: menu.dishes.secondi.map(name => ({name, selected: false})),
+      contorni: menu.dishes.contorni.map(name => ({name, selected: false})),
+      pizze: menu.dishes.pizze.map(name => ({name, selected: false})),
+    }) : null ));
   }
 
   getAppSettings(){

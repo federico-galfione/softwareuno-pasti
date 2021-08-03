@@ -4,10 +4,10 @@ import { Router } from '@angular/router';
 import { BasePageFormDirective } from '@shared/directives';
 import { DishesForm } from '@shared/models/Dishes';
 import { UsualDishes } from '@shared/models/UsualDishes';
+import { AppService } from '@shared/services';
 import { combineLatest, Observable } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { DishesListComponent } from 'src/app/shared/components/dishes-list/dishes-list.component';
-import { AuthService } from '../../shared/services/auth.service';
 import { MediaService } from '../../shared/services/media.service';
 import { RestaurantService } from '../restaurant.service';
 import { fabAnimation } from './restaurant.animations';
@@ -49,7 +49,7 @@ export class RestaurantPage extends BasePageFormDirective {
   }
 
 
-  constructor(private authSvc: AuthService, private router: Router, public mediaSvc: MediaService, private restaurantSvc: RestaurantService) {
+  constructor(private router: Router, public mediaSvc: MediaService, private restaurantSvc: RestaurantService, private appSvc: AppService) {
     super();
     this.pageForm = new FormGroup({
       primi: new FormControl([]),
@@ -62,7 +62,7 @@ export class RestaurantPage extends BasePageFormDirective {
     this.contorniUsualDishes$ = this.restaurantSvc.getTemplate('contorni');
     this.pizzeUsualDishes$ = this.restaurantSvc.getTemplate('pizze');
 
-    this.todayMenu$ = this.restaurantSvc.getTodaysMenu();
+    this.todayMenu$ = this.appSvc.getTodaysMenu();
 
     let editDefaultValue$ = combineLatest([this.primiUsualDishes$, this.secondiUsualDishes$, this.contorniUsualDishes$, this.pizzeUsualDishes$]).pipe(
       map(([primi, secondi, contorni, pizze]) => ({
@@ -80,19 +80,12 @@ export class RestaurantPage extends BasePageFormDirective {
     this.defaultValue$.subscribe(x => this.pageForm.patchValue(x));
   }
 
-  async logout(){
-    try{
-      await this.authSvc.logout();
-      this.router.navigate(['']);
-    }catch(e){}
-  }
-
   goToUsual(course: 'primi' | 'secondi' | 'contorni' | 'pizze'){
     this.router.navigate(['restaurant', 'recurrent-dishes', course])
   }
 
   goToSettings(){
-    this.router.navigate(['settings'])
+    this.router.navigate(['restaurant', 'settings'])
   }
 
   deleteSelectedDishes(){

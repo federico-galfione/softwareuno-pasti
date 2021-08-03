@@ -1,0 +1,54 @@
+<ion-content>
+    <app-external-container class="desktop" [multiplier]="40">
+        <app-default-page [removeMargins]="mediaSvc.isSmartphone" sectionTitle="Fine ordinazioni" title="Menù" subtitle="Scegli cosa mangiare!">
+          <ng-container *ngIf="todaysMenu === null">
+            <div class="no-menu-container">
+              <div class="menu-img-container">
+                <img src="../../../assets/svg/waiting-menu.svg">
+              </div>
+              <div class="message">
+                <h3>Menù non disponibile</h3>
+                <div>Il menù di oggi non è ancora disponibile. Una volta che il ristoratore avrà completato la compilazione sarà possibile eseguire l'ordinazione. Nel caso non sia disponibile nonostante la fine delle ordinazioni vicina, contattare il ristoratore.</div>
+              </div>
+            </div>
+          </ng-container> 
+          <ng-container *ngIf="todaysMenu">
+            <div class="dishes" [formGroup]="pageForm">
+              <app-dishes-list 
+                #primiList
+                [editMode]="false"
+                formControlName="primi"
+                title="Primi"></app-dishes-list>
+              <app-dishes-list 
+                #secondiList
+                [editMode]="false"
+                formControlName="secondi"
+                title="Secondi"></app-dishes-list>
+              <app-dishes-list 
+                #contorniList
+                [editMode]="false"
+                formControlName="contorni"
+                title="Contorni"></app-dishes-list>
+              <app-dishes-list 
+                #pizzeList
+                [editMode]="false"
+                formControlName="pizze"
+                title="Pizze"></app-dishes-list>
+            </div> 
+            <div class="options-container">
+              <ion-card class="big-card guests">
+                Aggiungi<br>ospiti
+                <img src="../../../assets/svg/guests.svg">
+              </ion-card>
+              <ion-card class="big-card takeaway">
+                Da<br>asporto
+                <img src="../../../assets/svg/take-away.svg">
+              </ion-card>
+            </div> 
+            <div class="buttons-container">
+              <ion-button class="send-button">Invia</ion-button>
+            </div>
+          </ng-container>
+        </app-default-page>
+    </app-external-container>
+</ion-content>

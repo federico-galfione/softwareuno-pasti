@@ -28,7 +28,7 @@ export class DishesListComponent implements ControlValueAccessor, Validator{
   @Input()
   title: string = 'Primi';
   @Input()
-  rightText: string = 'Piatti ricorrenti';
+  rightText: string = null;
   @Input()
   editMode: boolean = true;
   @Input()

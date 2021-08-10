@@ -1,4 +1,11 @@
 @import "mixins";
+.dishes {
+  div[rightText] {
+    display: flex;
+    align-items: center;
+    height: 32px;
+  }
+}
 app-popup {
   .popup-title {
     margin-bottom: var(--space-2);

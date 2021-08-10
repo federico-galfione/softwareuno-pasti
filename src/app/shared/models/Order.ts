@@ -1,7 +1,8 @@
 export interface Order{
-    user: string;
-    contorni?: string[];
-    pizza?: string;
-    primo?: string;
-    secondo?: string;
+    contorni: string[];
+    pizze: string[];
+    primi: string[];
+    secondi: string[];
+    abbondante: boolean;
+    takeAway: boolean;
 }

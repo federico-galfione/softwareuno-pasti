@@ -1,5 +1,6 @@
 @import "mixins";
 :host {
+  --current-color: #000;
   .title-container {
     display: flex;
     align-items: flex-end;
@@ -8,11 +9,12 @@
       var(--current-space-3);
     .title {
       flex: 1;
+      line-height: 32px;
     }
     .right-text {
       cursor: pointer;
       font-size: 2rem;
-      color: var(--ion-color-secondary);
+      color: var(--current-color);
       font-weight: 900;
     }
   }

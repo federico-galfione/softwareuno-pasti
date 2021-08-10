@@ -1,6 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 
-export const fabAnimation = trigger('fabAnimation', [
+export const enterFromRightAnimation = trigger('enterFromRightAnimation', [
     transition(':enter', [
         style({transform: 'translateX(100%)'}),
         animate('0.1s ease-out',

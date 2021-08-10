@@ -41,7 +41,6 @@ export class RestaurantService {
     await modal.present();
     try{
       const { data } = await modal.onWillDismiss();
-      console.log(menu);
       if(data.success){
         await this.firestore.collection('menus').doc(`${menu.date.getFullYear()}-${menu.date.getMonth()}-${menu.date.getDate()}`).set(menu);
         this.toastSvc.addSuccessToast({header: 'Menù inviato', message: 'Il menù è stato inviato con successo!'})

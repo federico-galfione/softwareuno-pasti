@@ -34,38 +34,40 @@ export class ToastService {
    * Aggiunge un nuovo toast alla coda
    * @param options Aspetto e contenuto del toast
    */
-  private addToast(options: { message: string; header: string; color?: 'primary' | 'danger' | 'warning' | 'success' }) {
-    this.toastQueue.push({
-      ...options,
-      duration: 4000,
-      mode: 'ios',
-      cssClass: 'ionic-toast'
-    });
-    if (this.toastQueue.length === 1) {
-      this.displayNext();
+  private addToast(options: { message: string; header: string; color?: 'primary' | 'danger' | 'warning' | 'success' }, stack: boolean) {
+    if(stack || this.toastQueue.length <= 0){
+      this.toastQueue.push({
+        ...options,
+        duration: 4000,
+        mode: 'ios',
+        cssClass: 'ionic-toast'
+      });
+      if (this.toastQueue.length === 1) {
+        this.displayNext();
+      }
     }
   }
 
-  public addErrorToast(options: { message: string }) {
+  public addErrorToast(options: { message: string }, stack: boolean = true) {
     this.addToast({
       header: 'Ops...',
       message: options.message,
       color: 'danger'
-    });
+    }, stack);
   }
 
-  public addInfoToast(options: { header: string; message: string }) {
+  public addInfoToast(options: { header: string; message: string }, stack: boolean = true) {
     this.addToast({
       header: options.header,
       message: options.message,
-    });
+    }, stack);
   }
 
-  public addSuccessToast(options: { header: string; message: string }) {
+  public addSuccessToast(options: { header: string; message: string }, stack: boolean = true) {
     this.addToast({
       header: options.header,
       message: options.message,
       color: 'success',
-    });
+    }, stack);
   }
 }

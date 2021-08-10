@@ -6,33 +6,31 @@
             #defaultsList
             formControlName="defaults"
             title="{{dishType | titlecase}} {{(dishType === 'pizze') ? 'fisse' : 'fissi'}}" 
-            rightText="Info" 
             (rightButtonClicked)="toggleInfoPopup('fissiInfo')"
             [addDishesFormOptions]="{
               title: 'Aggiungi i piatti',
               subtitle: 'Inserisci '+ ((dishType === 'pizze') ? 'le ' : 'i ') + dishType +' ricorrenti',
               info: 'Inserisci un piatto per riga. Questi saranno preinseriti nel menù ogni giorno.'
             }"
-            ></app-dishes-list>
+            ><div rightText>Info</div></app-dishes-list>
           <app-dishes-list 
             #hintsList
             title="{{dishType | titlecase}} frequenti" 
             formControlName="hints"
-            rightText="Info" 
             (rightButtonClicked)="toggleInfoPopup('frequentiInfo')"
             [addDishesFormOptions]="{
               title: 'Aggiungi i piatti',
               subtitle: 'Inserisci '+ ((dishType === 'pizze') ? 'le ' : 'i ') + dishType +' frequenti',
               info: 'Inserisci un piatto per riga. Questi verranno mostrati durante l\'inserimento di piatti nel menù'
             }"
-            ></app-dishes-list>
+            ><div rightText>Info</div></app-dishes-list>
         </div>
       </app-default-page>
   </app-external-container>
   <ion-fab *ngIf="
   defaultsList.selectedDishes.length || hintsList.selectedDishes.length
   "
-  @fabAnimation
+  @enterFromRightAnimation
   (click)="deleteSelectedDishes()"
   vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="danger">

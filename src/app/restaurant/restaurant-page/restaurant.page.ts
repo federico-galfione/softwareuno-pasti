@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { enterFromRightAnimation } from '@shared/animations/generic.animations';
 import { BasePageFormDirective } from '@shared/directives';
 import { DishesForm } from '@shared/models/Dishes';
 import { UsualDishes } from '@shared/models/UsualDishes';
@@ -10,13 +11,12 @@ import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { DishesListComponent } from 'src/app/shared/components/dishes-list/dishes-list.component';
 import { MediaService } from '../../shared/services/media.service';
 import { RestaurantService } from '../restaurant.service';
-import { fabAnimation } from './restaurant.animations';
 
 @Component({
   selector: 'app-restaurant',
   templateUrl: './restaurant.page.html',
   styleUrls: ['./restaurant.page.scss'],
-  animations: [fabAnimation]
+  animations: [enterFromRightAnimation]
 })
 export class RestaurantPage extends BasePageFormDirective {
 

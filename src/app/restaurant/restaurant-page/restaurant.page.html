@@ -8,52 +8,48 @@
             formControlName="primi"
             [dishesHints]="(primiUsualDishes$ | async)?.hints"
             title="Primi" 
-            rightText="Piatti ricorrenti" 
             (rightButtonClicked)="goToUsual('primi')"
             [addDishesFormOptions]="{
               title: 'Aggiungi i primi',
               subtitle: 'Inserisci i primi nel menù del giorno',
               showUsualDishes: true
-            }"></app-dishes-list>
+            }"><div rightText>Piatti ricorrenti</div></app-dishes-list>
           <app-dishes-list 
             #secondiList
             [editMode]="!(this.todayMenu$ | async)"
             formControlName="secondi"
             [dishesHints]="(secondiUsualDishes$ | async)?.hints"
             title="Secondi" 
-            rightText="Piatti ricorrenti" 
             (rightButtonClicked)="goToUsual('secondi')"
             [addDishesFormOptions]="{
               title: 'Aggiungi i secondi',
               subtitle: 'Inserisci i secondi nel menù del giorno',
               showUsualDishes: true
-            }"></app-dishes-list>
+            }"><div rightText>Piatti ricorrenti</div></app-dishes-list>
           <app-dishes-list 
             #contorniList
             [editMode]="!(this.todayMenu$ | async)"
             formControlName="contorni"
             [dishesHints]="(contorniUsualDishes$ | async)?.hints"
             title="Contorni" 
-            rightText="Piatti ricorrenti" 
             (rightButtonClicked)="goToUsual('contorni')"
             [addDishesFormOptions]="{
               title: 'Aggiungi i contorni',
               subtitle: 'Inserisci i contorni nel menù del giorno',
               showUsualDishes: true
-            }"></app-dishes-list>
+            }"><div rightText>Piatti ricorrenti</div></app-dishes-list>
           <app-dishes-list 
             #pizzeList
             [editMode]="!(this.todayMenu$ | async)"
             formControlName="pizze"
             [dishesHints]="(pizzeUsualDishes$ | async)?.hints"
             title="Pizze" 
-            rightText="Piatti ricorrenti" 
             (rightButtonClicked)="goToUsual('pizze')"
             [addDishesFormOptions]="{
               title: 'Aggiungi le pizze',
               subtitle: 'Inserisci le pizze nel menù del giorno',
               showUsualDishes: true
-            }"></app-dishes-list>
+            }"><div rightText>Piatti ricorrenti</div></app-dishes-list>
         </div>  
         <div *ngIf="!(this.todayMenu$ | async)" class="buttons-container">
           <ion-button class="send-button" (click)="sendMenu()">Invia</ion-button>
@@ -68,7 +64,7 @@
   <ion-fab *ngIf="
     primiList.selectedDishes.length || secondiList.selectedDishes.length || contorniList.selectedDishes.length || pizzeList.selectedDishes.length
   "
-  @fabAnimation
+  @enterFromRightAnimation
   (click)="deleteSelectedDishes()"
   vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="danger">

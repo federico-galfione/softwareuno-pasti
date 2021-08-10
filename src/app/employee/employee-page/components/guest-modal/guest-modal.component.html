@@ -1,0 +1,14 @@
+<div modal-default-content 
+  [successButton]="{
+    type: 'secondary',
+    fill: true,
+    title: 'Ok, ho capito'
+  }"
+  (buttonClicked)="closeModal()"
+  >
+  <h3 class="popup-title">Aggiungi ospite</h3>
+  <div class="text">
+    Condividi col tuo ospite il seguente link. Da qui potrà effettuare il proprio ordine.
+  </div>
+  <div class="text big">{{secretLink}}</div>
+</div>

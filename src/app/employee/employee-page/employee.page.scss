@@ -43,6 +43,11 @@ ion-content {
       grid-template-columns: auto auto;
       grid-gap: calc(var(--space-4) + var(--space-2));
     }
+    div[rightText] {
+      display: flex;
+      align-items: center;
+      height: 32px;
+    }
   }
   .options-container {
     display: flex;
@@ -68,6 +73,12 @@ ion-content {
       }
       &.takeaway {
         margin-left: var(--current-space-2);
+        .selection-tick {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          height: var(--space-4);
+        }
       }
     }
   }

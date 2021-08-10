@@ -5,6 +5,7 @@
           <app-dishes-list 
             #primiList
             [editMode]="!(this.todayMenu$ | async)"
+            [selectable]="!(this.todayMenu$ | async)"
             formControlName="primi"
             [dishesHints]="(primiUsualDishes$ | async)?.hints"
             title="Primi" 
@@ -17,6 +18,7 @@
           <app-dishes-list 
             #secondiList
             [editMode]="!(this.todayMenu$ | async)"
+            [selectable]="!(this.todayMenu$ | async)"
             formControlName="secondi"
             [dishesHints]="(secondiUsualDishes$ | async)?.hints"
             title="Secondi" 
@@ -29,6 +31,7 @@
           <app-dishes-list 
             #contorniList
             [editMode]="!(this.todayMenu$ | async)"
+            [selectable]="!(this.todayMenu$ | async)"
             formControlName="contorni"
             [dishesHints]="(contorniUsualDishes$ | async)?.hints"
             title="Contorni" 
@@ -41,6 +44,7 @@
           <app-dishes-list 
             #pizzeList
             [editMode]="!(this.todayMenu$ | async)"
+            [selectable]="!(this.todayMenu$ | async)"
             formControlName="pizze"
             [dishesHints]="(pizzeUsualDishes$ | async)?.hints"
             title="Pizze" 

@@ -12,7 +12,7 @@ export class GuestModalComponent {
   secretKey: string;
 
   get secretLink(){
-    return (this.secretKey) ? window.location.host + '/' + this.secretKey : '';
+    return (this.secretKey) ? window.location.host + '/login/' + this.secretKey : '';
   }
 
   constructor(private modalCtrl: ModalController) { }

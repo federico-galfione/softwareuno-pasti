@@ -5,7 +5,7 @@ import { AngularFireFunctions } from '@angular/fire/functions';
 import { Router } from '@angular/router';
 import firebase from 'firebase/app';
 import { Observable, of } from 'rxjs';
-import { map, mergeMap, take, withLatestFrom } from 'rxjs/operators';
+import { catchError, map, mergeMap, take, withLatestFrom } from 'rxjs/operators';
 import { User } from '../models/User';
 import { ToastService } from './toast.service';
 
@@ -21,7 +21,11 @@ export class AuthService {
     return this._currentUser;
   }
 
-  constructor(private auth: AngularFireAuth, private firestore: AngularFirestore, private router: Router, private toastSvc: ToastService, private fns: AngularFireFunctions) { }
+  constructor(private auth: AngularFireAuth, private firestore: AngularFirestore, private router: Router, private toastSvc: ToastService, private fns: AngularFireFunctions) { 
+    this.auth.onAuthStateChanged(async (user) => {
+      console.log('onAuthStateChanged', await user?.getIdToken());
+    })
+  }
 
   // Login 
   async login(email: string, password: string){
@@ -40,6 +44,35 @@ export class AuthService {
       else
         this.toastSvc.addErrorToast({message: 'C\'è stato un problema durante il login.'})
     }
+  }
+
+  async loginAsGuest(){
+    try{
+      if(await this.auth.currentUser){
+        this.router.navigate(['']);
+        return null;
+      }
+      await this.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      const user = (await this.auth.signInAnonymously()).user;
+      this._currentUser = { 
+        ...user, 
+        role: 'EMPLOYEE'
+      };
+      this.toastSvc.addSuccessToast({header: 'Benvenuto!', message: 'Avrai accesso all\'applicazione per questa giornata.'})
+      return this.currentUser;
+    }catch(e: any){
+      this.toastSvc.addErrorToast({message: 'Errore durante l\'accesso come ospite'});
+    }
+  }
+
+  checkSecretKey(key: string){
+    const callable = this.fns.httpsCallable('checkSecretLink');
+    return callable({ key }).pipe(take(1)).pipe(
+      catchError(err => { 
+        this.toastSvc.addErrorToast({message: 'La chiave segreta è sbagliata'});
+        return of('ERROR');
+      })
+    );
   }
 
   // Logout
@@ -61,7 +94,7 @@ export class AuthService {
       withLatestFrom(user$),
       map(([roleDoc, user]) => {
         if(user && roleDoc){
-          this._currentUser = { ...user, role: roleDoc.get('role') };
+          this._currentUser = { ...user, role: roleDoc.get('role') || 'EMPLOYEE' };
         }
         return !!user;
       })

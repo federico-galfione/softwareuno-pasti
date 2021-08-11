@@ -1,19 +1,4 @@
-import { animate, query, stagger, state, style, transition, trigger } from '@angular/animations';
-export const menuAnimation = trigger('openClose', [
-    transition(':enter', [
-        style({
-            transform: 'translateX(100%)'
-        }),
-        animate('0.2s ease-out', style({
-            transform: 'translateX(0%)'
-        }))
-    ]),
-    transition(':leave', [
-      animate('0.2s ease-in', style({
-            transform: 'translateX(100%)'
-        }))
-    ]),
-  ])
+import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 
 export const usersAnimation = trigger('usersAnimation', [
     transition('* => *', [

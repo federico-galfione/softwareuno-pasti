@@ -1,20 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { ModalController } from '@ionic/angular';
 import { Dish, DishType } from '@shared/models';
 import { Menu } from '@shared/models/Menu';
 import { UsualDishesStrings } from '@shared/models/UsualDishes';
 import { ToastService } from '@shared/services';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AddMenuWarnComponent } from './restaurant-page/components/add-menu-warn/add-menu-warn.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RestaurantService {
 
-  constructor(private firestore: AngularFirestore, private toastSvc: ToastService, private modalCtrl: ModalController) { }
+  constructor(private firestore: AngularFirestore, private toastSvc: ToastService) { }
 
   getTemplate(dishType: DishType){
     return this.firestore.collection('templates').doc<UsualDishesStrings>(dishType).valueChanges().pipe(map(templates => ({
@@ -32,19 +30,9 @@ export class RestaurantService {
   }
 
   async addTodayMenu(menu: Menu){
-    const modal = await this.modalCtrl.create({
-      component: AddMenuWarnComponent,
-      cssClass: 'bottom',
-      swipeToClose: true,
-      mode: "ios"
-    });
-    await modal.present();
     try{
-      const { data } = await modal.onWillDismiss();
-      if(data.success){
-        await this.firestore.collection('menus').doc(`${menu.date.getFullYear()}-${menu.date.getMonth()}-${menu.date.getDate()}`).set(menu);
-        this.toastSvc.addSuccessToast({header: 'Menù inviato', message: 'Il menù è stato inviato con successo!'})
-      }
+      await this.firestore.collection('menus').doc(`${menu.date.getFullYear()}-${menu.date.getMonth()}-${menu.date.getDate()}`).set(menu);
+      this.toastSvc.addSuccessToast({header: 'Menù inviato', message: 'Il menù è stato inviato con successo!'})
     }catch(e){
       this.toastSvc.addErrorToast({message: 'Errore durante l\'inserimento del menù'});
     }

@@ -1,12 +1,17 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { enterFromRightAnimation } from '@shared/animations';
 import { User } from '@shared/models';
 import { AuthService, MediaService } from '@shared/services';
-import { combineLatest, of } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { debounceTime, map, skip, switchMap, take, takeUntil } from 'rxjs/operators';
-import { menuAnimation, usersAnimation } from './admin.animations';
+import { debounceTime, map, skip, switchMap, takeUntil } from 'rxjs/operators';
+import { usersAnimation } from '../admin.animations';
+import { CreateUserModalComponent } from '../components/create-user-modal/create-user-modal.component';
+import { DeleteUserModalComponent } from '../components/delete-user-modal/delete-user-modal.component';
+import { EditUserModalComponent } from '../components/edit-user-modal/edit-user-modal.component';
 
 const autocomplete = (time, selector) => (source$) =>
   source$.pipe(
@@ -28,35 +33,24 @@ const autocomplete = (time, selector) => (source$) =>
   templateUrl: './admin.page.html',
   styleUrls: ['./admin.page.scss'],
   animations: [
-    menuAnimation,
-    usersAnimation
+    usersAnimation,
+    enterFromRightAnimation
   ]
 })
 export class AdminPage implements AfterViewInit {
   adminColors: {primary?: string, tint?: string} = {};
-  showPopup: 'delete' | 'edit' | 'create' = null;
   users$: Observable<User[]>;
   filteredUsers$: Observable<User[]>;
   filteredUsers: User[];
-  userFormGroup: FormGroup = new FormGroup({
-    email: new FormControl('', [Validators.email, Validators.required]),
-    firstName: new FormControl('', [Validators.required]),
-    lastName: new FormControl('', [Validators.required]),
-    role: new FormControl('', [Validators.required])
-  })
   filterForm = new FormGroup({
     text: new FormControl(''),
     roles: new FormControl(['ADMIN', 'EMPLOYEE', 'RESTAURANT'])
   });
   selectedUser: User;
-  // @ViewChild('deletePopup')
-  // deletePopup: PopupComponent;
-  // @ViewChild('editPopup')
-  // editPopup: PopupComponent;
-  // @ViewChild('createPopup')
-  // createPopup: PopupComponent;
 
-  constructor(public authSvc: AuthService, private router: Router, public mediaSvc: MediaService) { 
+  trackByEmail = (index: number, item: User) => item.email;
+
+  constructor(public authSvc: AuthService, private router: Router, public mediaSvc: MediaService, private modalCtrl: ModalController) { 
     this.adminColors.primary = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-tertiary');
     this.adminColors.tint = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-tertiary-tint');
     this.users$ = this.authSvc.getUsers();
@@ -99,53 +93,56 @@ export class AdminPage implements AfterViewInit {
     }
   }
 
-  showCreateUserPopup(event: MouseEvent){
+  async createUser(event: MouseEvent){
     event.stopPropagation();
-    this.userFormGroup.setValue({
-      email: '',
-      firstName: '',
-      lastName: '',
-      role: 'EMPLOYEE'
+    const modal = await this.modalCtrl.create({
+      component: CreateUserModalComponent,
+      cssClass: 'bottom',
+      swipeToClose: true,
+      mode: "ios"
     });
-    this.showPopup = 'create';
-  }
-
-  showDeleteUserPopup(event: MouseEvent){
-    event.stopPropagation();
-    this.showPopup = 'delete';
-  }
-
-  showEditUserPopup(event: MouseEvent){
-    event.stopPropagation();
-    this.userFormGroup.patchValue(this.selectedUser);
-    this.showPopup = 'edit';
-  }
-
-  createUser(){
-    if(this.userFormGroup.valid){
-      this.authSvc.createUser(this.userFormGroup.value)
-      return this.authSvc.stopLoading$.pipe(take(1));
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if(data?.user){
+      this.authSvc.createUser(data.user);
     }
-    return of(false);
   }
 
-  editUser(){
-    if(this.userFormGroup.valid){
-      this.authSvc.editUser(this.userFormGroup.value)
-      return this.authSvc.stopLoading$.pipe(take(1));
+  async deleteUser(event: MouseEvent){
+    event.stopPropagation();
+    const modal = await this.modalCtrl.create({
+      component: DeleteUserModalComponent,
+      cssClass: 'bottom',
+      swipeToClose: true,
+      mode: "ios",
+      componentProps: {
+        selectedUser: this.selectedUser
+      }
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if(data?.delete){
+      this.authSvc.deleteUser(this.selectedUser.email);
     }
-    return of(false);
   }
 
-  deleteUser(){
-    this.authSvc.deleteUser(this.selectedUser.email);
-    return this.authSvc.stopLoading$.pipe(take(1));
+  async editUser(event: MouseEvent){
+    event.stopPropagation();
+    const modal = await this.modalCtrl.create({
+      component: EditUserModalComponent,
+      cssClass: 'bottom',
+      swipeToClose: true,
+      mode: "ios",
+      componentProps: {
+        selectedUser: this.selectedUser
+      }
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if(data?.user){
+      this.authSvc.editUser(data.user);
+    }
   }
-
-  // closePopup(popup: PopupComponent, e?: MouseEvent){
-  //   e?.stopPropagation();
-  //   popup.closePopupTrigger$.next('success');
-  // }
 
   cancel(){
     this.selectedUser = null;

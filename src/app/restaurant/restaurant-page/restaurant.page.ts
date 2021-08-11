@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 import { enterFromRightAnimation } from '@shared/animations/generic.animations';
 import { BasePageFormDirective } from '@shared/directives';
 import { DishesForm } from '@shared/models/Dishes';
@@ -11,6 +12,7 @@ import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { DishesListComponent } from 'src/app/shared/components/dishes-list/dishes-list.component';
 import { MediaService } from '../../shared/services/media.service';
 import { RestaurantService } from '../restaurant.service';
+import { AddMenuWarnComponent } from './components/add-menu-warn/add-menu-warn.component';
 
 @Component({
   selector: 'app-restaurant',
@@ -49,7 +51,7 @@ export class RestaurantPage extends BasePageFormDirective {
   }
 
 
-  constructor(private router: Router, public mediaSvc: MediaService, private restaurantSvc: RestaurantService, private appSvc: AppService) {
+  constructor(private router: Router, public mediaSvc: MediaService, private restaurantSvc: RestaurantService, private appSvc: AppService, private modalCtrl: ModalController) {
     super();
     this.pageForm = new FormGroup({
       primi: new FormControl([]),
@@ -95,11 +97,23 @@ export class RestaurantPage extends BasePageFormDirective {
     this.pizzeList.deleteSelectedDishes();
   }
 
-  sendMenu(){
-    this.restaurantSvc.addTodayMenu({
-      date: new Date(),
-      dishes: this.cleanMenuData
-    });
+  async sendMenu(){
+    try{
+      const modal = await this.modalCtrl.create({
+        component: AddMenuWarnComponent,
+        cssClass: 'bottom',
+        swipeToClose: true,
+        mode: "ios"
+      });
+      await modal.present();
+      const { data } = await modal.onWillDismiss();
+      if(data.success){
+        this.restaurantSvc.addTodayMenu({
+          date: new Date(),
+          dishes: this.cleanMenuData
+        });
+      }
+    }catch(e){}
   }
 
 }

@@ -4,8 +4,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { Router } from '@angular/router';
 import firebase from 'firebase/app';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { filter, map, mergeMap, take, withLatestFrom } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, mergeMap, take, withLatestFrom } from 'rxjs/operators';
 import { User } from '../models/User';
 import { ToastService } from './toast.service';
 
@@ -17,9 +17,6 @@ export type Roles = 'ADMIN' | 'EMPLOYEE' | 'RESTAURANT';
 export class AuthService {
 
   private _currentUser: firebase.User & {role: Roles} = null;
-  private isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public startLoading$: Observable<boolean> = this.isLoading$.asObservable().pipe(filter(x => x));
-  public stopLoading$: Observable<boolean> = this.isLoading$.asObservable().pipe(filter(x => !x), map(y => !y));
   get currentUser(){
     return this._currentUser;
   }
@@ -78,8 +75,6 @@ export class AuthService {
 
   // Create a new user
   createUser(user: User){
-    if(!this.isLoading$.value){
-      this.isLoading$.next(true);
       const callable = this.fns.httpsCallable('createUser');
       callable(user).pipe(take(1)).subscribe(
         async res => {
@@ -88,23 +83,18 @@ export class AuthService {
             header: 'Utente creato!',
             message: `L'utente ${res.email} è stato creato con successo`
           })
-          this.isLoading$.next(false);
         },
         err => {
           this.toastSvc.addErrorToast({
             message: 'Errore durante la creazione dell\'utente'
           });
           console.error(err);
-          this.isLoading$.next(false);
         }
       );
-    }
   }
 
   // Delete user
   deleteUser(email: string){
-    if(!this.isLoading$.value){
-      this.isLoading$.next(true);
       const callable = this.fns.httpsCallable('deleteUser');
       callable({email}).pipe(take(1)).subscribe(
         async res => {
@@ -112,22 +102,17 @@ export class AuthService {
             header: 'Utente eliminato!',
             message: `L'utente ${res.email} è stato eliminato con successo`
           })
-          this.isLoading$.next(false);
         },
         err => {
           this.toastSvc.addErrorToast({
             message: 'Errore durante l\'eliminazione dell\'utente'
           });
           console.error(err);
-          this.isLoading$.next(false);
         }
       );
-    }
   }
 
   editUser(user: User){
-    if(!this.isLoading$.value){
-      this.isLoading$.next(true);
       const callable = this.fns.httpsCallable('editUser');
       callable(user).pipe(take(1)).subscribe(
         async res => {
@@ -135,17 +120,14 @@ export class AuthService {
             header: 'Utente modificato!',
             message: `L'utente ${res.email} è stato modificato con successo`
           })
-          this.isLoading$.next(false);
         },
         err => {
           this.toastSvc.addErrorToast({
             message: 'Errore durante la modifica dell\'utente'
           });
           console.error(err);
-          this.isLoading$.next(false);
         }
       );
-    }
   }
 
   getUsers(): Observable<User[]>{

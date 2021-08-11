@@ -1,0 +1,69 @@
+<ion-content>
+  <app-external-container class="desktop" [multiplier]="40">
+      <app-default-page title="Utenti" subtitle="Gestisci gli utenti dell'app" [showCountdown]="false" color="tertiary" sectionTitle="Admin console">
+        <div class="filter-title"><ion-icon name="filter-outline"></ion-icon><div class="text">Filtra</div></div>
+        <div [formGroup]="filterForm" class="filter-container">
+          <ion-input formControlName="text" placeholder="Nome o Email"></ion-input>
+          <app-role-segment formControlName="roles"></app-role-segment>
+        </div>  
+        <div class="users" [@usersAnimation]="filteredUsers?.length">
+            <div class="new-user ion-activatable ripple-parent tertiary" (click)="createUser($event)">
+              <ion-icon name="person-add-outline"></ion-icon>
+              <div class="text">Aggiungi utente</div>
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+            <ion-card [ngClass]="{user: true, smartphone: mediaSvc?.isSmartphone, display: !(mediaSvc?.isSmartphone)}" mode="ios" *ngFor="let user of filteredUsers; trackBy: trackByEmail" (click)="selectUser(user)">
+              <ion-card-header>
+                <ion-card-title>{{user.firstName}} {{user.lastName}}</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                {{user.email}}
+              </ion-card-content>
+              <div class="menu" *ngIf="user?.email === selectedUser?.email" @enterFromRightAnimation>
+                <div class="edit-container ion-activatable ripple-parent white" (click)="editUser($event)">
+                  <div class="info">
+                    <div class="text">Modifica</div>
+                    <ion-icon name="create-outline"></ion-icon>
+                  </div>
+                  <ion-ripple-effect></ion-ripple-effect>
+                  <svg class="edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1">
+                    <radialGradient cx="80%" cy="20%" id="gradientEdit">
+                      <stop offset="0%" class="color1" />
+                      <stop offset="100%" class="color2" />
+                    </radialGradient>
+                    <rect width="1" height="1" fill="url(#gradientEdit)"/>
+                  </svg>
+                </div>
+                <div class="delete-container ion-activatable ripple-parent white" (click)="deleteUser($event)">
+                  <div class="info">
+                    <div class="text">Cancella</div>
+                    <ion-icon name="trash-outline"></ion-icon>
+                  </div>
+                  <ion-ripple-effect></ion-ripple-effect>
+                  <svg class="delete" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1">
+                    <radialGradient cx="80%" cy="20%" id="gradientDelete">
+                      <stop offset="0%" class="color1" />
+                      <stop offset="100%" class="color2" />
+                    </radialGradient>
+                    <rect width="1" height="1" fill="url(#gradientDelete)"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="role-icon-container">
+                <svg class="wave-img" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 60 60" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="linearGradientWaveSvg" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+                      <stop offset="0" [attr.stop-color]="adminColors.primary"/>
+                      <stop offset="1" [attr.stop-color]="adminColors.tint"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M-442.477-245.1c3.025-11.065,11.159-30.548,31.5-35.159,17.308-3.924,25.065-15.9,28.5-24.84v60Z" transform="translate(442.477 305.097)" fill="url(#linearGradientWaveSvg)"/>
+                </svg>
+                <ion-icon [name]="user.role | roleIcon"></ion-icon>
+              </div>
+            </ion-card>
+          </div>
+          <ion-button (click)="logout()">Logout</ion-button>
+      </app-default-page>
+  </app-external-container>
+</ion-content>

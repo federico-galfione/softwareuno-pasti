@@ -21,10 +21,7 @@ export class AuthService {
     return this._currentUser;
   }
 
-  constructor(private auth: AngularFireAuth, private firestore: AngularFirestore, private router: Router, private toastSvc: ToastService, private fns: AngularFireFunctions) { 
-    this.auth.onAuthStateChanged(async (user) => {
-      console.log('onAuthStateChanged', await user?.getIdToken());
-    })
+  constructor(private auth: AngularFireAuth, private firestore: AngularFirestore, private router: Router, private toastSvc: ToastService, private fns: AngularFireFunctions) {
   }
 
   // Login 

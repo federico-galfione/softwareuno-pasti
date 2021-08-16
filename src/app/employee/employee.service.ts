@@ -17,10 +17,20 @@ export class EmployeeService {
     return callable({}).pipe(take(1), map(x => x?.secretKey as string));
   }
 
+  getSavedOrder(){
+    const today = new Date();
+    return this.firestore.collection('menus')
+      .doc(`${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`)
+      .collection('orders')
+      .doc(this.authSvc.currentUser.uid)
+      .valueChanges()
+
+  }
+
   async saveOrder(order: DishesForm & {takeAway: boolean; abbondante: boolean}){
     try{
-      let today = new Date();
-      await this.firestore.firestore.collection('menus')
+      const today = new Date();
+      await this.firestore.collection('menus')
         .doc(`${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`)
         .collection('orders')
         .doc(this.authSvc.currentUser.uid)
@@ -31,7 +41,7 @@ export class EmployeeService {
           contorni: order.contorni.filter(x => x.selected).map(x => x.name),
           pizze: order.pizze.filter(x => x.selected).map(x => x.name)
         })
-        this.toastSvc.addSuccessToast({header: 'Menù inviato', message: 'Il menù è stato inviato con successo!'})
+        this.toastSvc.addSuccessToast({header: 'Ordine inviato', message: 'L\'ordine è stato inviato con successo! Puoi modificarlo fino allo scadere del tempo.'})
     }catch(e){
       console.error(e)
       this.toastSvc.addErrorToast({message: 'Errore durante il salvataggio dell\'ordine'});

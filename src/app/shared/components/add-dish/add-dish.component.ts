@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, startWith, withLatestFrom } from 'rxjs/operators';
 import { itemsAnimation, listAnimation } from '../../animations/list.animations';
 import { AddDishesFormOptions } from '../../models/AddDishesFormOptions';
 import { Dish } from '../../models/Dish';
@@ -28,7 +28,7 @@ export class AddDishComponent implements OnInit {
   /**
    * Animations properties
    */
-  listAnimationDone$: Subject<void> = new Subject();
+  listAnimationDone$: Subject<boolean> = new Subject();
   showPlaceholder$: Observable<boolean>;
   
   /**
@@ -52,7 +52,7 @@ export class AddDishComponent implements OnInit {
 
   ngOnInit() {
     this.filteredHints$ = combineLatest([this.dishesHints$, this.currentValue$]).pipe(map(([hints, value]) => hints.filter(( el ) => !value.map(x => x.makeComparable()).includes(el.name.makeComparable()) && !this.dishes.map(x => x.name.makeComparable()).includes(el.name.makeComparable()))))
-    this.showPlaceholder$ = this.listAnimationDone$.pipe(switchMap(_ => this.filteredHints$), map(x => x.length <= 0));
+    this.showPlaceholder$ = this.listAnimationDone$.pipe(withLatestFrom(this.filteredHints$), map(([animationDone, hints]) => animationDone && hints.length <= 0), startWith(true));
   }
 
   /**

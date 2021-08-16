@@ -73,25 +73,22 @@ export const deleteGuests = functions.pubsub.schedule('every day 00:00')
         })
     });
 
-export const sendEmail = functions.pubsub.schedule('every 1 minutes from 11:00 to 00:00')
+export const sendEmail = functions.pubsub.schedule('every 3 minutes')
     .timeZone('Europe/Rome')
     .onRun(async (context) => {
         const currentTime = new Date();
         const stopOrdersTime = (await admin.firestore().collection('app').doc('settings').get()).data()?.stopOrdersTime.toDate() as Date;
-        console.log(await setupOrders());
 
         if(currentTime.getHours() === stopOrdersTime.getHours() && currentTime.getMinutes() === stopOrdersTime.getMinutes()){
             const allRestaurantAccounts = (await admin.firestore().collection('users').where('role', '==', 'RESTAURANT').get());
-            
-
+            const orders = await setupOrders();
+            const ordersString = createOrdersString(orders);
             allRestaurantAccounts.forEach(doc => {
                 const mail = {
                     from: 'pasti.softwareuno@gmail.com',
                     to: doc.data()?.email,
                     subject: `Ordini del giorno (${currentTime.getDate()}/${currentTime.getMonth()+1}/${currentTime.getFullYear()})`,
-                    html: `<h1>Ordini del giorno<h1>
-                        <p>Di seguito sono elencati gli ordini di oggi!<p>
-                    `
+                    html: `${ordersString}`
                 }
                 transporter.sendMail(mail).then(() => {
                     console.log('MAIL SENT TO ' + doc.data()?.email)
@@ -167,7 +164,7 @@ export const deleteUser = functions.https.onRequest(async (req, res) => {
 
 
 //Check if the user is authenticated and has role == role
-export async function authenticate(req: functions.https.Request, role: string = 'ADMIN'): Promise<admin.auth.DecodedIdToken>{
+async function authenticate(req: functions.https.Request, role: string = 'ADMIN'): Promise<admin.auth.DecodedIdToken>{
     if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) {
         throw new Error();
       }
@@ -186,7 +183,7 @@ export async function authenticate(req: functions.https.Request, role: string = 
 interface Orders{
     primi: Map<string, number>;
     secondi: Map<string, number>;
-    contorni: Map<string, number>;
+    contorni: Map<string, number | {abbondanti: number; normali: number}>;
     pizze: Map<string, number>;
 }
 
@@ -195,20 +192,20 @@ interface RestAndTakeawayOrders{
     takeAway: Orders;
 }
 
-export async function setupOrders(): Promise<RestAndTakeawayOrders>{
+async function setupOrders(): Promise<RestAndTakeawayOrders>{
     const currentTime = new Date();
     const todayOrders = (await admin.firestore().collection('menus').doc(`${currentTime.getFullYear()}-${currentTime.getMonth()}-${currentTime.getDate()}`).collection('orders').get());
     const orders: RestAndTakeawayOrders = {
         coperti: {
             primi: new Map<string, number>(),
             secondi: new Map<string, number>(),
-            contorni: new Map<string, number>(),
+            contorni: new Map<string, {abbondanti: number; normali: number}>(),
             pizze: new Map<string, number>()
         },
         takeAway: {
             primi: new Map<string, number>(),
             secondi: new Map<string, number>(),
-            contorni: new Map<string, number>(),
+            contorni: new Map<string, {abbondanti: number; normali: number}>(),
             pizze: new Map<string, number>()
         }
     }
@@ -216,16 +213,62 @@ export async function setupOrders(): Promise<RestAndTakeawayOrders>{
         const data = el.data();
         data?.primi.forEach((primo: string) => orders.takeAway.primi.get(primo) ? orders.takeAway.primi.set(primo, (orders.takeAway.primi.get(primo) as number + 1)) : orders.takeAway.primi.set(primo, 1));
         data?.secondi.forEach((secondo: string) => orders.takeAway.secondi.get(secondo) ? orders.takeAway.secondi.set(secondo, (orders.takeAway.secondi.get(secondo) as number + 1)) : orders.takeAway.secondi.set(secondo, 1));
-        data?.contorni.forEach((contorno: string) => orders.takeAway.contorni.get(contorno) ? orders.takeAway.contorni.set(contorno, (orders.takeAway.contorni.get(contorno) as number + 1)) : orders.takeAway.contorni.set(contorno, 1));
+        data?.contorni.forEach((contorno: string) => { 
+            if(!orders.takeAway.contorni.get(contorno))
+                orders.takeAway.contorni.set(contorno, data?.abbondante ? {abbondanti: 1, normali: 0} : {abbondanti: 0, normali: 1});
+            else{
+                const currentAbb = (orders.takeAway.contorni.get(contorno) as {abbondanti: number; normali: number}).abbondanti;
+                const currentNorm = (orders.takeAway.contorni.get(contorno) as {abbondanti: number; normali: number}).normali;
+                if(data?.abbondante)
+                    orders.takeAway.contorni.set(contorno, {abbondanti: currentAbb + 1, normali: currentNorm});
+                else
+                    orders.takeAway.contorni.set(contorno, {abbondanti: currentAbb, normali: currentNorm + 1});
+            }
+        });
         data?.pizze.forEach((pizza: string) => orders.takeAway.pizze.get(pizza) ? orders.takeAway.pizze.set(pizza, (orders.takeAway.pizze.get(pizza) as number + 1)) : orders.takeAway.pizze.set(pizza, 1));
     })
     todayOrders.docs.filter(doc => !doc.data()?.takeAway).forEach(el => {
         const data = el.data();
         data?.primi.forEach((primo: string) => orders.coperti.primi.get(primo) ? orders.coperti.primi.set(primo, (orders.coperti.primi.get(primo) as number + 1)) : orders.coperti.primi.set(primo, 1));
         data?.secondi.forEach((secondo: string) => orders.coperti.secondi.get(secondo) ? orders.coperti.secondi.set(secondo, (orders.coperti.secondi.get(secondo) as number + 1)) : orders.coperti.secondi.set(secondo, 1));
-        data?.contorni.forEach((contorno: string) => orders.coperti.contorni.get(contorno) ? orders.coperti.contorni.set(contorno, (orders.coperti.contorni.get(contorno) as number + 1)) : orders.coperti.contorni.set(contorno, 1));
+        data?.contorni.forEach((contorno: string) => { 
+            if(!orders.coperti.contorni.get(contorno))
+                orders.coperti.contorni.set(contorno, data?.abbondante ? {abbondanti: 1, normali: 0} : {abbondanti: 0, normali: 1});
+            else{
+                const currentAbb = (orders.coperti.contorni.get(contorno) as {abbondanti: number; normali: number}).abbondanti;
+                const currentNorm = (orders.coperti.contorni.get(contorno) as {abbondanti: number; normali: number}).normali;
+                if(data?.abbondante)
+                    orders.coperti.contorni.set(contorno, {abbondanti: currentAbb + 1, normali: currentNorm});
+                else
+                    orders.coperti.contorni.set(contorno, {abbondanti: currentAbb, normali: currentNorm + 1});
+            }
+        });
         data?.pizze.forEach((pizza: string) => orders.coperti.pizze.get(pizza) ? orders.coperti.pizze.set(pizza, (orders.coperti.pizze.get(pizza) as number + 1)) : orders.coperti.pizze.set(pizza, 1));
     })
-    console.log(orders);
     return orders;
+}
+
+function createOrdersString(orders: RestAndTakeawayOrders){
+    let ordersString = '';
+    Object.keys(orders).forEach(place => {
+        ordersString += '<h2>' + place.charAt(0).toUpperCase() + place.slice(1) + '</h2>';
+        Object.keys(orders[place as 'coperti' | 'takeAway']).forEach(dish => {
+            ordersString += '<h3>' + dish.charAt(0).toUpperCase() + dish.slice(1) + '</h3>'
+            const currDishType = orders[place as 'coperti' | 'takeAway'][dish as ('primi' | 'secondi' | 'contorni' | 'pizze')];
+            if(dish !== 'contorni'){
+                currDishType.forEach((value, key: string) => {
+                    ordersString += value + 'x ' + key.charAt(0).toUpperCase() + key.slice(1) + '\n';
+                })
+            }else{
+                currDishType.forEach((value, key: string) => {
+                    const contorni = value as {abbondanti: number; normali: number};
+                    if(contorni.normali > 0)
+                        ordersString += contorni.normali + 'x ' + key.charAt(0).toUpperCase() + key.slice(1) + '\n';
+                    if(contorni.abbondanti > 0)
+                        ordersString += contorni.abbondanti + 'x ' + key.charAt(0).toUpperCase() + key.slice(1) + '(Abbondante)\n';
+                })
+            }
+        })
+    })
+    return ordersString;
 }

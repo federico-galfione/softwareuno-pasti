@@ -4,7 +4,8 @@ import { ModalController } from '@ionic/angular';
 import { selectionAnimation } from '@shared/animations';
 import { enterFromRightAnimation } from '@shared/animations/generic.animations';
 import { BasePageFormDirective } from '@shared/directives';
-import { DishesForm } from '@shared/models/Dishes';
+import { Dish } from '@shared/models';
+import { Dishes, DishesForm } from '@shared/models/Dishes';
 import { AppService, MediaService, ToastService } from '@shared/services';
 import { ordersValidator } from '@shared/validators/orders.validator';
 import { Observable } from 'rxjs';
@@ -62,7 +63,16 @@ export class EmployeePage extends BasePageFormDirective {
         return true;
     })).subscribe();
 
-
+    this.employeeSvc.getSavedOrder().subscribe((value: Dishes & {takeAway: boolean; abbondante: boolean}) => {
+      this.pageForm.patchValue({
+        primi: (this.pageForm.get('primi').value as Array<Dish>).map(x => ({name: x.name, selected: value.primi.includes(x.name)})),
+        secondi: (this.pageForm.get('secondi').value as Array<Dish>).map(x => ({name: x.name, selected: value.secondi.includes(x.name)})),
+        contorni: (this.pageForm.get('contorni').value as Array<Dish>).map(x => ({name: x.name, selected: value.contorni.includes(x.name)})),
+        pizze: (this.pageForm.get('pizze').value as Array<Dish>).map(x => ({name: x.name, selected: value.pizze.includes(x.name)})),
+        abbondante: value.abbondante,
+        takeAway: value.takeAway
+      })
+    })
 
     this.showAbbondante$ = this.pageForm.valueChanges.pipe(
       map(x => {

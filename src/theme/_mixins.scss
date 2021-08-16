@@ -116,6 +116,10 @@ $breakpoints: (
   -ms-#{$element}: $content;
 }
 
+@mixin remove-blur-safari() {
+  -webkit-transform: translate3d(0, 0, 0);
+}
+
 @mixin truncate($truncation-boundary) {
   max-width: $truncation-boundary;
   white-space: nowrap;

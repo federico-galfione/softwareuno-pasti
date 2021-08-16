@@ -20,7 +20,7 @@
   </div>
   <div class="recurrent-dishes" *ngIf="(dishesHints$ | async)?.length > 0">
     <h4>Piatti frequenti</h4>
-    <div *ngIf="(filteredHints$ | async).length > 0; else cardPlaceholder" [@listAnimation] (@listAnimation.done)="listAnimationDone$.next()" class="dishes">
+    <div *ngIf="(filteredHints$ | async).length > 0; else cardPlaceholder" [@listAnimation] (@listAnimation.start)="listAnimationDone$.next(false)" (@listAnimation.done)="listAnimationDone$.next(true)" class="dishes">
       <ion-card @itemsAnimation  class="card ion-activatable" (click)="addToTextarea(dish.name)" *ngFor="let dish of (filteredHints$ | async)">
         {{dish.name | firstCharUppercase}}          
       </ion-card>

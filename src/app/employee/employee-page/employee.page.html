@@ -41,12 +41,13 @@
                 title="Pizze"></app-dishes-list>
             </div> 
             <div class="options-container">
-              <ion-card [disabled]="!authSvc.currentUser.email || (isLoadingGuests$ | async)" class="big-card guests ion-activatable" (click)="showGuestModal()">
+              <ion-card class="big-card guests ion-activatable {{(!authSvc.currentUser.email || (isLoadingGuests$ | async)) ? 'disabled' : ''}}" (click)="showGuestModal()">
                 <div class="container">
                   <div class="text">Aggiungi<br>ospiti</div>
                   <canvas class="square" width="100" height="100"></canvas>
                 </div>
                 <div class="icon" guests-icon></div>
+                <ion-spinner *ngIf="(isLoadingGuests$ | async)" color="primary" name="crescent"></ion-spinner>
                 <ion-ripple-effect></ion-ripple-effect>
               </ion-card>
               <ion-card class="big-card takeaway ion-activatable" (click)="toggleTakeAway()">
@@ -60,7 +61,7 @@
               </ion-card>
             </div> 
             <div class="buttons-container">
-              <ion-button (click)="saveOrder()" [disabled]="pageForm.errors?.noElements" class="send-button">Invia</ion-button>
+              <ion-button (click)="saveOrder()" [disabled]="pageForm.errors?.noElements || (isOrdersEnded$ | async)" class="send-button">Invia</ion-button>
             </div>
           </ng-container>
         </app-default-page>

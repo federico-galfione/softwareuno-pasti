@@ -26,6 +26,7 @@ export class EmployeePage extends BasePageFormDirective {
   lastValidValue$: Observable<boolean>;
   validityChange$: Observable<boolean>;
   showAbbondante$: Observable<number>;
+  isOrdersEnded$: Observable<boolean>;
 
   constructor(public mediaSvc: MediaService, public authSvc: AuthService, private employeeSvc: EmployeeService, private appSvc: AppService, private toastSvc: ToastService, private modalCtrl: ModalController) { 
     super();
@@ -37,6 +38,7 @@ export class EmployeePage extends BasePageFormDirective {
       abbondante: new FormControl(true),
       takeAway: new FormControl(false)
     }, ordersValidator)
+    this.isOrdersEnded$ = this.appSvc.isOrdersEnded();
     this.todaysMenu$ = this.appSvc.getTodaysMenu().pipe(takeUntil(this.destroy$));
     this.lastValidValue$ = this.pageForm.statusChanges.pipe(takeUntil(this.destroy$), filter(x => (x === 'VALID')), map(_ => JSON.parse(JSON.stringify(this.pageForm.value))));
     this.validityChange$ = this.pageForm.statusChanges.pipe(takeUntil(this.destroy$), map(_ => this.pageForm.errors?.invalidOrder));
@@ -90,6 +92,7 @@ export class EmployeePage extends BasePageFormDirective {
   }
 
   showGuestModal(){
+    this.isLoadingGuests$.next(true);
     this.employeeSvc.getGuestKey().subscribe(async secretKey => {
       const modal = await this.modalCtrl.create({
         component: GuestModalComponent,
@@ -100,7 +103,11 @@ export class EmployeePage extends BasePageFormDirective {
           secretKey
         }
       });
+      this.isLoadingGuests$.next(false);
       await modal.present();
+    }, _ => {
+      this.isLoadingGuests$.next(false)
+      this.toastSvc.addErrorToast({message: 'Errore durante il recupero del link per gli ospiti'})
     })
   }
 

@@ -14,6 +14,10 @@ export class AppService {
 
   constructor(private firestore: AngularFirestore, private toastSvc: ToastService) { }
 
+  isOrdersEnded(){
+    return this.getOrdersTimer().pipe(map(time => time.hours === 0 && time.minutes === 0));
+  }
+
   async changeSettings(appSettings: AppSettings){
     try{
       await this.firestore.collection('app').doc<AppSettings>('settings').update(appSettings);

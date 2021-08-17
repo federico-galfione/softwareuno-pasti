@@ -6,7 +6,7 @@ import { Roles } from '../services/auth.service';
 })
 export class RoleIconPipe implements PipeTransform {
 
-  transform(value: Roles, ...args: unknown[]): string {
+  transform(value: Roles): string {
     switch (value) {
       case 'ADMIN':
         return 'shield-half-outline'

@@ -25,11 +25,7 @@
       }
       width: 100%;
       flex: 1;
-      img {
-        max-width: 120px;
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
-      }
+      --max-width-svg: 120px;
     }
     .right-corner {
       @include flex($position: relative, $justify-content: flex-end);

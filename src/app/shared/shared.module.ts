@@ -14,12 +14,40 @@ import { UnsavedChangesComponent } from './components/unsaved-changes/unsaved-ch
 import { BaseDirective } from './directives';
 import { BasePageFormDirective } from './directives/base-page-form/base-page-form.directive';
 import { FirstCharUppercasePipe } from './pipes/first-char-uppercase.pipe';
+import { RoleColorPipe } from './pipes/role-color.pipe';
 import { RoleIconPipe } from './pipes/role-icon.pipe';
 import { SvgIdPathPipe } from './pipes/svg-id-path.pipe';
+import { AddOutlineComponent, CheckComponent, GuestsComponent, LogoComponent, StainFiveComponent, StainFourComponent, StainOneComponent, StainThreeComponent, StainTwoComponent, TakeAwayComponent, WaitingMenuComponent, WaveComponent } from './svg';
+
 
 
 @NgModule({
-  declarations: [ExternalContainerComponent, DefaultPageComponent, RoleIconPipe, SvgIdPathPipe, RoleSegmentComponent, DishesListComponent, AddDishComponent, ModalDefaultContentComponent, FirstCharUppercasePipe, BaseDirective, BasePageFormDirective, UnsavedChangesComponent],
+  declarations: [
+    ExternalContainerComponent, 
+    DefaultPageComponent, 
+    RoleIconPipe, 
+    SvgIdPathPipe, 
+    RoleSegmentComponent, 
+    DishesListComponent, 
+    AddDishComponent, 
+    ModalDefaultContentComponent, 
+    FirstCharUppercasePipe, 
+    BaseDirective, 
+    BasePageFormDirective, 
+    UnsavedChangesComponent, 
+    LogoComponent, 
+    StainOneComponent, 
+    StainTwoComponent, 
+    StainThreeComponent, 
+    GuestsComponent, 
+    TakeAwayComponent, 
+    WaitingMenuComponent,
+    AddOutlineComponent, 
+    CheckComponent, 
+    StainFourComponent, 
+    StainFiveComponent, 
+    WaveComponent, RoleColorPipe
+  ],
   imports: [
     CommonModule,
     AngularFireAuthModule,
@@ -27,6 +55,28 @@ import { SvgIdPathPipe } from './pipes/svg-id-path.pipe';
     IonicModule,
     FormsModule
   ],
-  exports: [ExternalContainerComponent, RoleIconPipe, DefaultPageComponent, SvgIdPathPipe, RoleSegmentComponent, DishesListComponent, ModalDefaultContentComponent, BaseDirective]
+  exports: [
+    ExternalContainerComponent, 
+    RoleIconPipe, 
+    RoleColorPipe,
+    DefaultPageComponent, 
+    SvgIdPathPipe, 
+    RoleSegmentComponent, 
+    DishesListComponent, 
+    ModalDefaultContentComponent, 
+    BaseDirective, 
+    LogoComponent, 
+    StainOneComponent, 
+    StainTwoComponent, 
+    StainThreeComponent, 
+    GuestsComponent, 
+    TakeAwayComponent,
+    WaitingMenuComponent,
+    AddOutlineComponent, 
+    CheckComponent,
+    StainFourComponent, 
+    StainFiveComponent, 
+    WaveComponent
+  ]
 })
 export class SharedModule { }

@@ -11,8 +11,6 @@ ion-content {
       .shape {
         @include flex($position: relative, $justify-content: flex-end);
         width: 50%;
-        top: -2px;
-        right: -2px;
         @include respond-to("tablet") {
           width: 20%;
         }
@@ -36,8 +34,11 @@ ion-content {
           padding-right: var(--space-4);
           width: 30%;
         }
-        img {
+        div[logo-icon] {
           width: 100%;
+          @include respond-to("tablet") {
+            width: 80%;
+          }
         }
       }
       .text {
@@ -90,7 +91,7 @@ ion-content {
         @include flex($align-items: flex-end, $justify-content: left);
         width: 50%;
         @include respond-to("tablet") {
-          img {
+          div[stain-two-icon] {
             width: 40%;
           }
         }

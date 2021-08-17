@@ -38,7 +38,6 @@ const autocomplete = (time, selector) => (source$) =>
   ]
 })
 export class AdminPage implements AfterViewInit {
-  adminColors: {primary?: string, tint?: string} = {};
   users$: Observable<User[]>;
   filteredUsers$: Observable<User[]>;
   filteredUsers: User[];
@@ -51,8 +50,6 @@ export class AdminPage implements AfterViewInit {
   trackByEmail = (index: number, item: User) => item.email;
 
   constructor(public authSvc: AuthService, private router: Router, public mediaSvc: MediaService, private modalCtrl: ModalController) { 
-    this.adminColors.primary = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-tertiary');
-    this.adminColors.tint = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-tertiary-tint');
     this.users$ = this.authSvc.getUsers();
 
     this.filteredUsers$ = combineLatest([this.users$, this.filterForm.valueChanges]).pipe(map(([users, form]) => {

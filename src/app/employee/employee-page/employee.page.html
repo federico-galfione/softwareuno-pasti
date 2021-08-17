@@ -3,12 +3,11 @@
         <app-default-page [removeMargins]="mediaSvc.isSmartphone" sectionTitle="Fine ordinazioni" title="Menù" subtitle="Scegli cosa mangiare!">
           <ng-container *ngIf="todaysMenu === null">
             <div class="no-menu-container">
-              <div class="menu-img-container">
-                <img src="../../../assets/svg/waiting-menu.svg">
+              <div waiting-menu-icon class="menu-img-container">
               </div>
               <div class="message">
-                <h3>Menù non disponibile</h3>
-                <div>Il menù di oggi non è ancora disponibile. Una volta che il ristoratore avrà completato la compilazione sarà possibile eseguire l'ordinazione. Nel caso non sia disponibile nonostante la fine delle ordinazioni vicina, contattare il ristoratore.</div>
+                <h3 class="title">Menù non disponibile</h3>
+                <div class="text">Il menù di oggi non è ancora disponibile. Una volta che il ristoratore avrà completato la compilazione sarà possibile eseguire l'ordinazione. Nel caso non sia disponibile nonostante la fine delle ordinazioni vicina, contattare il ristoratore.</div>
               </div>
             </div>
           </ng-container> 
@@ -43,27 +42,21 @@
             </div> 
             <div class="options-container">
               <ion-card class="big-card guests ion-activatable" (click)="showGuestModal()">
-                Aggiungi<br>ospiti
-                <img src="../../../assets/svg/guests.svg">
+                <div class="container">
+                  <div class="text">Aggiungi<br>ospiti</div>
+                  <canvas class="square" width="100" height="100"></canvas>
+                </div>
+                <div class="icon" guests-icon></div>
                 <ion-ripple-effect></ion-ripple-effect>
               </ion-card>
               <ion-card class="big-card takeaway ion-activatable" (click)="toggleTakeAway()">
-                Da<br>asporto
-                <img src="../../../assets/svg/take-away.svg">
+                <div class="container">
+                  <div class="text">Da<br>asporto</div>
+                  <canvas class="square" width="100" height="100"></canvas>
+                </div>
+                <div class="icon" take-away-icon></div>
                 <ion-ripple-effect></ion-ripple-effect>
-                <svg *ngIf="pageForm.get('takeAway')?.value" @selectionAnimation class="selection-tick" viewBox="0 0 60 60">
-                  <defs>
-                    <linearGradient id="selection-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
-                      <stop offset="0" stop-color="#f7ad45"/>
-                      <stop offset="0.415" stop-color="#f7ae47"/>
-                      <stop offset="1" stop-color="#f6c074"/>
-                    </linearGradient>
-                  </defs>
-                  <g id="select" transform="translate(-101.523 -354.903)">
-                    <path id="left-corner-image" d="M-442.477-245.1c3.025-11.065,11.159-30.548,31.5-35.159,17.308-3.924,25.065-15.9,28.5-24.84v60Z" transform="translate(544 660)" fill="url(#selection-gradient)"/>
-                    <path id="checkmark-outline" d="M114.951,128l-13.266,15.161L96,137.476" transform="translate(34.572 259.741)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
-                  </g>
-                </svg>
+                <div check-icon *ngIf="pageForm.get('takeAway')?.value" @selectionAnimation class="selection-tick"></div>
               </ion-card>
             </div> 
             <div class="buttons-container">

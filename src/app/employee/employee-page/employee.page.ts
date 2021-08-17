@@ -6,9 +6,9 @@ import { enterFromRightAnimation } from '@shared/animations/generic.animations';
 import { BasePageFormDirective } from '@shared/directives';
 import { Dish } from '@shared/models';
 import { Dishes, DishesForm } from '@shared/models/Dishes';
-import { AppService, MediaService, ToastService } from '@shared/services';
+import { AppService, AuthService, MediaService, ToastService } from '@shared/services';
 import { ordersValidator } from '@shared/validators/orders.validator';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { EmployeeService } from '../employee.service';
 import { GuestModalComponent } from './components/guest-modal/guest-modal.component';
@@ -20,14 +20,14 @@ import { GuestModalComponent } from './components/guest-modal/guest-modal.compon
   animations: [selectionAnimation, enterFromRightAnimation]
 })
 export class EmployeePage extends BasePageFormDirective {
-
+  isLoadingGuests$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   todaysMenu$: Observable<DishesForm>;
   todaysMenu: DishesForm = undefined;
   lastValidValue$: Observable<boolean>;
   validityChange$: Observable<boolean>;
   showAbbondante$: Observable<number>;
 
-  constructor(public mediaSvc: MediaService, private employeeSvc: EmployeeService, private appSvc: AppService, private toastSvc: ToastService, private modalCtrl: ModalController) { 
+  constructor(public mediaSvc: MediaService, public authSvc: AuthService, private employeeSvc: EmployeeService, private appSvc: AppService, private toastSvc: ToastService, private modalCtrl: ModalController) { 
     super();
     this.pageForm = new FormGroup({
       primi: new FormControl([]),

@@ -41,7 +41,7 @@
                 title="Pizze"></app-dishes-list>
             </div> 
             <div class="options-container">
-              <ion-card class="big-card guests ion-activatable" (click)="showGuestModal()">
+              <ion-card [disabled]="!authSvc.currentUser.email || (isLoadingGuests$ | async)" class="big-card guests ion-activatable" (click)="showGuestModal()">
                 <div class="container">
                   <div class="text">Aggiungi<br>ospiti</div>
                   <canvas class="square" width="100" height="100"></canvas>

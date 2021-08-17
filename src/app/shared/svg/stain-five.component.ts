@@ -43,7 +43,6 @@ export class StainFiveComponent implements OnChanges, OnInit{
   }
 
   ngOnChanges(changes: SimpleChanges){
-    console.log('CHANGES');
     if(changes.type){
       this.color$.next(getComputedStyle(document.documentElement).getPropertyValue(`--ion-color-${this.type}-tint`).trim())
     }

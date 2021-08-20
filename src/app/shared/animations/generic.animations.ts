@@ -15,3 +15,19 @@ export const enterFromRightAnimation = trigger('enterFromRightAnimation', [
         }))
     ]),
 ])
+
+export const enterFromTopAnimation = trigger('enterFromTopAnimation', [
+    transition(':enter', [
+        style({transform: 'translateY(-100%)'}),
+        animate('0.2s ease-out',
+            style({
+                transform: 'translateX(0)'
+            }))
+    ]),
+    transition(':leave', [
+        animate('0.2s ease-in',
+        style({
+            transform: 'translateY(-100%)'
+        }))
+    ]),
+])

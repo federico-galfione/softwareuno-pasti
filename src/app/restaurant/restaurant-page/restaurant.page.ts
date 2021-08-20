@@ -111,7 +111,7 @@ export class RestaurantPage extends BasePageFormDirective {
         this.restaurantSvc.addTodayMenu({
           date: new Date(),
           dishes: this.cleanMenuData
-        });
+        }).subscribe();
       }
     }catch(e){}
   }

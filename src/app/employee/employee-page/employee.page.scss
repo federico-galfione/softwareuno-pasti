@@ -74,9 +74,9 @@ ion-content {
           opacity: 0.4;
         }
       }
-      ion-spinner {
-        transform: scale(2);
+      div[loading-icon] {
         position: absolute;
+        padding: calc(var(--space-3) + var(--space-1));
         top: 0;
         bottom: 0;
         left: 0;

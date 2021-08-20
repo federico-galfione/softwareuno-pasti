@@ -19,12 +19,8 @@ export class LoginPage {
   }
 
   async login(){
-    try{
-      const user = await this.authSvc.login(this.loginForm.get('email').value, this.loginForm.get('password').value);
-      this.router.navigate([user.role.toLowerCase()]);
-    }catch(e){
-      console.log(e);
-    }
+      this.authSvc.login(this.loginForm.get('email').value, this.loginForm.get('password').value)
+        .subscribe(user => this.router.navigate([user.role.toLowerCase()]));
   }
 
   ionViewDidEnter(){

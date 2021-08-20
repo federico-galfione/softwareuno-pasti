@@ -1,21 +1,34 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireFunctions } from '@angular/fire/functions';
+import { BaseDirective } from '@shared/directives';
 import { DishesForm } from '@shared/models/Dishes';
-import { AuthService, ToastService } from '@shared/services';
-import { BehaviorSubject } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { AuthService, LoadingService, ToastService } from '@shared/services';
+import { from } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+
+enum EmployeeLoadingNames{
+  GUESTKEY = 'getGuestKey',
+  SAVEORDER = 'saveOrder'
+}
 
 @Injectable({
   providedIn: 'root'
 })
-export class EmployeeService {
-  public isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  constructor(private authSvc: AuthService, private toastSvc: ToastService, private firestore: AngularFirestore, private fns: AngularFireFunctions) { }
+export class EmployeeService extends BaseDirective {
+  employeeLoadings = EmployeeLoadingNames;
+  constructor(private authSvc: AuthService, private toastSvc: ToastService, private firestore: AngularFirestore, private fns: AngularFireFunctions, private loadingSvc: LoadingService) { 
+    super();
+  }
 
   getGuestKey(){
     const callable = this.fns.httpsCallable('getSecretLink');
-    return callable({}).pipe(take(1), map(x => x?.secretKey as string));
+    return this.loadingSvc.startLoading(
+      this, 
+      this.employeeLoadings.GUESTKEY, 
+      callable({}).pipe(map(x => x?.secretKey as string)), 
+      {message: 'Sto recuperando il link ospiti'}
+    )
   }
 
   getSavedOrder(){
@@ -28,28 +41,28 @@ export class EmployeeService {
 
   }
 
-  async saveOrder(order: DishesForm & {takeAway: boolean; abbondante: boolean}){
-    try{
-      this.isLoading$.next(true);
+  saveOrder(order: DishesForm & {takeAway: boolean; abbondante: boolean}){
       const today = new Date();
-      await this.firestore.collection('menus')
-        .doc(`${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`)
-        .collection('orders')
-        .doc(this.authSvc.currentUser.uid)
-        .set({
-          ...order,
-          primi: order.primi.filter(x => x.selected).map(x => x.name),
-          secondi: order.secondi.filter(x => x.selected).map(x => x.name),
-          contorni: order.contorni.filter(x => x.selected).map(x => x.name),
-          pizze: order.pizze.filter(x => x.selected).map(x => x.name)
-        })
-      this.isLoading$.next(false);
-      this.toastSvc.addSuccessToast({header: 'Ordine inviato', message: 'L\'ordine è stato inviato con successo! Puoi modificarlo fino allo scadere del tempo.'})
-    }catch(e){
-      console.error(e)
-      this.isLoading$.next(false);
-      this.toastSvc.addErrorToast({message: 'Errore durante il salvataggio dell\'ordine'});
-    }
-    
+      return this.loadingSvc.startLoading(
+        this,
+        this.employeeLoadings.SAVEORDER,
+        from(
+          this.firestore.collection('menus')
+          .doc(`${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`)
+          .collection('orders')
+          .doc(this.authSvc.currentUser.uid)
+          .set({
+            ...order,
+            primi: order.primi.filter(x => x.selected).map(x => x.name),
+            secondi: order.secondi.filter(x => x.selected).map(x => x.name),
+            contorni: order.contorni.filter(x => x.selected).map(x => x.name),
+            pizze: order.pizze.filter(x => x.selected).map(x => x.name)
+          })
+        ),
+        {message: 'Sto inviando l\'ordine'}
+      ).pipe(tap(
+        _ => this.toastSvc.addSuccessToast({header: 'Ordine inviato', message: 'L\'ordine è stato inviato con successo! Puoi modificarlo fino allo scadere del tempo.'}),
+        _ => this.toastSvc.addErrorToast({message: 'Errore durante il salvataggio dell\'ordine'})
+      ))
   }
 }

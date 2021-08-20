@@ -8,16 +8,16 @@ import { AddDishComponent } from './components/add-dish/add-dish.component';
 import { DefaultPageComponent } from './components/default-page/default-page.component';
 import { DishesListComponent } from './components/dishes-list/dishes-list.component';
 import { ExternalContainerComponent } from './components/external-container/external-container.component';
+import { LoadingToastComponent } from './components/loading-toast/loading-toast.component';
 import { ModalDefaultContentComponent } from './components/modal-default-content/modal-default-content.component';
 import { RoleSegmentComponent } from './components/role-segment/role-segment.component';
 import { UnsavedChangesComponent } from './components/unsaved-changes/unsaved-changes.component';
-import { BaseDirective } from './directives';
-import { BasePageFormDirective } from './directives/base-page-form/base-page-form.directive';
+import { BaseDirective, BasePageFormDirective, LoadingDirective } from './directives';
 import { FirstCharUppercasePipe } from './pipes/first-char-uppercase.pipe';
 import { RoleColorPipe } from './pipes/role-color.pipe';
 import { RoleIconPipe } from './pipes/role-icon.pipe';
 import { SvgIdPathPipe } from './pipes/svg-id-path.pipe';
-import { AddOutlineComponent, CheckComponent, GuestsComponent, LogoComponent, StainFiveComponent, StainFourComponent, StainOneComponent, StainThreeComponent, StainTwoComponent, TakeAwayComponent, WaitingMenuComponent, WaveComponent } from './svg';
+import { AddOutlineComponent, CheckComponent, GuestsComponent, LoadingComponent, LogoComponent, StainFiveComponent, StainFourComponent, StainOneComponent, StainThreeComponent, StainTwoComponent, TakeAwayComponent, WaitingMenuComponent, WaveComponent } from './svg';
 
 
 
@@ -46,7 +46,11 @@ import { AddOutlineComponent, CheckComponent, GuestsComponent, LogoComponent, St
     CheckComponent, 
     StainFourComponent, 
     StainFiveComponent, 
-    WaveComponent, RoleColorPipe
+    WaveComponent, 
+    RoleColorPipe, 
+    LoadingToastComponent, 
+    LoadingComponent,
+    LoadingDirective
   ],
   imports: [
     CommonModule,
@@ -76,7 +80,9 @@ import { AddOutlineComponent, CheckComponent, GuestsComponent, LogoComponent, St
     CheckComponent,
     StainFourComponent, 
     StainFiveComponent, 
-    WaveComponent
+    WaveComponent,
+    LoadingComponent,
+    LoadingDirective
   ]
 })
 export class SharedModule { }

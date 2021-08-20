@@ -68,11 +68,8 @@ export class AdminPage implements AfterViewInit {
   }
 
 
-  async logout(){
-    try{
-      await this.authSvc.logout();
-      this.router.navigate(['']);
-    }catch(e){}
+  logout(){
+    this.authSvc.logout().subscribe(_ => this.router.navigate(['']));
   }
 
   ngAfterViewInit(){
@@ -101,7 +98,7 @@ export class AdminPage implements AfterViewInit {
     await modal.present();
     const { data } = await modal.onWillDismiss();
     if(data?.user){
-      this.authSvc.createUser(data.user);
+      this.authSvc.createUser(data.user).subscribe();
     }
   }
 
@@ -119,7 +116,7 @@ export class AdminPage implements AfterViewInit {
     await modal.present();
     const { data } = await modal.onWillDismiss();
     if(data?.delete){
-      this.authSvc.deleteUser(this.selectedUser.email);
+      this.authSvc.deleteUser(this.selectedUser.email).subscribe();
     }
   }
 
@@ -137,7 +134,7 @@ export class AdminPage implements AfterViewInit {
     await modal.present();
     const { data } = await modal.onWillDismiss();
     if(data?.user){
-      this.authSvc.editUser(data.user);
+      this.authSvc.editUser(data.user).subscribe();
     }
   }
 

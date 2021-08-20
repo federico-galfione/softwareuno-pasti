@@ -1,37 +1,42 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Timestamp } from '@google-cloud/firestore';
+import { BaseDirective } from '@shared/directives';
 import { AppSettings } from '@shared/models';
 import { Dishes, DishesForm } from '@shared/models/Dishes';
-import { combineLatest, interval, Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { combineLatest, from, interval, Observable } from 'rxjs';
+import { filter, map, tap } from 'rxjs/operators';
+import { LoadingService } from './loading.service';
 import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AppService {
+export class AppService extends BaseDirective {
 
-  constructor(private firestore: AngularFirestore, private toastSvc: ToastService) { }
+  constructor(private firestore: AngularFirestore, private toastSvc: ToastService, private loadingSvc: LoadingService) { super() }
 
   isOrdersEnded(){
     return this.getOrdersTimer().pipe(map(time => time.hours === 0 && time.minutes === 0));
   }
 
-  async changeSettings(appSettings: AppSettings){
-    try{
-      await this.firestore.collection('app').doc<AppSettings>('settings').update(appSettings);
-      this.toastSvc.addSuccessToast({
+  changeSettings(appSettings: AppSettings){
+    return this.loadingSvc.startLoading(
+      this,
+      null,
+      from(this.firestore.collection('app').doc<AppSettings>('settings').update(appSettings)),
+      {
+        message: 'Sto modificando le impostazioni.'
+      }
+    ).pipe(tap(
+      _ => this.toastSvc.addSuccessToast({
         header: "Impostazioni salvate",
         message: "Le impostazioni sono state salvate con successo"
-      })
-      return true;
-    } catch(e){
-      this.toastSvc.addErrorToast({
+      }),
+      _ => this.toastSvc.addErrorToast({
         message: "Errore durante il salvataggio delle impostazioni"
       })
-    }
-    return false;
+    ))
   }
 
   getStopOrdersTime(){

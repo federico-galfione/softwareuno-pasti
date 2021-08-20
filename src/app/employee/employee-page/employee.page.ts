@@ -7,8 +7,9 @@ import { BasePageFormDirective } from '@shared/directives';
 import { Dish } from '@shared/models';
 import { Dishes, DishesForm } from '@shared/models/Dishes';
 import { AppService, AuthService, MediaService, ToastService } from '@shared/services';
+import { LoadingService } from '@shared/services/loading.service';
 import { ordersValidator } from '@shared/validators/orders.validator';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { EmployeeService } from '../employee.service';
 import { GuestModalComponent } from './components/guest-modal/guest-modal.component';
@@ -20,7 +21,7 @@ import { GuestModalComponent } from './components/guest-modal/guest-modal.compon
   animations: [selectionAnimation, enterFromRightAnimation]
 })
 export class EmployeePage extends BasePageFormDirective {
-  isLoadingGuests$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  isLoadingGuestLink$: Observable<boolean>;
   todaysMenu$: Observable<DishesForm>;
   todaysMenu: DishesForm = undefined;
   lastValidValue$: Observable<boolean>;
@@ -28,7 +29,15 @@ export class EmployeePage extends BasePageFormDirective {
   showAbbondante$: Observable<number>;
   isOrdersEnded$: Observable<boolean>;
 
-  constructor(public mediaSvc: MediaService, public authSvc: AuthService, private employeeSvc: EmployeeService, private appSvc: AppService, private toastSvc: ToastService, private modalCtrl: ModalController) { 
+  constructor(
+    public mediaSvc: MediaService, 
+    public authSvc: AuthService, 
+    public employeeSvc: EmployeeService, 
+    private appSvc: AppService, 
+    private toastSvc: ToastService, 
+    private modalCtrl: ModalController,
+    public loadingSvc: LoadingService
+  ) { 
     super();
     this.pageForm = new FormGroup({
       primi: new FormControl([]),
@@ -42,6 +51,7 @@ export class EmployeePage extends BasePageFormDirective {
     this.todaysMenu$ = this.appSvc.getTodaysMenu().pipe(takeUntil(this.destroy$));
     this.lastValidValue$ = this.pageForm.statusChanges.pipe(takeUntil(this.destroy$), filter(x => (x === 'VALID')), map(_ => JSON.parse(JSON.stringify(this.pageForm.value))));
     this.validityChange$ = this.pageForm.statusChanges.pipe(takeUntil(this.destroy$), map(_ => this.pageForm.errors?.invalidOrder));
+    this.isLoadingGuestLink$ = this.loadingSvc.getLoading(employeeSvc, employeeSvc.employeeLoadings.GUESTKEY);
     this.todaysMenu$.pipe(
       switchMap(x => {
         this.todaysMenu = x;
@@ -71,8 +81,8 @@ export class EmployeePage extends BasePageFormDirective {
         secondi: (this.pageForm.get('secondi').value as Array<Dish>).map(x => ({name: x.name, selected: value?.secondi.includes(x.name)})),
         contorni: (this.pageForm.get('contorni').value as Array<Dish>).map(x => ({name: x.name, selected: value?.contorni.includes(x.name)})),
         pizze: (this.pageForm.get('pizze').value as Array<Dish>).map(x => ({name: x.name, selected: value?.pizze.includes(x.name)})),
-        abbondante: value?.abbondante,
-        takeAway: value?.takeAway
+        abbondante: !!value?.abbondante,
+        takeAway: !!value?.takeAway
       })
     })
 
@@ -92,7 +102,6 @@ export class EmployeePage extends BasePageFormDirective {
   }
 
   showGuestModal(){
-    this.isLoadingGuests$.next(true);
     this.employeeSvc.getGuestKey().subscribe(async secretKey => {
       const modal = await this.modalCtrl.create({
         component: GuestModalComponent,
@@ -103,10 +112,8 @@ export class EmployeePage extends BasePageFormDirective {
           secretKey
         }
       });
-      this.isLoadingGuests$.next(false);
       await modal.present();
     }, _ => {
-      this.isLoadingGuests$.next(false)
       this.toastSvc.addErrorToast({message: 'Errore durante il recupero del link per gli ospiti'})
     })
   }
@@ -122,7 +129,7 @@ export class EmployeePage extends BasePageFormDirective {
   saveOrder(){
     let currentValue = this.pageForm.value;
     currentValue.abbondante = currentValue.abbondante && (currentValue.contorni.length === 1);
-    this.employeeSvc.saveOrder(currentValue);
+    this.employeeSvc.saveOrder(currentValue).subscribe();
   }
 
 }

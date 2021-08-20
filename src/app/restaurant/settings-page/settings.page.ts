@@ -37,20 +37,15 @@ export class SettingsPage extends BaseDirective {
     this.router.navigate(['']);
   }
 
-  async logout(){
-    try{
-      await this.authSvc.logout();
-      this.router.navigate(['']);
-    }catch(e){}
+  logout(){
+    this.authSvc.logout().subscribe(_ => this.router.navigate(['']));
   }
 
   async saveSettings(){
-    !(
-      await this.appSvc.changeSettings({ 
+    this.appSvc.changeSettings({ 
       ...this.settingsForm.value,
       stopOrdersTime: new Date(this.settingsForm.value.stopOrdersTime)
-     })
-    ) || this.cancel();
+     }).subscribe(_ => this.cancel());
   }  
 
 }

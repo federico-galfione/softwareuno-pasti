@@ -65,6 +65,16 @@ html {
     &::part(message) {
       font-size: 1.8rem;
     }
+    &.loading-toast {
+      &::part(container) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--ion-color-primary);
+        color: white;
+        vertical-align: middle;
+      }
+    }
   }
   ion-card {
     position: relative;

@@ -62,9 +62,9 @@ export class RecurrentDishesPage extends BasePageFormDirective {
   }
 
   async saveTemplate(){
-    !(
-       await this.restaurantSvc.setTemplate(this.dishType, this.pageForm.value)
-    ) || this.isDirty$.pipe(filter(x => !x), take(1)).subscribe(_ => this.cancel());
+    this.restaurantSvc.setTemplate(this.dishType, this.pageForm.value).subscribe(
+      _ => this.isDirty$.pipe(filter(x => !x), take(1)).subscribe(_ => this.cancel())
+    )
   }
 
   deleteSelectedDishes(){

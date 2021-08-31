@@ -11,13 +11,16 @@
     <ion-ripple-effect></ion-ripple-effect>
   </ion-card>
   <ng-container>
-    <ion-card class="card placeholder {{editMode ? '' : 'no-edit'}}" *ngIf="value.length === 0">
+    <ion-card class="card placeholder" *ngIf="value.length === 0 && editMode">
       Es.<br>
       Pasta alla carbonara
     </ion-card>
-    <ion-card class="card placeholder {{editMode ? '' : 'no-edit'}}" *ngIf="value.length === 0">
+    <ion-card class="card placeholder" *ngIf="value.length === 0 && editMode">
       Es.<br>
       Pasta alla carbonara
+    </ion-card>
+    <ion-card class="card placeholder" *ngIf="value.length === 0 && !editMode">
+      Non ci sono piatti
     </ion-card>
   </ng-container>
   <ion-card (click)="toggleDish(dish)" [ngClass]="{'card': true, 'dish': true, 'ion-activatable': this.selectable}" @itemsAnimation *ngFor="let dish of (dishes$ | async); trackBy: trackByName">

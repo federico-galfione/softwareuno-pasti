@@ -40,6 +40,7 @@ export class RestaurantPage extends BasePageFormDirective {
   pizzeUsualDishes$: Observable<UsualDishes>;
   defaultValue$: Observable<DishesForm>;
   todayMenu$: Observable<DishesForm>;
+  isOrdersEnded$: Observable<boolean>;
 
   get cleanMenuData(){
     return {
@@ -65,6 +66,7 @@ export class RestaurantPage extends BasePageFormDirective {
     this.pizzeUsualDishes$ = this.restaurantSvc.getTemplate('pizze');
 
     this.todayMenu$ = this.appSvc.getTodaysMenu();
+    this.isOrdersEnded$ = this.appSvc.isOrdersEnded();
 
     let editDefaultValue$ = combineLatest([this.primiUsualDishes$, this.secondiUsualDishes$, this.contorniUsualDishes$, this.pizzeUsualDishes$]).pipe(
       map(([primi, secondi, contorni, pizze]) => ({
@@ -74,8 +76,8 @@ export class RestaurantPage extends BasePageFormDirective {
         pizze: [...pizze.defaults, ...this.pageForm.get('pizze').value],
       })))
 
-    this.defaultValue$ = combineLatest([this.todayMenu$, editDefaultValue$]).pipe(
-      switchMap(([menu, value]) => menu ? this.todayMenu$ : editDefaultValue$),
+    this.defaultValue$ = combineLatest([this.isOrdersEnded$, this.todayMenu$, editDefaultValue$]).pipe(
+      switchMap(([timeExpired, menu, _]) => (timeExpired || menu) ? this.todayMenu$ : editDefaultValue$),
       takeUntil(this.destroy$)
     )
     this.pageDefaultFormValue$ = this.defaultValue$;
@@ -88,6 +90,10 @@ export class RestaurantPage extends BasePageFormDirective {
 
   goToSettings(){
     this.router.navigate(['restaurant', 'settings'])
+  }
+
+  goToOrders(){
+    this.router.navigate(['restaurant', 'orders'])
   }
 
   deleteSelectedDishes(){

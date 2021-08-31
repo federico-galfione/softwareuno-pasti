@@ -4,8 +4,8 @@ import { Timestamp } from '@google-cloud/firestore';
 import { BaseDirective } from '@shared/directives';
 import { AppSettings } from '@shared/models';
 import { Dishes, DishesForm } from '@shared/models/Dishes';
-import { combineLatest, from, interval, Observable } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import { from, interval, Observable } from 'rxjs';
+import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { LoadingService } from './loading.service';
 import { ToastService } from './toast.service';
 
@@ -44,23 +44,25 @@ export class AppService extends BaseDirective {
   }
 
   getOrdersTimer(){
-    return combineLatest([this.getStopOrdersTime(), interval(1000)]).pipe(
-      filter(([date, _]) => !!date), // Check if I already retrived a date from firebase
-      filter((_, index) => index === 0 || new Date().getSeconds() === 0), // Get only the first element and one everytime a minute start (0 seconds)
-      map(([date, _]) => {
-        let settedTime = new Date();
-        settedTime.setHours(date.getHours());
-        settedTime.setMinutes(date.getMinutes());
-        settedTime.setSeconds(0);
-        let currentTime = new Date();
-        if (currentTime > settedTime)
-          return { hours: 0, minutes: 0 };
-        let diff = Math.abs(settedTime.getTime() - currentTime.getTime());
-        const hours = Math.floor((diff % 86400000) / 3600000)
-        const minutes = Math.round(((diff % 86400000) % 3600000) / 60000);
-        return { hours, minutes }
-      })
-     )
+    return this.getStopOrdersTime().pipe(
+      switchMap(_ => interval(1000).pipe(
+        withLatestFrom(this.getStopOrdersTime()),
+        filter((_, index) => index === 0 || new Date().getSeconds() === 0), // Get only the first element and one everytime a minute start (0 seconds)
+        map(([_, date]) => {
+          let settedTime = new Date();
+          settedTime.setHours(date.getHours());
+          settedTime.setMinutes(date.getMinutes());
+          settedTime.setSeconds(0);
+          let currentTime = new Date();
+          if (currentTime > settedTime)
+            return { hours: 0, minutes: 0 };
+          let diff = Math.abs(settedTime.getTime() - currentTime.getTime());
+          const hours = Math.floor((diff % 86400000) / 3600000)
+          const minutes = Math.round(((diff % 86400000) % 3600000) / 60000);
+          return { hours, minutes }
+        })
+      ))
+    )
   }
 
   getTodaysMenu(): Observable<DishesForm>{
@@ -77,4 +79,6 @@ export class AppService extends BaseDirective {
   getAppSettings(){
     return this.firestore.collection('app').doc<AppSettings>('settings').valueChanges();
   }
+
+  private getHours
 }

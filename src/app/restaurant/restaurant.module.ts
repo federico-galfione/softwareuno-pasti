@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '../shared/shared.module';
+import { OrdersPage } from './orders-page/orders.page';
 import { InfoModalComponent } from './recurrent-dishes-page/components/info-modal/info-modal.component';
 import { RecurrentDishesPage } from './recurrent-dishes-page/recurrent-dishes.page';
 import { AddMenuWarnComponent } from './restaurant-page/components/add-menu-warn/add-menu-warn.component';
@@ -21,6 +22,6 @@ import { SettingsPage } from './settings-page/settings.page';
     SharedModule,
     RestaurantPageRoutingModule
   ],
-  declarations: [RestaurantPage, RecurrentDishesPage, SettingsPage, InfoModalComponent, AddMenuWarnComponent]
+  declarations: [RestaurantPage, RecurrentDishesPage, SettingsPage, InfoModalComponent, AddMenuWarnComponent, OrdersPage]
 })
 export class RestaurantPageModule {}

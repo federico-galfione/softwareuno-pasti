@@ -26,6 +26,7 @@ export class SettingsPage extends BaseDirective {
     super();
     this.appSettings$ = this.appSvc.getAppSettings();
     this.appSettings$.pipe(takeUntil(this.destroy$)).subscribe(settings => { 
+      console.log(settings.stopOrdersTime.toDate().toISOString());
       this.settingsForm.patchValue({
         ...settings,
         stopOrdersTime: settings.stopOrdersTime.toDate().toISOString()

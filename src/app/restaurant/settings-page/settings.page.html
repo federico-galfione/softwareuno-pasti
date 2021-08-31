@@ -6,7 +6,7 @@
           <ion-list lines="none">
             <ion-item>
               <ion-label>Cambia orario</ion-label>
-              <ion-datetime formControlName="stopOrdersTime" min="11:00" max="00:00" displayFormat="HH:mm" placeholder="Orario"></ion-datetime>
+              <ion-datetime formControlName="stopOrdersTime" min="11:00" max="23:59" displayFormat="HH:mm" placeholder="Orario"></ion-datetime>
             </ion-item>
           </ion-list>
           <div class="error-label" *ngIf="stopOrdersTime.invalid && (stopOrdersTime.dirty || stopOrdersTime.touched)">L'orario di fine ordinazioni è obbligatorio</div>

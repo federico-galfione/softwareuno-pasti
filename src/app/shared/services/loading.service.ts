@@ -73,7 +73,7 @@ export class LoadingService {
   private loadingAsObservable(loading: BehaviorSubject<boolean>){
     return loading.pipe(
       switchMap((loading) => 
-        iif(() => loading, of(loading).pipe(delay(500)), of(loading)
+        iif(() => loading, of(loading).pipe(delay(700)), of(loading)
       ))
     )
   }

@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BaseDirective } from '@shared/directives';
 import { AppSettings } from '@shared/models';
-import { AppService, AuthService, MediaService } from '@shared/services';
+import { AppService, MediaService } from '@shared/services';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -22,7 +22,7 @@ export class SettingsPage extends BaseDirective {
   get stopOrdersTime() { return this.settingsForm.get('stopOrdersTime'); }
   get disableSaveButton() { return this.settingsForm.invalid }
 
-  constructor(public mediaSvc: MediaService, private appSvc: AppService, private router: Router, private authSvc: AuthService) { 
+  constructor(public mediaSvc: MediaService, private appSvc: AppService, private router: Router) { 
     super();
     this.appSettings$ = this.appSvc.getAppSettings();
     this.appSettings$.pipe(takeUntil(this.destroy$)).subscribe(settings => { 
@@ -36,10 +36,6 @@ export class SettingsPage extends BaseDirective {
 
   cancel(){
     this.router.navigate(['']);
-  }
-
-  logout(){
-    this.authSvc.logout().subscribe(_ => this.router.navigate(['']));
   }
 
   async saveSettings(){

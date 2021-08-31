@@ -9,6 +9,7 @@ import { DefaultPageComponent } from './components/default-page/default-page.com
 import { DishesListComponent } from './components/dishes-list/dishes-list.component';
 import { ExternalContainerComponent } from './components/external-container/external-container.component';
 import { LoadingToastComponent } from './components/loading-toast/loading-toast.component';
+import { LogoutModalComponent } from './components/logout-modal/logout-modal.component';
 import { ModalDefaultContentComponent } from './components/modal-default-content/modal-default-content.component';
 import { RoleSegmentComponent } from './components/role-segment/role-segment.component';
 import { UnsavedChangesComponent } from './components/unsaved-changes/unsaved-changes.component';
@@ -50,7 +51,8 @@ import { AddOutlineComponent, CheckComponent, GuestsComponent, LoadingComponent,
     RoleColorPipe, 
     LoadingToastComponent, 
     LoadingComponent,
-    LoadingDirective
+    LoadingDirective,
+    LogoutModalComponent
   ],
   imports: [
     CommonModule,
@@ -82,7 +84,8 @@ import { AddOutlineComponent, CheckComponent, GuestsComponent, LoadingComponent,
     StainFiveComponent, 
     WaveComponent,
     LoadingComponent,
-    LoadingDirective
+    LoadingDirective,
+    LogoutModalComponent
   ]
 })
 export class SharedModule { }

@@ -63,10 +63,18 @@
         </div>
       </app-default-page>
   </app-external-container>
-  <ion-fab (click)="goToSettings()" vertical="bottom" horizontal="start" slot="fixed">
-    <ion-fab-button color="secondary" size="small">
-      <ion-icon name="settings-outline"></ion-icon>
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button size="small" color="secondary">
+      <ion-icon name="menu-outline"></ion-icon>
     </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="goToSettings()" color="light">
+        <ion-icon name="settings-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="logout()" color="light">
+        <ion-icon name="exit-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
   </ion-fab>
   <ion-fab *ngIf="
     primiList.selectedDishes.length || secondiList.selectedDishes.length || contorniList.selectedDishes.length || pizzeList.selectedDishes.length

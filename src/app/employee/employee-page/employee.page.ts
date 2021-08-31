@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from "@angular/router";
 import { ModalController } from '@ionic/angular';
 import { selectionAnimation } from '@shared/animations';
 import { enterFromRightAnimation } from '@shared/animations/generic.animations';
+import { LogoutModalComponent } from "@shared/components/logout-modal/logout-modal.component";
 import { BasePageFormDirective } from '@shared/directives';
 import { Dish, Dishes, DishesForm } from '@shared/models';
 import { AppService, AuthService, MediaService, ToastService } from '@shared/services';
@@ -35,7 +37,8 @@ export class EmployeePage extends BasePageFormDirective {
     private appSvc: AppService, 
     private toastSvc: ToastService, 
     private modalCtrl: ModalController,
-    public loadingSvc: LoadingService
+    public loadingSvc: LoadingService,
+    private router: Router
   ) { 
     super();
     this.pageForm = new FormGroup({
@@ -131,4 +134,16 @@ export class EmployeePage extends BasePageFormDirective {
     this.employeeSvc.saveOrder(currentValue).subscribe();
   }
 
+  async logout(){
+    const modal = await this.modalCtrl.create({
+      component: LogoutModalComponent,
+      cssClass: 'bottom',
+      swipeToClose: true,
+      mode: "ios"
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if(data.logout)
+      this.authSvc.logout().subscribe(_ => this.router.navigate(['']));
+  }
 }

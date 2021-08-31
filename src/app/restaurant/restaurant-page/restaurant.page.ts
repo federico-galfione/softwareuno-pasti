@@ -3,9 +3,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { enterFromRightAnimation } from '@shared/animations/generic.animations';
+import { LogoutModalComponent } from "@shared/components/logout-modal/logout-modal.component";
 import { BasePageFormDirective } from '@shared/directives';
 import { DishesForm, UsualDishes } from '@shared/models';
-import { AppService } from '@shared/services';
+import { AppService, AuthService } from '@shared/services';
 import { combineLatest, Observable } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { DishesListComponent } from 'src/app/shared/components/dishes-list/dishes-list.component';
@@ -51,7 +52,7 @@ export class RestaurantPage extends BasePageFormDirective {
   }
 
 
-  constructor(private router: Router, public mediaSvc: MediaService, private restaurantSvc: RestaurantService, private appSvc: AppService, private modalCtrl: ModalController) {
+  constructor(private router: Router, private authSvc: AuthService, public mediaSvc: MediaService, private restaurantSvc: RestaurantService, private appSvc: AppService, private modalCtrl: ModalController) {
     super();
     this.pageForm = new FormGroup({
       primi: new FormControl([]),
@@ -119,6 +120,19 @@ export class RestaurantPage extends BasePageFormDirective {
         }).subscribe();
       }
     }catch(e){}
+  }
+
+  async logout(){
+    const modal = await this.modalCtrl.create({
+      component: LogoutModalComponent,
+      cssClass: 'bottom',
+      swipeToClose: true,
+      mode: "ios"
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if(data.logout)
+      this.authSvc.logout().subscribe(_ => this.router.navigate(['']));
   }
 
 }

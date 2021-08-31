@@ -14,9 +14,4 @@
       --border-color: var(--ion-color-secondary);
     }
   }
-  ion-button {
-    @include ion-button-style("secondary");
-    margin-top: var(--space-4);
-    width: 100%;
-  }
 }

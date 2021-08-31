@@ -61,7 +61,7 @@
               </ion-card>
             </div> 
             <div class="buttons-container">
-              <ion-button (click)="saveOrder()" [disabled]="pageForm.errors?.noElements || (isOrdersEnded$ | async)" class="send-button">Invia</ion-button>
+              <ion-button mode="md" (click)="saveOrder()" [disabled]="pageForm.errors?.noElements || (isOrdersEnded$ | async)" class="send-button">Invia</ion-button>
             </div>
           </ng-container>
         </app-default-page>

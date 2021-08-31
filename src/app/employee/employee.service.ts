@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { BaseDirective } from '@shared/directives';
-import { DishesForm } from '@shared/models/Dishes';
+import { DishesForm } from '@shared/models';
 import { AuthService, LoadingService, ToastService } from '@shared/services';
 import { from } from 'rxjs';
 import { map, tap } from 'rxjs/operators';

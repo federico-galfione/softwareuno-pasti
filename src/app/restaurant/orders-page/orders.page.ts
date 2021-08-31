@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Order } from '@shared/models/Order';
+import { Router } from "@angular/router";
+import { RestAndTakeawayOrders } from "@shared/models";
 import { MediaService } from '@shared/services';
 import { RestaurantService } from '../restaurant.service';
 
@@ -10,13 +11,16 @@ import { RestaurantService } from '../restaurant.service';
 })
 export class OrdersPage {
 
-  orders: Order[];
+  orders: RestAndTakeawayOrders;
 
-  constructor(public mediaSvc: MediaService, private restaurantSvc: RestaurantService) { 
-    this.restaurantSvc.getOrders().subscribe(orders => { 
-      this.orders = orders 
-      console.log(this.orders)
+
+  constructor(public mediaSvc: MediaService, private restaurantSvc: RestaurantService, private router: Router) { 
+    this.restaurantSvc.getOrders().subscribe(orders => {
+      this.orders = orders
     })
   }
 
+  goToMenu(){
+    this.router.navigate(['restaurant'])
+  }
 }

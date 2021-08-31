@@ -1,7 +1,39 @@
 <ion-content>
     <app-external-container class="desktop" [multiplier]="40">
-        <app-default-page [secondaryPage]="true" [removeMargins]="mediaSvc.isSmartphone" color="secondary" sectionTitle="Fine ordinazioni"  title="Ordini" subtitle="Gli ordini di oggi">
-          
+        <app-default-page [secondaryPage]="true" [isEditPage]="false" [removeMargins]="mediaSvc.isSmartphone" color="secondary" sectionTitle="Fine ordinazioni"  title="Ordini" subtitle="Gli ordini di oggi">
+            <div class="orders-container">
+                <div class="places" *ngFor="let whereToEat of (orders | keyvalue)">
+                    <h3>{{whereToEat.key | titlecase}}</h3>
+                    <ng-container *ngFor="let entry of (orders[whereToEat.key] | keyvalue)">
+                        <div class="entry-container" *ngIf="(orders[whereToEat.key][entry.key] | keyvalue).length > 0">
+                            <div class="entry-name">{{entry.key | titlecase}}</div>
+                            <ion-list>
+                                <ng-container *ngFor="let dish of (orders[whereToEat.key][entry.key] | keyvalue)">
+                                    <ion-item *ngIf="entry.key !== 'contorni'; else contorni" lines="none" class="ion-no-padding">
+                                        <ion-label>{{dish.key | titlecase}}</ion-label>
+                                        <ion-note color="secondary" slot="start">x{{dish.value}}</ion-note>                             
+                                    </ion-item>
+                                    <ng-template #contorni>
+                                        <ion-item lines="none" class="ion-no-padding">
+                                            <ng-container *ngIf="dish.value['normali'] > 0">
+                                                <ion-note color="secondary" slot="start">x{{dish.value['normali']}}</ion-note>  
+                                                <ion-label>{{dish.key | titlecase}}</ion-label>  
+                                            </ng-container>
+                                            <ng-container *ngIf="dish.value['abbondanti'] > 0">
+                                                <ion-note color="secondary" slot="start">x{{dish.value['abbondanti']}}</ion-note>  
+                                                <ion-label>{{dish.key | titlecase}} (Abbondante)</ion-label>  
+                                            </ng-container>
+                                        </ion-item>
+                                    </ng-template>
+                                </ng-container>
+                            </ion-list>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="buttons-container">
+                <ion-button class="send-button" mode="md" (click)="goToMenu()"><ion-icon slot="start" name="arrow-back-outline"></ion-icon> Menù</ion-button>
+            </div>
         </app-default-page>
     </app-external-container>
   </ion-content>

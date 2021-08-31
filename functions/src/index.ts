@@ -50,14 +50,14 @@ export const checkSecretLink = functions.https.onRequest(async (req, res) => {
         await admin.firestore().collection("app").doc("hiddenSettings").get()
       ).data()?.guestAccessString;
       console.log(
-          Buffer.from(currentKey, "base64").toString("binary"),
-          data.key
+        Buffer.from(currentKey, "base64").toString("binary"),
+        data.key
       );
       if (data.key === Buffer.from(currentKey, "base64").toString("binary")) {
-        res.status(200).send({data: {authenticated: true}});
+        res.status(200).send({ data: { authenticated: true } });
         return;
       }
-      res.status(403).send({data: {authenticated: false}});
+      res.status(403).send({ data: { authenticated: false } });
       return;
     } catch (e) {
       res.status(403).send(e);
@@ -67,84 +67,84 @@ export const checkSecretLink = functions.https.onRequest(async (req, res) => {
 });
 
 export const createSecretLink = functions.pubsub
-    .schedule("every day 00:00")
-    .timeZone("Europe/Rome")
-    .onRun(async () => {
-      await admin
-          .firestore()
-          .collection("app")
-          .doc("hiddenSettings")
-          .set(
-              {
-                guestAccessString: Buffer.from(
-                    Math.random()
-                        .toString(36)
-                        .replace(/[^a-z]+/g, "")
-                        .substr(0, 5)
-                ).toString("base64"),
-              },
-              {merge: true}
-          );
-    });
+  .schedule("every day 00:00")
+  .timeZone("Europe/Rome")
+  .onRun(async () => {
+    await admin
+      .firestore()
+      .collection("app")
+      .doc("hiddenSettings")
+      .set(
+        {
+          guestAccessString: Buffer.from(
+            Math.random()
+              .toString(36)
+              .replace(/[^a-z]+/g, "")
+              .substr(0, 5)
+          ).toString("base64"),
+        },
+        { merge: true }
+      );
+  });
 
 export const deleteGuests = functions.pubsub
-    .schedule("every day 00:00")
-    .timeZone("Europe/Rome")
-    .onRun(async () => {
-      const listUsers = await admin.auth().listUsers();
-      listUsers.users
-          .filter((user) => !user.email)
-          .forEach((user) => {
-            admin
-                .auth()
-                .deleteUser(user.uid)
-                .then(() => console.log("User deleted"))
-                .catch(() => console.log("Error"));
-          });
-    });
+  .schedule("every day 00:00")
+  .timeZone("Europe/Rome")
+  .onRun(async () => {
+    const listUsers = await admin.auth().listUsers();
+    listUsers.users
+      .filter((user) => !user.email)
+      .forEach((user) => {
+        admin
+          .auth()
+          .deleteUser(user.uid)
+          .then(() => console.log("User deleted"))
+          .catch(() => console.log("Error"));
+      });
+  });
 
 export const sendEmail = functions.pubsub
-    .schedule("every 1 minutes from 11:00 to 14:00")
-    .timeZone("Europe/Rome")
-    .onRun(async () => {
-      const currentTime = new Date();
-      const stopOrdersTime = (
+  .schedule("every 1 minutes from 11:00 to 14:00")
+  .timeZone("Europe/Rome")
+  .onRun(async () => {
+    const currentTime = new Date();
+    const stopOrdersTime = (
       await admin.firestore().collection("app").doc("settings").get()
     )
-          .data()
+      .data()
       ?.stopOrdersTime.toDate() as Date;
 
-      if (
-        currentTime.getHours() === stopOrdersTime.getHours() &&
+    if (
+      currentTime.getHours() === stopOrdersTime.getHours() &&
       currentTime.getMinutes() === stopOrdersTime.getMinutes()
-      ) {
-        const allRestaurantAccounts = await admin
-            .firestore()
-            .collection("users")
-            .where("role", "==", "RESTAURANT")
-            .get();
-        const orders = await setupOrders();
-        const ordersString = createOrdersString(orders);
-        allRestaurantAccounts.forEach((doc) => {
-          const mail = {
-            from: "pasti.softwareuno@gmail.com",
-            to: doc.data()?.email,
-            subject: `Ordini del giorno (${currentTime.getDate()}/${
-              currentTime.getMonth() + 1
-            }/${currentTime.getFullYear()})`,
-            html: `${ordersString}`,
-          };
-          transporter
-              .sendMail(mail)
-              .then(() => {
-                console.log("MAIL SENT TO " + doc.data()?.email);
-              })
-              .catch(() => {
-                console.log("ERROR WHILE SENDING THE EMAIL!");
-              });
-        });
-      }
-    });
+    ) {
+      const allRestaurantAccounts = await admin
+        .firestore()
+        .collection("users")
+        .where("role", "==", "RESTAURANT")
+        .get();
+      const orders = await setupOrders();
+      const ordersString = createOrdersString(orders);
+      allRestaurantAccounts.forEach((doc) => {
+        const mail = {
+          from: "pasti.softwareuno@gmail.com",
+          to: doc.data()?.email,
+          subject: `Ordini del giorno (${currentTime.getDate()}/${
+            currentTime.getMonth() + 1
+          }/${currentTime.getFullYear()})`,
+          html: `${ordersString}`,
+        };
+        transporter
+          .sendMail(mail)
+          .then(() => {
+            console.log("MAIL SENT TO " + doc.data()?.email);
+          })
+          .catch(() => {
+            console.log("ERROR WHILE SENDING THE EMAIL!");
+          });
+      });
+    }
+  });
 
 export const createUser = functions.https.onRequest(async (req, res) => {
   return cors()(req, res, async () => {
@@ -161,7 +161,7 @@ export const createUser = functions.https.onRequest(async (req, res) => {
         lastName: data.lastName,
         role: data.role,
       });
-      res.status(200).send({data: newUser});
+      res.status(200).send({ data: newUser });
       return;
     } catch (e) {
       console.log(e);
@@ -182,7 +182,7 @@ export const editUser = functions.https.onRequest(async (req, res) => {
         lastName: data.lastName,
         role: data.role,
       });
-      res.status(200).send({data: userToEdit});
+      res.status(200).send({ data: userToEdit });
       return;
     } catch (e) {
       res.status(403).send(e);
@@ -199,11 +199,11 @@ export const deleteUser = functions.https.onRequest(async (req, res) => {
       const userToDelete = await admin.auth().getUserByEmail(data.email);
       await admin.auth().deleteUser(userToDelete.uid);
       await admin
-          .firestore()
-          .collection("users")
-          .doc(userToDelete.uid)
-          .delete();
-      res.status(200).send({data: userToDelete});
+        .firestore()
+        .collection("users")
+        .doc(userToDelete.uid)
+        .delete();
+      res.status(200).send({ data: userToDelete });
       return;
     } catch (e) {
       console.log(e);
@@ -231,7 +231,7 @@ export const getTodaysOrders = functions.https.onRequest(async (req, res) => {
           pizze: Object.fromEntries(orders.takeAway.pizze),
         },
       };
-      res.status(200).send({data: ordersJSON});
+      res.status(200).send({ data: ordersJSON });
       return;
     } catch (e) {
       console.log(e);
@@ -248,8 +248,8 @@ export const getTodaysOrders = functions.https.onRequest(async (req, res) => {
  * @return {Promise<admin.auth.DecodedIdToken>} The user id token
  */
 async function authenticate(
-    req: functions.https.Request,
-    role = "ADMIN"
+  req: functions.https.Request,
+  role = "ADMIN"
 ): Promise<admin.auth.DecodedIdToken> {
   if (
     !req.headers.authorization ||
@@ -263,10 +263,10 @@ async function authenticate(
     if (
       (
         await admin
-            .firestore()
-            .collection("users")
-            .doc(decodedIdToken.uid)
-            .get()
+          .firestore()
+          .collection("users")
+          .doc(decodedIdToken.uid)
+          .get()
       ).data()?.role !== role
     ) {
       throw new Error();
@@ -296,15 +296,15 @@ interface RestAndTakeawayOrders {
 async function setupOrders(): Promise<RestAndTakeawayOrders> {
   const currentTime = new Date();
   const todayOrders = await admin
-      .firestore()
-      .collection("menus")
-      .doc(
-          `${currentTime.getFullYear()}\
-      -${currentTime.getMonth()}\
-      -${currentTime.getDate()}`
-      )
-      .collection("orders")
-      .get();
+    .firestore()
+    .collection("menus")
+    .doc(
+      `${currentTime.getFullYear()}\
+-${currentTime.getMonth()}\
+-${currentTime.getDate()}`
+    )
+    .collection("orders")
+    .get();
   const orders: RestAndTakeawayOrders = {
     coperti: {
       primi: new Map<string, number>(),
@@ -320,32 +320,32 @@ async function setupOrders(): Promise<RestAndTakeawayOrders> {
     },
   };
   todayOrders.docs
-      .filter((doc) => doc.data()?.takeAway)
-      .forEach((el) => {
-        const data = el.data();
+    .filter((doc) => doc.data()?.takeAway)
+    .forEach((el) => {
+      const data = el.data();
       data?.primi.forEach((primo: string) =>
-        orders.takeAway.primi.get(primo) ?
-          orders.takeAway.primi.set(
+        orders.takeAway.primi.get(primo)
+          ? orders.takeAway.primi.set(
               primo,
               (orders.takeAway.primi.get(primo) as number) + 1
-          ) :
-          orders.takeAway.primi.set(primo, 1)
+            )
+          : orders.takeAway.primi.set(primo, 1)
       );
       data?.secondi.forEach((secondo: string) =>
-        orders.takeAway.secondi.get(secondo) ?
-          orders.takeAway.secondi.set(
+        orders.takeAway.secondi.get(secondo)
+          ? orders.takeAway.secondi.set(
               secondo,
               (orders.takeAway.secondi.get(secondo) as number) + 1
-          ) :
-          orders.takeAway.secondi.set(secondo, 1)
+            )
+          : orders.takeAway.secondi.set(secondo, 1)
       );
       data?.contorni.forEach((contorno: string) => {
         if (!orders.takeAway.contorni.get(contorno)) {
           orders.takeAway.contorni.set(
-              contorno,
-            data?.abbondante ?
-              {abbondanti: 1, normali: 0} :
-              {abbondanti: 0, normali: 1}
+            contorno,
+            data?.abbondante
+              ? { abbondanti: 1, normali: 0 }
+              : { abbondanti: 0, normali: 1 }
           );
         } else {
           const currentAbb = (
@@ -374,41 +374,41 @@ async function setupOrders(): Promise<RestAndTakeawayOrders> {
         }
       });
       data?.pizze.forEach((pizza: string) =>
-        orders.takeAway.pizze.get(pizza) ?
-          orders.takeAway.pizze.set(
+        orders.takeAway.pizze.get(pizza)
+          ? orders.takeAway.pizze.set(
               pizza,
               (orders.takeAway.pizze.get(pizza) as number) + 1
-          ) :
-          orders.takeAway.pizze.set(pizza, 1)
+            )
+          : orders.takeAway.pizze.set(pizza, 1)
       );
-      });
+    });
   todayOrders.docs
-      .filter((doc) => !doc.data()?.takeAway)
-      .forEach((el) => {
-        const data = el.data();
+    .filter((doc) => !doc.data()?.takeAway)
+    .forEach((el) => {
+      const data = el.data();
       data?.primi.forEach((primo: string) =>
-        orders.coperti.primi.get(primo) ?
-          orders.coperti.primi.set(
+        orders.coperti.primi.get(primo)
+          ? orders.coperti.primi.set(
               primo,
               (orders.coperti.primi.get(primo) as number) + 1
-          ) :
-          orders.coperti.primi.set(primo, 1)
+            )
+          : orders.coperti.primi.set(primo, 1)
       );
       data?.secondi.forEach((secondo: string) =>
-        orders.coperti.secondi.get(secondo) ?
-          orders.coperti.secondi.set(
+        orders.coperti.secondi.get(secondo)
+          ? orders.coperti.secondi.set(
               secondo,
               (orders.coperti.secondi.get(secondo) as number) + 1
-          ) :
-          orders.coperti.secondi.set(secondo, 1)
+            )
+          : orders.coperti.secondi.set(secondo, 1)
       );
       data?.contorni.forEach((contorno: string) => {
         if (!orders.coperti.contorni.get(contorno)) {
           orders.coperti.contorni.set(
-              contorno,
-            data?.abbondante ?
-              {abbondanti: 1, normali: 0} :
-              {abbondanti: 0, normali: 1}
+            contorno,
+            data?.abbondante
+              ? { abbondanti: 1, normali: 0 }
+              : { abbondanti: 0, normali: 1 }
           );
         } else {
           const currentAbb = (
@@ -437,14 +437,14 @@ async function setupOrders(): Promise<RestAndTakeawayOrders> {
         }
       });
       data?.pizze.forEach((pizza: string) =>
-        orders.coperti.pizze.get(pizza) ?
-          orders.coperti.pizze.set(
+        orders.coperti.pizze.get(pizza)
+          ? orders.coperti.pizze.set(
               pizza,
               (orders.coperti.pizze.get(pizza) as number) + 1
-          ) :
-          orders.coperti.pizze.set(pizza, 1)
+            )
+          : orders.coperti.pizze.set(pizza, 1)
       );
-      });
+    });
   return orders;
 }
 

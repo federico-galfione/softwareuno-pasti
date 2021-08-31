@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { BaseDirective } from '@shared/directives';
-import { Dish, DishType } from '@shared/models';
-import { Menu } from '@shared/models/Menu';
-import { Order } from '@shared/models/Order';
-import { UsualDishesStrings } from '@shared/models/UsualDishes';
+import { Dish, DishType, Menu, RestAndTakeawayOrders, UsualDishesStrings } from '@shared/models';
 import { LoadingService, ToastService } from '@shared/services';
 import { from, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -34,7 +31,7 @@ export class RestaurantService extends BaseDirective {
     return this.getTemplate(dishType).pipe(map(template => template.defaults));
   }
 
-  getOrders(): Observable<Order[]>{
+  getOrders(): Observable<RestAndTakeawayOrders>{
     const callable = this.fns.httpsCallable('getTodaysOrders');
     return this.loadingSvc.startLoading(
       this, 

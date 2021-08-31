@@ -25,6 +25,8 @@ export class DefaultPageComponent implements AfterViewInit, OnChanges {
   secondaryPage: boolean = false;
   @Input()
   disableSaveButton: boolean = false;
+  @Input()
+  isEditPage: boolean = true;
 
   timer$: Observable<{hours: number, minutes: number}>;
 

@@ -59,7 +59,7 @@
           <ion-button class="send-button" (click)="sendMenu()">Invia</ion-button>
         </div>
         <div *ngIf="(this.isOrdersEnded$ | async)" class="buttons-container">
-          <ion-button class="send-button" (click)="goToOrders()">Ordini</ion-button>
+          <ion-button class="send-button" mode="md" (click)="goToOrders()"><ion-icon slot="end" name="arrow-forward-outline"></ion-icon>Ordini</ion-button>
         </div>
       </app-default-page>
   </app-external-container>

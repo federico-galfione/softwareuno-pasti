@@ -34,9 +34,15 @@
                     --padding-start: var(--space-2);
                     --padding-end: var(--space-2);
                     --min-height: 12px;
-                    ion-label, ion-note{
+                    ion-label{
                         margin-top: var(--space-1);
                         margin-bottom: var(--space-1);
+                    }
+                    ion-note{
+                        margin: 0;
+                        font-size: 2rem;
+                        padding-top: var(--space-1);
+                        padding-bottom: var(--space-1);
                     }
                 }
             }     
@@ -55,6 +61,8 @@
       @include ion-button-style($color: "secondary");
       width: calc(50% - var(--current-space-2));
       max-width: calc(var(--space-4) * 4);
-      margin-left: var(--current-space-3);
+      @include respond-to('tablet'){
+        margin-left: var(--current-space-3);
+      }
     }
   }

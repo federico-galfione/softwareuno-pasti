@@ -113,6 +113,9 @@ html {
       }
     }
   }
+  ion-content{
+    --background: transparent;
+  }
   .new-dish-info {
     --background: var(--ion-color-dark-shade);
   }

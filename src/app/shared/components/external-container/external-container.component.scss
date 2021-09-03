@@ -5,20 +5,7 @@
   @include flex($position: relative, $align-items: center);
   width: 100%;
   min-height: 100%;
-  &::before{
-    @include dimensions(100%, 100%);
-    content: "";
-    position: fixed;
-    left: 0;
-    right: 0;
-    z-index: -1;
-  
-    display: block;
-    background-image: url('../../../../assets/images/login-background.jpg');
-    background-size:cover;
-
-    filter: blur(5px) opacity(50%);
-  }
+  background-color: transparent;
   &.tablet{
     @include respond-to('tablet') {
       padding: 64px;

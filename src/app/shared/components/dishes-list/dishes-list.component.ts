@@ -2,6 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmi
 import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { BaseDirective } from '@shared/directives';
+import { MediaService } from "@shared/services";
 import { BehaviorSubject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { itemsAnimation, listAnimation, selectionAnimation } from '../../animations/list.animations';
@@ -74,7 +75,7 @@ export class DishesListComponent extends BaseDirective implements ControlValueAc
   @Output()
   rightButtonClicked: EventEmitter<void> = new EventEmitter<void>();
 
-  constructor(private modalCtrl: ModalController, private elRef: ElementRef){super();}
+  constructor(private modalCtrl: ModalController, private elRef: ElementRef, private mediaSvc: MediaService){super();}
 
   ngAfterViewInit(){
     this.currentColor$.pipe(takeUntil(this.destroy$), filter(x => !!x)).subscribe(x => this.elRef.nativeElement.style.setProperty('--current-color', x));
@@ -105,7 +106,7 @@ export class DishesListComponent extends BaseDirective implements ControlValueAc
   async openAddDishesModal(){
     const modal = await this.modalCtrl.create({
       component: AddDishComponent,
-      cssClass: 'bottom',
+      cssClass: this.mediaSvc.isSmartphone ? 'bottom' : '',
       swipeToClose: true,
       mode: "ios",
       componentProps: {

@@ -10,7 +10,8 @@ import { map, tap } from 'rxjs/operators';
 enum RestaurantLoadingKeys{
   ADD_MENU = 'addTodayMenu',
   SET_TEMPLATE = 'setTemplate',
-  GET_ORDERS = 'getOrders'
+  GET_ORDERS = 'getOrders',
+  GET_TEMPLATE = 'getTemplate'
 }
 
 @Injectable({
@@ -21,14 +22,16 @@ export class RestaurantService extends BaseDirective {
   constructor(private firestore: AngularFirestore, private toastSvc: ToastService, private loadingSvc: LoadingService, private fns: AngularFireFunctions) { super() }
 
   getTemplate(dishType: DishType){
-    return this.firestore.collection('templates').doc<UsualDishesStrings>(dishType).valueChanges().pipe(map(templates => ({
-      defaults: templates.defaults.map(name => ({name, selected: false})),
-      hints: templates.hints.map(name => ({name, selected: false}))
-    })));
-  }
-
-  getDefaultDishes(dishType: DishType): Observable<Dish[]>{
-    return this.getTemplate(dishType).pipe(map(template => template.defaults));
+    return this.loadingSvc.startLoading(
+      this,
+      RestaurantLoadingKeys.GET_TEMPLATE,
+      this.firestore.collection('templates').doc<UsualDishesStrings>(dishType).valueChanges().pipe(map(templates => ({
+        defaults: templates.defaults.map(name => ({name, selected: false})),
+        hints: templates.hints.map(name => ({name, selected: false}))
+      }))),
+      {message: 'Sto recuperando i piatti.'},
+      false
+    )
   }
 
   getOrders(): Observable<RestAndTakeawayOrders>{
@@ -39,10 +42,6 @@ export class RestaurantService extends BaseDirective {
       callable({}), 
       {message: 'Sto recuperando tutti gli ordini di Softwareuno.'}
     )
-  }
-
-  getHintDishes(dishType: DishType): Observable<Dish[]>{
-    return this.getTemplate(dishType).pipe(map(template => template.hints));
   }
 
   addTodayMenu(menu: Menu){

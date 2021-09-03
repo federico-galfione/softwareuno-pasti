@@ -2,7 +2,7 @@ import { ComponentFactoryResolver, ComponentRef, Injectable, ViewContainerRef } 
 import { LoadingToastComponent } from '@shared/components/loading-toast/loading-toast.component';
 import { BaseDirective } from '@shared/directives';
 import { BehaviorSubject, iif, Observable, of } from 'rxjs';
-import { delay, finalize, switchMap, take, takeUntil } from 'rxjs/operators';
+import { delay, finalize, skip, startWith, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 
 interface LoadingOptions {
   hideToast?: boolean;
@@ -38,7 +38,7 @@ export class LoadingService {
    * @param asyncFunc: An observable with the response from the server
    * @param options the loading options
    */
-  public startLoading(context: BaseDirective, loadingName: string, asyncFunc: Observable<any>, options?: LoadingOptions){
+  public startLoading<T>(context: BaseDirective, loadingName: string, asyncFunc: Observable<T>, options?: LoadingOptions, isPromise = true): Observable<T>{
     loadingName = (loadingName) ? loadingName : 'UniqueLoading';
     // Check if exist the selected loading
     if(!this.loadings.get(context)?.get(loadingName)){
@@ -53,12 +53,15 @@ export class LoadingService {
     }
     loadingMap.isLoading.next(true);
     // Return the given observable and deal with the end of loading
-    return asyncFunc.pipe(take(1), finalize(() => this.endLoading(context, loadingName)));
+    return isPromise 
+    ? asyncFunc.pipe(take(1), finalize(() => this.endLoading(context, loadingName))) 
+    : asyncFunc.pipe(startWith(<T>null), skip(1), tap(() => this.endLoading(context, loadingName)));
   }
+
 
   public endLoading(context: BaseDirective, loadingName?: string){
     loadingName = (loadingName) ? loadingName : 'UniqueLoading';
-    this.loadings.get(context).get(loadingName).isLoading.next(false);
+    this.loadings.get(context)?.get(loadingName)?.isLoading.next(false);
   }
 
   public getLoading(context: BaseDirective, loadingName?: string){
@@ -73,7 +76,7 @@ export class LoadingService {
   private loadingAsObservable(loading: BehaviorSubject<boolean>){
     return loading.pipe(
       switchMap((loading) => 
-        iif(() => loading, of(loading).pipe(delay(700)), of(loading)
+        iif(() => loading, of(loading).pipe(delay(500)), of(loading)
       ))
     )
   }
@@ -87,7 +90,11 @@ export class LoadingService {
   }
 
   private addToMap(context: BaseDirective, loadingName: string, options?: LoadingOptions){
-    const loadingsMap = this.loadings.set(context, new Map<string, LoadingInfo>().set(loadingName, { isLoading: new BehaviorSubject(false), options: null, toast: null})).get(context)
+    let loadingsMap: Map<string, LoadingInfo>;
+    if(!this.loadings.get(context))
+      loadingsMap = this.loadings.set(context, new Map<string, LoadingInfo>().set(loadingName, { isLoading: new BehaviorSubject(false), options: null, toast: null})).get(context)
+    else
+      loadingsMap = this.loadings.get(context).set(loadingName, { isLoading: new BehaviorSubject(false), options: null, toast: null})
     if(!options?.hideToast)
       this.loadingAsObservable(loadingsMap.get(loadingName).isLoading)
         .pipe(takeUntil(context.destroy$))

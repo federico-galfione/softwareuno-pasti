@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { enterFromRightAnimation } from '@shared/animations';
+import { LogoutModalComponent } from "@shared/components/logout-modal/logout-modal.component";
 import { User } from '@shared/models';
 import { AuthService, MediaService } from '@shared/services';
 import { combineLatest } from 'rxjs';
@@ -68,8 +69,17 @@ export class AdminPage implements AfterViewInit {
   }
 
 
-  logout(){
-    this.authSvc.logout().subscribe(_ => this.router.navigate(['']));
+  async logout(){
+    const modal = await this.modalCtrl.create({
+      component: LogoutModalComponent,
+      cssClass: this.mediaSvc.isSmartphone ? 'bottom' : '',
+      swipeToClose: true,
+      mode: "ios"
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if(data.logout)
+      this.authSvc.logout().subscribe(_ => this.router.navigate(['']));
   }
 
   ngAfterViewInit(){
@@ -91,7 +101,7 @@ export class AdminPage implements AfterViewInit {
     event.stopPropagation();
     const modal = await this.modalCtrl.create({
       component: CreateUserModalComponent,
-      cssClass: 'bottom',
+      cssClass: this.mediaSvc.isSmartphone ? 'bottom' : '',
       swipeToClose: true,
       mode: "ios"
     });
@@ -106,7 +116,7 @@ export class AdminPage implements AfterViewInit {
     event.stopPropagation();
     const modal = await this.modalCtrl.create({
       component: DeleteUserModalComponent,
-      cssClass: 'bottom',
+      cssClass: this.mediaSvc.isSmartphone ? 'bottom' : '',
       swipeToClose: true,
       mode: "ios",
       componentProps: {
@@ -124,7 +134,7 @@ export class AdminPage implements AfterViewInit {
     event.stopPropagation();
     const modal = await this.modalCtrl.create({
       component: EditUserModalComponent,
-      cssClass: 'bottom',
+      cssClass: this.mediaSvc.isSmartphone ? 'bottom' : '',
       swipeToClose: true,
       mode: "ios",
       componentProps: {

@@ -6,12 +6,10 @@
   h3 {
     margin-bottom: var(--space-2);
   }
-  ion-list {
-    border-radius: 30px;
-    ion-item {
-      --border-width: 1px;
-      --border-radius: 30px;
-      --border-color: var(--ion-color-secondary);
-    }
+  ion-item {
+    --border-width: 1px;
+    --border-radius: 30px;
+    --border-color: var(--ion-color-secondary);
+    max-width: 360px;
   }
 }

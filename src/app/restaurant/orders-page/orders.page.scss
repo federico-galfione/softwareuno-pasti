@@ -2,6 +2,10 @@
 
 .orders-container{
     margin: 0 var(--current-space-3) 0 var(--current-space-3);
+    @include respond-to("tablet") {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
     .places{
         &:first-of-type{
             margin-bottom: var(--space-3);
@@ -12,6 +16,12 @@
             border: 2px solid var(--ion-color-secondary);
             margin-top: var(--space-2);
             overflow: hidden;
+            &.placeholder{
+                opacity: .6;
+            }
+            @include respond-to("tablet") {
+                max-width: 360px;
+            }
             .entry-name{
                 background-color: var(--ion-color-secondary);
                 font-size: 2rem;
@@ -45,5 +55,6 @@
       @include ion-button-style($color: "secondary");
       width: calc(50% - var(--current-space-2));
       max-width: calc(var(--space-4) * 4);
+      margin-left: var(--current-space-3);
     }
   }

@@ -53,7 +53,7 @@ export class EmployeePage extends BasePageFormDirective {
     this.todaysMenu$ = this.appSvc.getTodaysMenu().pipe(takeUntil(this.destroy$));
     this.lastValidValue$ = this.pageForm.statusChanges.pipe(takeUntil(this.destroy$), filter(x => (x === 'VALID')), map(_ => JSON.parse(JSON.stringify(this.pageForm.value))));
     this.validityChange$ = this.pageForm.statusChanges.pipe(takeUntil(this.destroy$), map(_ => this.pageForm.errors?.invalidOrder));
-    this.isLoadingGuestLink$ = this.loadingSvc.getLoading(employeeSvc, employeeSvc.employeeLoadings.GUESTKEY);
+    this.isLoadingGuestLink$ = this.loadingSvc.getLoading(employeeSvc, employeeSvc.employeeLoadings.GUEST_KEY);
     this.todaysMenu$.pipe(
       switchMap(x => {
         this.todaysMenu = x;
@@ -107,7 +107,7 @@ export class EmployeePage extends BasePageFormDirective {
     this.employeeSvc.getGuestKey().subscribe(async secretKey => {
       const modal = await this.modalCtrl.create({
         component: GuestModalComponent,
-        cssClass: 'bottom',
+        cssClass: this.mediaSvc.isSmartphone ? 'bottom' : '',
         swipeToClose: true,
         mode: "ios",
         componentProps: {
@@ -137,7 +137,7 @@ export class EmployeePage extends BasePageFormDirective {
   async logout(){
     const modal = await this.modalCtrl.create({
       component: LogoutModalComponent,
-      cssClass: 'bottom',
+      cssClass: this.mediaSvc.isSmartphone ? 'bottom' : '',
       swipeToClose: true,
       mode: "ios"
     });

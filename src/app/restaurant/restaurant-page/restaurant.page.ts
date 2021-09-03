@@ -67,6 +67,7 @@ export class RestaurantPage extends BasePageFormDirective {
 
     this.todayMenu$ = this.appSvc.getTodaysMenu();
     this.isOrdersEnded$ = this.appSvc.isOrdersEnded();
+    this.todayMenu$.subscribe(value => console.log('TODAYS MENU', value))
 
     let editDefaultValue$ = combineLatest([this.primiUsualDishes$, this.secondiUsualDishes$, this.contorniUsualDishes$, this.pizzeUsualDishes$]).pipe(
       map(([primi, secondi, contorni, pizze]) => ({
@@ -107,7 +108,7 @@ export class RestaurantPage extends BasePageFormDirective {
     try{
       const modal = await this.modalCtrl.create({
         component: AddMenuWarnComponent,
-        cssClass: 'bottom',
+        cssClass: this.mediaSvc.isSmartphone ? 'bottom' : '',
         swipeToClose: true,
         mode: "ios"
       });
@@ -125,7 +126,7 @@ export class RestaurantPage extends BasePageFormDirective {
   async logout(){
     const modal = await this.modalCtrl.create({
       component: LogoutModalComponent,
-      cssClass: 'bottom',
+      cssClass: this.mediaSvc.isSmartphone ? 'bottom' : '',
       swipeToClose: true,
       mode: "ios"
     });

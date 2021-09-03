@@ -43,11 +43,11 @@ ion-content {
     position: relative;
     display: grid;
     grid-template-columns: auto;
-    grid-gap: var(--space-2);
+    row-gap: var(--space-2);
     align-items: flex-start;
     @include respond-to("tablet") {
-      grid-template-columns: auto auto;
-      grid-gap: calc(var(--space-4) + var(--space-2));
+      grid-template-columns: 1fr 1fr;
+      column-gap: var(--space-2);
     }
     div[rightText] {
       display: flex;
@@ -57,7 +57,7 @@ ion-content {
   }
   .options-container {
     display: flex;
-    padding: var(--space-2) var(--current-space-3)
+    padding: var(--space-4) var(--current-space-3)
       calc(var(--space-3) + var(--space-1)) var(--current-space-3);
     .big-card {
       position: relative;
@@ -67,6 +67,7 @@ ion-content {
       color: var(--default-dark-color);
       flex: 1;
       width: 100%;
+      max-width: calc(var(--space-4) * 3);
       height: auto;
       &.disabled {
         background-color: rgba(255, 255, 255, 0.4);
@@ -122,9 +123,6 @@ ion-content {
   .buttons-container {
     display: flex;
     padding: 0 var(--current-space-3) 0 var(--current-space-3);
-    @include respond-to("tablet") {
-      padding: 0;
-    }
     justify-content: flex-end;
     margin-top: var(--space-3);
     .send-button {

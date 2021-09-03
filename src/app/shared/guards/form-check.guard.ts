@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot, UrlTree } f
 import { ModalController } from '@ionic/angular';
 import { UnsavedChangesComponent } from '@shared/components/unsaved-changes/unsaved-changes.component';
 import { BasePageFormDirective } from '@shared/directives';
+import { MediaService } from "@shared/services";
 import { Observable } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 
@@ -11,7 +12,7 @@ import { switchMap, take } from 'rxjs/operators';
 })
 export class FormCheckGuard implements CanDeactivate<BasePageFormDirective> {
 
-  constructor(private modalCtrl: ModalController){}
+  constructor(private modalCtrl: ModalController, private mediaSvc: MediaService){}
 
   canDeactivate(
     component: BasePageFormDirective,
@@ -24,7 +25,7 @@ export class FormCheckGuard implements CanDeactivate<BasePageFormDirective> {
         }
         const modal = await this.modalCtrl.create({
           component: UnsavedChangesComponent,
-          cssClass: 'bottom',
+          cssClass: this.mediaSvc.isSmartphone ? 'bottom' : '',
           swipeToClose: true,
           mode: "ios",
         });

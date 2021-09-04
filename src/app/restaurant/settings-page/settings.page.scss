@@ -6,17 +6,10 @@
   h3 {
     margin-bottom: var(--space-2);
   }
-  ion-list {
-    border-radius: 30px;
-    ion-item {
-      --border-width: 1px;
-      --border-radius: 30px;
-      --border-color: var(--ion-color-secondary);
-    }
-  }
-  ion-button {
-    @include ion-button-style("secondary");
-    margin-top: var(--space-4);
-    width: 100%;
+  ion-item {
+    --border-width: 1px;
+    --border-radius: 30px;
+    --border-color: var(--ion-color-secondary);
+    max-width: 360px;
   }
 }

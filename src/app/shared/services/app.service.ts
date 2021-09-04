@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Timestamp } from '@google-cloud/firestore';
 import { BaseDirective } from '@shared/directives';
-import { AppSettings } from '@shared/models';
-import { Dishes, DishesForm } from '@shared/models/Dishes';
+import { AppSettings, Dishes, DishesForm } from '@shared/models';
 import { from, interval, Observable } from 'rxjs';
 import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { LoadingService } from './loading.service';
 import { ToastService } from './toast.service';
+
+enum AppLoadingKeys{
+  GET_TODAYS_MENU_KEY = 'getTodaysMenu',
+  GET_STOP_ORDERS_TIME_KEY = 'getStopOrdersTime'
+}
 
 @Injectable({
   providedIn: 'root'
@@ -40,45 +44,57 @@ export class AppService extends BaseDirective {
   }
 
   getStopOrdersTime(){
-    return this.getAppSettings().pipe(map(settings => settings.stopOrdersTime.toDate()));
+    return this.loadingSvc.startLoading(
+      this,
+      AppLoadingKeys.GET_STOP_ORDERS_TIME_KEY,
+      this.getAppSettings().pipe(map(settings => settings.stopOrdersTime.toDate())),
+      {message: 'Sto recuperando l\'ora di fine ordinazioni' },
+      false
+    )
   }
 
   getOrdersTimer(){
     return this.getStopOrdersTime().pipe(
-      switchMap(_ => interval(1000).pipe(
-        withLatestFrom(this.getStopOrdersTime()),
-        filter((_, index) => index === 0 || new Date().getSeconds() === 0), // Get only the first element and one everytime a minute start (0 seconds)
-        map(([_, date]) => {
-          let settedTime = new Date();
-          settedTime.setHours(date.getHours());
-          settedTime.setMinutes(date.getMinutes());
-          settedTime.setSeconds(0);
-          let currentTime = new Date();
-          if (currentTime > settedTime)
-            return { hours: 0, minutes: 0 };
-          let diff = Math.abs(settedTime.getTime() - currentTime.getTime());
-          const hours = Math.floor((diff % 86400000) / 3600000)
-          const minutes = Math.round(((diff % 86400000) % 3600000) / 60000);
-          return { hours, minutes }
-        })
-      ))
-    )
+        switchMap(_ => interval(1000).pipe(
+          withLatestFrom(this.getStopOrdersTime()),
+          filter((_, index) => index === 0 || new Date().getSeconds() === 0), // Get only the first element and one everytime a minute start (0 seconds)
+          map(([_, date]) => {
+            let settedTime = new Date();
+            settedTime.setHours(date.getHours());
+            settedTime.setMinutes(date.getMinutes());
+            settedTime.setSeconds(0);
+            let currentTime = new Date();
+            if (currentTime > settedTime)
+              return { hours: 0, minutes: 0 };
+            let diff = Math.abs(settedTime.getTime() - currentTime.getTime());
+            const hours = Math.floor((diff % 86400000) / 3600000)
+            const minutes = Math.round(((diff % 86400000) % 3600000) / 60000);
+            return { hours, minutes }
+          })
+        ))
+      )
   }
 
   getTodaysMenu(): Observable<DishesForm>{
     let currDate = new Date();
-    return this.firestore.collection('menus').doc<{date: Timestamp, dishes: Dishes}>(`${currDate.getFullYear()}-${currDate.getMonth()}-${currDate.getDate()}`).valueChanges()
-    .pipe(map(menu => menu ? ({
-      primi: menu.dishes.primi.map(name => ({name, selected: false})),
-      secondi: menu.dishes.secondi.map(name => ({name, selected: false})),
-      contorni: menu.dishes.contorni.map(name => ({name, selected: false})),
-      pizze: menu.dishes.pizze.map(name => ({name, selected: false})),
-    }) : null ));
+    return this.loadingSvc.startLoading(
+      this,
+      AppLoadingKeys.GET_TODAYS_MENU_KEY,
+      this.firestore.collection('menus').doc<{date: Timestamp, dishes: Dishes}>(`${currDate.getFullYear()}-${currDate.getMonth()}-${currDate.getDate()}`).valueChanges()
+      .pipe(map(menu => menu ? ({
+        primi: menu.dishes.primi.map(name => ({name, selected: false})),
+        secondi: menu.dishes.secondi.map(name => ({name, selected: false})),
+        contorni: menu.dishes.contorni.map(name => ({name, selected: false})),
+        pizze: menu.dishes.pizze.map(name => ({name, selected: false})),
+      }) : null )),
+      {message: 'Sto recuperando il menù di oggi.'},
+      false
+    ) 
+    
+    
   }
 
   getAppSettings(){
     return this.firestore.collection('app').doc<AppSettings>('settings').valueChanges();
   }
-
-  private getHours
 }

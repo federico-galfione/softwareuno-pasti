@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from "@angular/router";
 import { ModalController } from '@ionic/angular';
 import { selectionAnimation } from '@shared/animations';
 import { enterFromRightAnimation } from '@shared/animations/generic.animations';
+import { LogoutModalComponent } from "@shared/components/logout-modal/logout-modal.component";
 import { BasePageFormDirective } from '@shared/directives';
-import { Dish } from '@shared/models';
-import { Dishes, DishesForm } from '@shared/models/Dishes';
+import { Dish, Dishes, DishesForm } from '@shared/models';
 import { AppService, AuthService, MediaService, ToastService } from '@shared/services';
 import { LoadingService } from '@shared/services/loading.service';
 import { ordersValidator } from '@shared/validators/orders.validator';
@@ -36,7 +37,8 @@ export class EmployeePage extends BasePageFormDirective {
     private appSvc: AppService, 
     private toastSvc: ToastService, 
     private modalCtrl: ModalController,
-    public loadingSvc: LoadingService
+    public loadingSvc: LoadingService,
+    private router: Router
   ) { 
     super();
     this.pageForm = new FormGroup({
@@ -51,7 +53,7 @@ export class EmployeePage extends BasePageFormDirective {
     this.todaysMenu$ = this.appSvc.getTodaysMenu().pipe(takeUntil(this.destroy$));
     this.lastValidValue$ = this.pageForm.statusChanges.pipe(takeUntil(this.destroy$), filter(x => (x === 'VALID')), map(_ => JSON.parse(JSON.stringify(this.pageForm.value))));
     this.validityChange$ = this.pageForm.statusChanges.pipe(takeUntil(this.destroy$), map(_ => this.pageForm.errors?.invalidOrder));
-    this.isLoadingGuestLink$ = this.loadingSvc.getLoading(employeeSvc, employeeSvc.employeeLoadings.GUESTKEY);
+    this.isLoadingGuestLink$ = this.loadingSvc.getLoading(employeeSvc, employeeSvc.employeeLoadings.GUEST_KEY);
     this.todaysMenu$.pipe(
       switchMap(x => {
         this.todaysMenu = x;
@@ -105,7 +107,7 @@ export class EmployeePage extends BasePageFormDirective {
     this.employeeSvc.getGuestKey().subscribe(async secretKey => {
       const modal = await this.modalCtrl.create({
         component: GuestModalComponent,
-        cssClass: 'bottom',
+        cssClass: this.mediaSvc.isSmartphone ? 'bottom' : '',
         swipeToClose: true,
         mode: "ios",
         componentProps: {
@@ -132,4 +134,16 @@ export class EmployeePage extends BasePageFormDirective {
     this.employeeSvc.saveOrder(currentValue).subscribe();
   }
 
+  async logout(){
+    const modal = await this.modalCtrl.create({
+      component: LogoutModalComponent,
+      cssClass: this.mediaSvc.isSmartphone ? 'bottom' : '',
+      swipeToClose: true,
+      mode: "ios"
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if(data.logout)
+      this.authSvc.logout().subscribe(_ => this.router.navigate(['']));
+  }
 }

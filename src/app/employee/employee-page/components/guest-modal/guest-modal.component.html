@@ -10,5 +10,5 @@
   <div class="text">
     Condividi col tuo ospite il seguente link. Da qui potrà effettuare il proprio ordine.
   </div>
-  <div class="text big">{{secretLink}}</div>
+  <ion-button lines="none" mode="md" (click)="shareLink()"><div>{{secretLink}}</div> <ion-icon color="tertiary" slot="end" name="share-social-outline"></ion-icon></ion-button>
 </div>

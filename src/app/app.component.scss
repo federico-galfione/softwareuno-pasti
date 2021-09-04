@@ -1,0 +1,6 @@
+@import 'mixins';
+.app-container{
+    width: 100vw;
+    height: 100vh;
+    @include default-gradient('background', #ECE9E6, #FFFFFF);
+}

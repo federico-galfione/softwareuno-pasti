@@ -46,7 +46,7 @@ export class RecurrentDishesPage extends BasePageFormDirective {
     this.infoModalType$.pipe(filter(x => !!x)).subscribe(async infoModalType => {
       const modal = await this.modalCtrl.create({
         component: InfoModalComponent,
-        cssClass: 'bottom',
+        cssClass: this.mediaSvc.isSmartphone ? 'bottom' : '',
         swipeToClose: true,
         mode: "ios",
         componentProps: {

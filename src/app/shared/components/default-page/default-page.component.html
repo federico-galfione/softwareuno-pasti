@@ -20,7 +20,7 @@
 </div>
 <div class="content">
   <ng-content></ng-content>
-  <div class="buttons-container" *ngIf="secondaryPage">
+  <div class="buttons-container" *ngIf="secondaryPage && isEditPage">
     <ion-button class="cancel" mode="md" (click)="cancelClicked.emit()">Annulla</ion-button>
     <ion-button [disabled]="disableSaveButton" class="save" mode="md" (click)="saveClicked.emit()">Salva</ion-button>
   </div>

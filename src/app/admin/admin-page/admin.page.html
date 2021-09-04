@@ -55,7 +55,11 @@
               </div>
             </ion-card>
           </div>
-          <ion-button (click)="logout()">Logout</ion-button>
       </app-default-page>
   </app-external-container>
+  <ion-fab (click)="logout()" vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button color="tertiary" size="small">
+      <ion-icon name="exit-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

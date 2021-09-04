@@ -1,0 +1,68 @@
+@import 'mixins';
+
+.orders-container{
+    margin: 0 var(--current-space-3) 0 var(--current-space-3);
+    @include respond-to("tablet") {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    .places{
+        &:first-of-type{
+            margin-bottom: var(--space-3);
+        }
+        .entry-container{
+            background-color: white;
+            border-radius: 15px;
+            border: 2px solid var(--ion-color-secondary);
+            margin-top: var(--space-2);
+            overflow: hidden;
+            &.placeholder{
+                opacity: .6;
+            }
+            @include respond-to("tablet") {
+                max-width: 360px;
+            }
+            .entry-name{
+                background-color: var(--ion-color-secondary);
+                font-size: 2rem;
+                padding: var(--space-1) var(--space-2) var(--space-1) var(--space-2);
+                font-weight: bold;
+                color: white;
+            }
+            ion-list{
+                ion-item{
+                    --padding-start: var(--space-2);
+                    --padding-end: var(--space-2);
+                    --min-height: 12px;
+                    ion-label{
+                        margin-top: var(--space-1);
+                        margin-bottom: var(--space-1);
+                    }
+                    ion-note{
+                        margin: 0;
+                        font-size: 2rem;
+                        padding-top: var(--space-1);
+                        padding-bottom: var(--space-1);
+                    }
+                }
+            }     
+        }   
+    }
+}
+.buttons-container {
+    display: flex;
+    padding: 0 var(--current-space-3) 0 var(--current-space-3);
+    @include respond-to("tablet") {
+      padding: 0;
+    }
+    justify-content: flex-start;
+    margin-top: var(--space-3);
+    .send-button {
+      @include ion-button-style($color: "secondary");
+      width: calc(50% - var(--current-space-2));
+      max-width: calc(var(--space-4) * 4);
+      @include respond-to('tablet'){
+        margin-left: var(--current-space-3);
+      }
+    }
+  }

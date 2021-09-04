@@ -3,10 +3,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { enterFromRightAnimation } from '@shared/animations/generic.animations';
+import { LogoutModalComponent } from "@shared/components/logout-modal/logout-modal.component";
 import { BasePageFormDirective } from '@shared/directives';
-import { DishesForm } from '@shared/models/Dishes';
-import { UsualDishes } from '@shared/models/UsualDishes';
-import { AppService } from '@shared/services';
+import { DishesForm, UsualDishes } from '@shared/models';
+import { AppService, AuthService } from '@shared/services';
 import { combineLatest, Observable } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { DishesListComponent } from 'src/app/shared/components/dishes-list/dishes-list.component';
@@ -52,7 +52,7 @@ export class RestaurantPage extends BasePageFormDirective {
   }
 
 
-  constructor(private router: Router, public mediaSvc: MediaService, private restaurantSvc: RestaurantService, private appSvc: AppService, private modalCtrl: ModalController) {
+  constructor(private router: Router, private authSvc: AuthService, public mediaSvc: MediaService, private restaurantSvc: RestaurantService, private appSvc: AppService, private modalCtrl: ModalController) {
     super();
     this.pageForm = new FormGroup({
       primi: new FormControl([]),
@@ -67,6 +67,7 @@ export class RestaurantPage extends BasePageFormDirective {
 
     this.todayMenu$ = this.appSvc.getTodaysMenu();
     this.isOrdersEnded$ = this.appSvc.isOrdersEnded();
+    this.todayMenu$.subscribe(value => console.log('TODAYS MENU', value))
 
     let editDefaultValue$ = combineLatest([this.primiUsualDishes$, this.secondiUsualDishes$, this.contorniUsualDishes$, this.pizzeUsualDishes$]).pipe(
       map(([primi, secondi, contorni, pizze]) => ({
@@ -107,7 +108,7 @@ export class RestaurantPage extends BasePageFormDirective {
     try{
       const modal = await this.modalCtrl.create({
         component: AddMenuWarnComponent,
-        cssClass: 'bottom',
+        cssClass: this.mediaSvc.isSmartphone ? 'bottom' : '',
         swipeToClose: true,
         mode: "ios"
       });
@@ -120,6 +121,19 @@ export class RestaurantPage extends BasePageFormDirective {
         }).subscribe();
       }
     }catch(e){}
+  }
+
+  async logout(){
+    const modal = await this.modalCtrl.create({
+      component: LogoutModalComponent,
+      cssClass: this.mediaSvc.isSmartphone ? 'bottom' : '',
+      swipeToClose: true,
+      mode: "ios"
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if(data.logout)
+      this.authSvc.logout().subscribe(_ => this.router.navigate(['']));
   }
 
 }

@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { BaseDirective } from '@shared/directives';
-import { DishesForm } from '@shared/models/Dishes';
+import { DishesForm } from '@shared/models';
 import { AuthService, LoadingService, ToastService } from '@shared/services';
 import { from } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 enum EmployeeLoadingNames{
-  GUESTKEY = 'getGuestKey',
-  SAVEORDER = 'saveOrder'
+  GUEST_KEY = 'getGuestKey',
+  SAVE_ORDER_KEY = 'saveOrder',
+  GET_SAVED_ORDERS_KEY = 'getSavedOrder'
 }
 
 @Injectable({
@@ -25,7 +26,7 @@ export class EmployeeService extends BaseDirective {
     const callable = this.fns.httpsCallable('getSecretLink');
     return this.loadingSvc.startLoading(
       this, 
-      this.employeeLoadings.GUESTKEY, 
+      this.employeeLoadings.GUEST_KEY, 
       callable({}).pipe(map(x => x?.secretKey as string)), 
       {message: 'Sto recuperando il link ospiti'}
     )
@@ -33,19 +34,24 @@ export class EmployeeService extends BaseDirective {
 
   getSavedOrder(){
     const today = new Date();
-    return this.firestore.collection('menus')
-      .doc(`${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`)
-      .collection('orders')
-      .doc(this.authSvc.currentUser.uid)
-      .valueChanges()
-
+    return this.loadingSvc.startLoading(
+      this,
+      this.employeeLoadings.GET_SAVED_ORDERS_KEY,
+      this.firestore.collection('menus')
+        .doc(`${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`)
+        .collection('orders')
+        .doc(this.authSvc.currentUser.uid)
+        .valueChanges(),
+      {message: 'Sto recuperando il tuo ordine salvato.'},
+      false
+    ) 
   }
 
   saveOrder(order: DishesForm & {takeAway: boolean; abbondante: boolean}){
       const today = new Date();
       return this.loadingSvc.startLoading(
         this,
-        this.employeeLoadings.SAVEORDER,
+        this.employeeLoadings.SAVE_ORDER_KEY,
         from(
           this.firestore.collection('menus')
           .doc(`${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`)

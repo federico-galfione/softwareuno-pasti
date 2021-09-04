@@ -18,7 +18,8 @@ enum AuthLoadingKeys{
   LOGOUT = 'logout',
   CREATE_USER = 'createUser',
   EDIT_USER = 'editUser',
-  DELETE_USER = 'deleteUser'
+  DELETE_USER = 'deleteUser',
+  GET_USERS = 'getUsers'
 }
 
 @Injectable({
@@ -252,6 +253,11 @@ export class AuthService extends BaseDirective {
   }
 
   getUsers(): Observable<User[]>{
-    return this.firestore.collection('users').valueChanges() as Observable<User[]>;
+    return this.loadingSvc.startLoading(
+      this,
+      AuthLoadingKeys.GET_USERS,
+      this.firestore.collection('users').valueChanges() as Observable<User[]>,
+      {message: 'Sto recuperando gli utenti'},
+      false)
   }
 }

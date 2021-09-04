@@ -4,11 +4,11 @@
     position: relative;
     display: grid;
     grid-template-columns: auto;
-    grid-gap: var(--space-2);
+    column-gap: var(--space-2);
     align-items: flex-start;
     @include respond-to("tablet") {
-      grid-template-columns: auto auto;
-      grid-gap: calc(var(--space-4) + var(--space-2));
+      width: 100%;
+      grid-template-columns: 1fr 1fr;
     }
     div[rightText] {
       display: flex;
@@ -28,6 +28,9 @@
       @include ion-button-style($color: "secondary");
       width: calc(50% - var(--current-space-2));
       max-width: calc(var(--space-4) * 4);
+      @include respond-to("tablet") {
+        margin-right: var(--current-space-3);
+      }
     }
   }
   app-popup {

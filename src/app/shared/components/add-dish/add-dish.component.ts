@@ -34,7 +34,7 @@ export class AddDishComponent implements OnInit {
   /**
    * Current selected elements from the add dishes form  (the ones in the textarea, each line is an array object)
    */
-  private currentValue$ = new BehaviorSubject<string[]>([]);
+  private currentValue$ = new BehaviorSubject<String[]>([]);
   
   /**
    * Filtered elements to show un usual dishes space
@@ -97,7 +97,7 @@ export class AddDishComponent implements OnInit {
    */
   closeModal(ev: 'success' | 'cancel'){
     this.modalCtrl.dismiss({
-      newDishes: (ev === 'success') ? this.currentValue$.value.map(name => ({ name })) : null,
+      newDishes: (ev === 'success') ? this.currentValue$.value.map(name => ({ name: name.makeComparable() })) : null,
       status: ev
     })
   }

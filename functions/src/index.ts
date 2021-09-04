@@ -49,10 +49,6 @@ export const checkSecretLink = functions.https.onRequest(async (req, res) => {
       const currentKey = (
         await admin.firestore().collection("app").doc("hiddenSettings").get()
       ).data()?.guestAccessString;
-      console.log(
-        Buffer.from(currentKey, "base64").toString("binary"),
-        data.key
-      );
       if (data.key === Buffer.from(currentKey, "base64").toString("binary")) {
         res.status(200).send({ data: { authenticated: true } });
         return;

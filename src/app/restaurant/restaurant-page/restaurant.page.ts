@@ -67,7 +67,6 @@ export class RestaurantPage extends BasePageFormDirective {
 
     this.todayMenu$ = this.appSvc.getTodaysMenu();
     this.isOrdersEnded$ = this.appSvc.isOrdersEnded();
-    this.todayMenu$.subscribe(value => console.log('TODAYS MENU', value))
 
     let editDefaultValue$ = combineLatest([this.primiUsualDishes$, this.secondiUsualDishes$, this.contorniUsualDishes$, this.pizzeUsualDishes$]).pipe(
       map(([primi, secondi, contorni, pizze]) => ({

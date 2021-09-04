@@ -13,7 +13,6 @@ export const navAnimation = (baseEl: HTMLElement, opts?: any): Animation => {
         .addElement(opts.leavingEl)
         .duration(DURATION)
         .easing('ease-out')
-    console.log(checkIfForwardOrBackward(opts.enteringEl.nodeName, opts.leavingEl.nodeName));
     if(checkIfForwardOrBackward(opts.enteringEl.nodeName, opts.leavingEl.nodeName) === 'FORWARD'){
         return animationCtrl.create()
             .addAnimation([

@@ -9,10 +9,10 @@
     ion-button {
       flex: 1;
       margin-top: var(--space-1);
-      &:first-child {
+      &:first-child:not(.alone) {
         margin-right: var(--space-1);
       }
-      &:last-child {
+      &:last-child:not(.alone) {
         margin-left: var(--space-1);
       }
       &.primary {

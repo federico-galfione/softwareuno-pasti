@@ -8,26 +8,11 @@ import { User } from '@shared/models';
 import { AuthService, MediaService } from '@shared/services';
 import { combineLatest } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { debounceTime, map, skip, switchMap, takeUntil } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { usersAnimation } from '../admin.animations';
-import { CreateUserModalComponent } from '../components/create-user-modal/create-user-modal.component';
-import { DeleteUserModalComponent } from '../components/delete-user-modal/delete-user-modal.component';
-import { EditUserModalComponent } from '../components/edit-user-modal/edit-user-modal.component';
-
-const autocomplete = (time, selector) => (source$) =>
-  source$.pipe(
-    debounceTime(time),
-    switchMap((...args: any[]) => selector(...args)
-        .pipe(
-            takeUntil(
-                source$
-                    .pipe(
-                        skip(1)
-                    )
-            )
-        )
-    )
-  )
+import { CreateUserModalComponent } from './components/create-user-modal/create-user-modal.component';
+import { DeleteUserModalComponent } from './components/delete-user-modal/delete-user-modal.component';
+import { EditUserModalComponent } from './components/edit-user-modal/edit-user-modal.component';
 
 @Component({
   selector: 'app-admin',

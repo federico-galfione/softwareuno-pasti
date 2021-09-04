@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '../shared/shared.module';
 import { GuestLoginPage } from './guest-login/guest-login.page';
+import { ForgotPwdModalComponent } from './login-page/components/forgot-pwd-modal/forgot-pwd-modal.component';
 import { LoginPage } from './login-page/login.page';
 import { LoginPageRoutingModule } from './login-routing.module';
 
@@ -17,6 +18,6 @@ import { LoginPageRoutingModule } from './login-routing.module';
     SharedModule,
     ReactiveFormsModule
   ],
-  declarations: [LoginPage, GuestLoginPage]
+  declarations: [LoginPage, GuestLoginPage, ForgotPwdModalComponent]
 })
 export class LoginPageModule {}

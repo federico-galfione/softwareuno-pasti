@@ -13,13 +13,15 @@ import { ToastService } from './toast.service';
 export type Roles = 'ADMIN' | 'EMPLOYEE' | 'RESTAURANT';
 
 enum AuthLoadingKeys{
-  LOGIN = 'login',
-  LOGIN_AS_GUEST = 'loginAsGuest',
-  LOGOUT = 'logout',
-  CREATE_USER = 'createUser',
-  EDIT_USER = 'editUser',
-  DELETE_USER = 'deleteUser',
-  GET_USERS = 'getUsers'
+  LOGIN_KEY = 'login',
+  LOGIN_AS_GUEST_KEY = 'loginAsGuest',
+  LOGOUT_KEY = 'logout',
+  CREATE_USER_KEY = 'createUser',
+  EDIT_USER_KEY = 'editUser',
+  DELETE_USER_KEY = 'deleteUser',
+  GET_USERS_KEY = 'getUsers',
+  CHECK_IF_USER_EXIST_KEY = 'checkIfUserExist',
+  SEND_FORGOT_PASSWORD_EMAIL_KEY = 'sendForgotPasswordEmail'
 }
 
 @Injectable({
@@ -64,7 +66,7 @@ export class AuthService extends BaseDirective {
 
       return this.loadingSvc.startLoading(
         this,
-        AuthLoadingKeys.LOGIN,
+        AuthLoadingKeys.LOGIN_KEY,
         login$,
         {
           message: 'Sto eseguendo il login'
@@ -125,7 +127,7 @@ export class AuthService extends BaseDirective {
     
     return this.loadingSvc.startLoading(
       this,
-      AuthLoadingKeys.LOGIN_AS_GUEST,
+      AuthLoadingKeys.LOGIN_AS_GUEST_KEY,
       checkSecretKey$,
       {
         message: 'Sto eseguendo l\'accesso all\'app come ospite'
@@ -146,7 +148,7 @@ export class AuthService extends BaseDirective {
   logout(){
     return this.loadingSvc.startLoading(
       this,
-      AuthLoadingKeys.LOGOUT,
+      AuthLoadingKeys.LOGOUT_KEY,
       from(this.auth.signOut()),
       {
         message: 'Sto eseguendo il logout.'
@@ -183,7 +185,7 @@ export class AuthService extends BaseDirective {
       const callable = this.fns.httpsCallable('createUser');
       return this.loadingSvc.startLoading(
         this,
-        AuthLoadingKeys.CREATE_USER,
+        AuthLoadingKeys.CREATE_USER_KEY,
         callable(user).pipe(
           switchMap(res => {
             from(this.auth.sendPasswordResetEmail(res.email));
@@ -208,7 +210,7 @@ export class AuthService extends BaseDirective {
       const callable = this.fns.httpsCallable('deleteUser');
       return this.loadingSvc.startLoading(
         this, 
-        AuthLoadingKeys.DELETE_USER,
+        AuthLoadingKeys.DELETE_USER_KEY,
         callable({email}),
         {
           message: 'Sto eliminando l\'utente selezionato.'
@@ -232,7 +234,7 @@ export class AuthService extends BaseDirective {
       const callable = this.fns.httpsCallable('editUser');
       return this.loadingSvc.startLoading(
         this,
-        AuthLoadingKeys.EDIT_USER,
+        AuthLoadingKeys.EDIT_USER_KEY,
         callable(user),
         {
           message: 'Sto modificando l\'utente selezionato.'
@@ -255,9 +257,31 @@ export class AuthService extends BaseDirective {
   getUsers(): Observable<User[]>{
     return this.loadingSvc.startLoading(
       this,
-      AuthLoadingKeys.GET_USERS,
+      AuthLoadingKeys.GET_USERS_KEY,
       this.firestore.collection('users').valueChanges() as Observable<User[]>,
       {message: 'Sto recuperando gli utenti'},
       false)
+  }
+
+  checkIfUserExist(email: string){
+    return this.loadingSvc.startLoading(
+      this,
+      AuthLoadingKeys.CHECK_IF_USER_EXIST_KEY,
+      this.firestore.collection<User>('users', ref => ref.where('email', '==', email).limit(1))
+        .get()
+        .pipe(
+          map(list => !!list.docs[0]),
+        ),
+      { message: 'Sto controllando se esiste l\'utente selezionato.' }
+    )
+  }
+
+  sendForgotPasswordEmail(email: string){
+    return this.loadingSvc.startLoading(
+      this,
+      AuthLoadingKeys.SEND_FORGOT_PASSWORD_EMAIL_KEY,
+      from(this.auth.sendPasswordResetEmail(email)).pipe(take(1)),
+      { message: 'Sto mandando la mail per il reset della password.'}
+    )
   }
 }

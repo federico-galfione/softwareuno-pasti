@@ -11,7 +11,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "deploy": "ionic build --prod & firebase deploy",
-    "deploy:rules": "firebase deploy --only firestore:rules"
+    "deploy:rules": "firebase deploy --only firestore:rules",
+    "deploy:app": "ionic build --prod & firebase deploy --only hosting"
   },
   "private": true,
   "dependencies": {

@@ -27,19 +27,15 @@ ion-content {
   }
   .users {
     position: relative;
-    display: grid;
-    grid-template-columns: repeat(
-      auto-fill,
-      minmax(calc(var(--space-3) * 9), 1fr)
-    );
-    @include respond-to("very-small") {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    @include respond-to("tablet") {
+      display: grid;
       grid-template-columns: repeat(
         auto-fill,
-        minmax(calc(var(--space-1) * 25), 1fr)
+        minmax(calc(var(--space-3) * 9), 1fr)
       );
-    }
-    grid-gap: var(--space-2);
-    @include respond-to("tablet") {
       grid-gap: calc(var(--space-3) + var(--space-2));
     }
     align-items: flex-start;
@@ -68,6 +64,7 @@ ion-content {
     }
     .user {
       cursor: pointer;
+      width: 100%;
       ion-card-title {
         @include truncate("100%");
       }
@@ -146,6 +143,7 @@ ion-content {
           width: 100%;
         }
         ion-icon {
+          position: relative;
           color: white;
           --ionicon-stroke-width: 5rem;
         }

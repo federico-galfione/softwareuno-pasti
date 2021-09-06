@@ -21,7 +21,6 @@ import { SvgIdPathPipe } from './pipes/svg-id-path.pipe';
 import { AddOutlineComponent, CheckComponent, GuestsComponent, LoadingComponent, LogoComponent, StainFiveComponent, StainFourComponent, StainOneComponent, StainThreeComponent, StainTwoComponent, TakeAwayComponent, WaitingMenuComponent, WaveComponent } from './svg';
 
 
-
 @NgModule({
   declarations: [
     ExternalContainerComponent, 

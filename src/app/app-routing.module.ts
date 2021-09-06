@@ -10,11 +10,6 @@ const routes: Routes = [
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
   {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  },
-  {
     path: 'admin',
     canActivate: [RoleGuard],
     loadChildren: () => import('./admin/admin.module').then( m => m.AdminPageModule)
@@ -28,7 +23,8 @@ const routes: Routes = [
     path: 'employee',
     canActivate: [RoleGuard],
     loadChildren: () => import('./employee/employee.module').then( m => m.EmployeePageModule)
-  }
+  },
+  { path: '**', redirectTo: 'login', pathMatch: 'full' }
 ];
 
 @NgModule({

@@ -6,6 +6,7 @@ import { DishesForm } from '@shared/models';
 import { AuthService, LoadingService, ToastService } from '@shared/services';
 import { from } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { environment } from "src/environments/environment";
 
 enum EmployeeLoadingNames{
   GUEST_KEY = 'getGuestKey',
@@ -23,7 +24,7 @@ export class EmployeeService extends BaseDirective {
   }
 
   getGuestKey(){
-    const callable = this.fns.httpsCallable('getSecretLink');
+    const callable = this.fns.httpsCallable(environment.functionsPrefix + '/getSecretLink');
     return this.loadingSvc.startLoading(
       this, 
       this.employeeLoadings.GUEST_KEY, 

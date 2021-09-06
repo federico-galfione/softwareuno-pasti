@@ -6,6 +6,7 @@ import { Dish, DishType, Menu, RestAndTakeawayOrders, UsualDishesStrings } from 
 import { LoadingService, ToastService } from '@shared/services';
 import { from, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { environment } from "src/environments/environment";
 
 enum RestaurantLoadingKeys{
   ADD_MENU = 'addTodayMenu',
@@ -35,7 +36,7 @@ export class RestaurantService extends BaseDirective {
   }
 
   getOrders(): Observable<RestAndTakeawayOrders>{
-    const callable = this.fns.httpsCallable('getTodaysOrders');
+    const callable = this.fns.httpsCallable(environment.functionsPrefix + '/getTodaysOrders');
     return this.loadingSvc.startLoading(
       this, 
       RestaurantLoadingKeys.GET_ORDERS, 

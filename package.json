@@ -10,9 +10,10 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "test:app": "ionic build --prod & firebase emulators:start --only hosting",
     "deploy": "cd ./functions & npm run clean-file & cd .. & ionic build --prod & firebase deploy",
     "deploy:rules": "firebase deploy --only firestore:rules",
-    "deploy:app": "ionic build --prod & firebase deploy --only hosting"
+    "deploy:app": "ionic build --prod & firebase deploy"
   },
   "private": true,
   "dependencies": {

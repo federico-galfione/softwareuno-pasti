@@ -6,6 +6,7 @@ import { BaseDirective } from '@shared/directives';
 import firebase from 'firebase/app';
 import { from, Observable, of } from 'rxjs';
 import { catchError, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { environment } from "src/environments/environment";
 import { User } from '../models/User';
 import { LoadingService } from './loading.service';
 import { ToastService } from './toast.service';
@@ -136,7 +137,7 @@ export class AuthService extends BaseDirective {
   }
 
   private checkSecretKey(key: string){
-    const callable = this.fns.httpsCallable('checkSecretLink');
+    const callable = this.fns.httpsCallable(environment.functionsPrefix + '/checkSecretLink');
     return callable({ key }).pipe(take(1)).pipe(
       catchError(err => { 
         throw 'KEY ERROR';
@@ -182,7 +183,7 @@ export class AuthService extends BaseDirective {
 
   // Create a new user
   createUser(user: User){
-      const callable = this.fns.httpsCallable('createUser');
+      const callable = this.fns.httpsCallable(environment.functionsPrefix + '/createUser');
       return this.loadingSvc.startLoading(
         this,
         AuthLoadingKeys.CREATE_USER_KEY,
@@ -207,7 +208,7 @@ export class AuthService extends BaseDirective {
 
   // Delete user
   deleteUser(email: string){
-      const callable = this.fns.httpsCallable('deleteUser');
+      const callable = this.fns.httpsCallable(environment.functionsPrefix + '/deleteUser');
       return this.loadingSvc.startLoading(
         this, 
         AuthLoadingKeys.DELETE_USER_KEY,
@@ -231,7 +232,7 @@ export class AuthService extends BaseDirective {
 
   // Edit user
   editUser(user: User){
-      const callable = this.fns.httpsCallable('editUser');
+      const callable = this.fns.httpsCallable(environment.functionsPrefix + '/editUser');
       return this.loadingSvc.startLoading(
         this,
         AuthLoadingKeys.EDIT_USER_KEY,

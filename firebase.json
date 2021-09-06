@@ -12,6 +12,30 @@
         {
           "source": "**",
           "destination": "/index.html"
+        },
+        {
+          "source": "/getSecretLink",
+          "function": "getSecretLink"
+        },
+        {
+          "source": "/checkSecretLink",
+          "function": "checkSecretLink"
+        },
+        {
+          "source": "/createUser",
+          "function": "createUser"
+        },
+        {
+          "source": "/editUser",
+          "function": "editUser"
+        },
+        {
+          "source": "/deleteUser",
+          "function": "deleteUser"
+        },
+        {
+          "source": "/getTodaysOrders",
+          "function": "getTodaysOrders"
         }
       ],
       "headers": [
@@ -56,6 +80,30 @@
         {
           "source": "**",
           "destination": "/index.html"
+        },
+        {
+          "source": "/getSecretLink",
+          "function": "getSecretLink"
+        },
+        {
+          "source": "/checkSecretLink",
+          "function": "checkSecretLink"
+        },
+        {
+          "source": "/createUser",
+          "function": "createUser"
+        },
+        {
+          "source": "/editUser",
+          "function": "editUser"
+        },
+        {
+          "source": "/deleteUser",
+          "function": "deleteUser"
+        },
+        {
+          "source": "/getTodaysOrders",
+          "function": "getTodaysOrders"
         }
       ]
     }
@@ -75,8 +123,8 @@
     "functions": {
       "port": 5001
     },
-    "pubsub": {
-      "port": 8085
+    "hosting": {
+      "port": 4500
     },
     "ui": {
       "enabled": true

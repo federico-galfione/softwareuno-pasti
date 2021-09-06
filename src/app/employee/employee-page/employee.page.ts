@@ -130,7 +130,7 @@ export class EmployeePage extends BasePageFormDirective {
 
   saveOrder(){
     let currentValue = this.pageForm.value;
-    currentValue.abbondante = currentValue.abbondante && (currentValue.contorni.length === 1);
+    currentValue.abbondante = currentValue.abbondante && (currentValue.contorni.length === 1) && [...currentValue.primi, ...currentValue.secondi, ...currentValue.pizze].length <= 0;
     this.employeeSvc.saveOrder(currentValue).subscribe();
   }
 

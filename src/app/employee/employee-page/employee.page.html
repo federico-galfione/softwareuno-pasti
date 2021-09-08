@@ -1,0 +1,74 @@
+<ion-content>
+    <app-external-container class="desktop" [multiplier]="40">
+        <app-default-page [removeMargins]="mediaSvc.isSmartphone" sectionTitle="Fine ordinazioni" title="Menù" subtitle="Scegli cosa mangiare!">
+          <ng-container *ngIf="todaysMenu === null">
+            <div class="no-menu-container">
+              <div waiting-menu-icon class="menu-img-container">
+              </div>
+              <div class="message">
+                <h3 class="title">Menù non disponibile</h3>
+                <div class="text">Il menù di oggi non è ancora disponibile. Una volta che il ristoratore avrà completato la compilazione sarà possibile eseguire l'ordinazione. Nel caso non sia disponibile nonostante la fine delle ordinazioni vicina, contattare il ristoratore.</div>
+              </div>
+            </div>
+          </ng-container> 
+          <ng-container *ngIf="todaysMenu">
+            <div class="dishes" [formGroup]="pageForm">
+              <app-dishes-list 
+                *ngIf="pageForm.get('primi')?.value.length > 0"
+                #primiList
+                [editMode]="false"
+                formControlName="primi"
+                title="Primi"></app-dishes-list>
+              <app-dishes-list 
+                *ngIf="pageForm.get('secondi')?.value.length > 0"
+                #secondiList
+                [editMode]="false"
+                formControlName="secondi"
+                title="Secondi"></app-dishes-list>
+              <app-dishes-list 
+                *ngIf="pageForm.get('contorni')?.value.length > 0"
+                #contorniList
+                color="primary"
+                [editMode]="false"
+                formControlName="contorni"
+                title="Contorni"><div @enterFromRightAnimation *ngIf="(showAbbondante$ | async) > 0" rightText><ion-toggle formControlName="abbondante" class="toggle" mode="md" color="primary"></ion-toggle>Abb.</div></app-dishes-list>
+              <app-dishes-list 
+                *ngIf="pageForm.get('pizze')?.value.length > 0"
+                #pizzeList
+                color="primary"
+                [editMode]="false"
+                formControlName="pizze"
+                title="Pizze"></app-dishes-list>
+            </div> 
+            <div class="options-container">
+              <ion-card class="big-card guests ion-activatable {{(!authSvc.currentUser.email || (isLoadingGuestLink$ | async)) ? 'disabled' : ''}}" (click)="showGuestModal()">
+                <div class="container">
+                  <div class="text">Invita<br>ospite</div>
+                  <canvas class="square" width="100" height="100"></canvas>
+                </div>
+                <div class="icon" guests-icon></div>
+                <div loading-icon color="primary" *ngIf="(isLoadingGuestLink$ | async)"></div>
+                <ion-ripple-effect></ion-ripple-effect>
+              </ion-card>
+              <ion-card class="big-card takeaway ion-activatable" (click)="toggleTakeAway()">
+                <div class="container">
+                  <div class="text">Da<br>asporto</div>
+                  <canvas class="square" width="100" height="100"></canvas>
+                </div>
+                <div class="icon" take-away-icon></div>
+                <ion-ripple-effect></ion-ripple-effect>
+                <div check-icon *ngIf="pageForm.get('takeAway')?.value" @selectionAnimation class="selection-tick"></div>
+              </ion-card>
+            </div> 
+            <div class="buttons-container">
+              <ion-button mode="md" (click)="saveOrder()" [disabled]="pageForm.errors?.noElements || (isOrdersEnded$ | async)" class="send-button">Invia</ion-button>
+            </div>
+          </ng-container>
+        </app-default-page>
+    </app-external-container>
+    <ion-fab (click)="logout()" vertical="bottom" horizontal="start" slot="fixed">
+      <ion-fab-button color="primary" size="small">
+        <ion-icon name="exit-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+</ion-content>

@@ -1,0 +1,117 @@
+@import "mixins";
+:host {
+  --current-color: #000;
+  .title-container {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    padding: 0 var(--current-space-3) var(--current-space-1)
+      var(--current-space-3);
+    .title {
+      flex: 1;
+      line-height: 32px;
+    }
+    .right-text {
+      cursor: pointer;
+      font-size: 2rem;
+      color: var(--current-color);
+      font-weight: 900;
+    }
+  }
+  .dishes-container{
+    position: relative;
+    width: 100vw;
+    @include respond-to('tablet') {
+      width: 100%;
+    }
+    .dishes {
+      position: relative;
+      display: inline-flex;
+      width: 100%;
+      overflow: auto;
+      padding: var(--space-2) 0 calc(var(--space-3) + var(--space-1))
+        var(--current-space-3);
+      @include respond-to('tablet') {
+        padding: var(--space-2) var(--current-space-3) calc(var(--space-3) + var(--space-1))
+        var(--current-space-3);
+        display: flex;
+        flex-wrap: wrap;
+      }
+      &.not-scrollable {
+        overflow: hidden;
+      }
+      &::after {
+        content: "";
+        display: inline-block;
+        height: 50px;
+        min-width: var(--current-space-3);
+        @include respond-to('tablet') {
+          min-width: 0;
+        }
+      }
+      .add-dish {
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        background: radial-gradient(
+          circle at left top,
+          var(--ion-color-secondary-shade),
+          var(--ion-color-secondary-tint)
+        );
+        color: white;
+        font-weight: 800;
+        color: var(--ion-color-secondary);
+        ion-ripple-effect {
+          color: white;
+        }
+        .text {
+          color: white;
+          display: flex;
+          align-items: flex-end;
+          height: 100%;
+        }
+      }
+      .card {
+        flex: 0 0 auto;
+        font-weight: 800;
+        padding: 16px;
+        height: calc(var(--space-4) + var(--space-3) + var(--space-2));
+        width: calc(var(--space-4) + var(--space-3) + var(--space-2));
+        margin-right: var(--space-2);
+        float: left;
+        @include respond-to('tablet') {
+          margin-bottom: var(--space-2);
+        }
+        &:last-child {
+          margin-right: 0;
+        }
+        &.placeholder {
+          opacity: 0.15;
+          &.no-edit {
+            opacity: 0;
+          }
+        }
+        &.hidden {
+          opacity: 0;
+        }
+        &.dish {
+          .selection-tick {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            height: var(--space-4);
+          }
+        }
+      }
+      .fake-card {
+        height: calc(var(--space-4) + var(--space-3) + var(--space-2));
+        width: calc(var(--space-4) + var(--space-3) + var(--space-2));
+      }
+      .no-items-placeholder {
+        height: calc(var(--space-4) + var(--space-3) + var(--space-2));
+      }
+    }
+  }
+}

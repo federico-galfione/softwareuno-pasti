@@ -1,0 +1,14 @@
+<ion-content>
+  <app-external-container class="desktop" [multiplier]="40">
+      <app-default-page [disableSaveButton]="disableSaveButton" (cancelClicked)="cancel()" (saveClicked)="saveSettings()"  [secondaryPage]="true" [removeMargins]="mediaSvc.isSmartphone" color="secondary" sectionTitle="Fine ordinazioni"  title="Impostazioni" subtitle="Modifica le impostazioni">
+        <div [formGroup]="settingsForm" class="container">
+          <h3>Fine ordinazioni</h3>
+          <ion-item lines="none">
+            <ion-label>Cambia orario</ion-label>
+            <ion-datetime formControlName="stopOrdersTime" min="11:00" max="14:00" displayFormat="HH:mm" placeholder="Orario"></ion-datetime>
+          </ion-item>
+          <div class="error-label" *ngIf="stopOrdersTime.invalid && (stopOrdersTime.dirty || stopOrdersTime.touched)">L'orario di fine ordinazioni è obbligatorio</div>
+        </div>
+      </app-default-page>
+  </app-external-container>
+</ion-content>

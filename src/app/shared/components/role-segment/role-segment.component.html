@@ -1,0 +1,14 @@
+<div class="segment">
+  <div class="button admin-button" [@selectDeselect]="selectedRoles.admin ? 'select' : 'deselect'" (click)="toggleRole('ADMIN')">
+    <ion-icon [name]="'ADMIN' | roleIcon"></ion-icon>
+    <div class="text">Amministratori</div>
+  </div>
+  <div class="button employee-button" [@selectDeselect]="selectedRoles.employee ? 'select' : 'deselect'" (click)="toggleRole('EMPLOYEE')">
+    <ion-icon [name]="'EMPLOYEE' | roleIcon"></ion-icon>
+    <div class="text">Dipendenti</div>
+  </div>
+  <div class="button restaurant-button" [@selectDeselect]="selectedRoles.restaurant ? 'select' : 'deselect'" (click)="toggleRole('RESTAURANT')">
+    <ion-icon [name]="'RESTAURANT' | roleIcon"></ion-icon>
+    <div class="text">Ristoratori</div>
+  </div>
+</div>

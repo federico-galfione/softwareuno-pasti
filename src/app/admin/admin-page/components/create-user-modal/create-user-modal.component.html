@@ -1,0 +1,25 @@
+<div modal-default-content 
+  [successButton]="{
+    type: 'tertiary',
+    fill: true,
+    title: 'Crea'
+  }"
+  [cancelButton]="{
+    type: 'tertiary',
+    fill: false,
+    title: 'Annulla'
+  }"
+  (buttonClicked)="closeModal($event)"
+  [formGroup]="userFormGroup"
+>    
+    <h3>Aggiungi Utente</h3>
+    <div class="subtitle">Crea un nuovo utente per l'app.</div>
+    <app-role-segment formControlName="role" [multipleValues]="false"></app-role-segment>
+    <ion-input formControlName="email" placeholder="Email"></ion-input>
+    <div class="error-message" *ngIf="userFormGroup.get('email').invalid && (userFormGroup.get('email').dirty || userFormGroup.get('email').touched) && userFormGroup.get('email').errors.required">Email obbligatoria.</div>
+    <div class="error-message" *ngIf="userFormGroup.get('email').invalid && (userFormGroup.get('email').dirty || userFormGroup.get('email').touched) && userFormGroup.get('email').errors.email">Email non valida.</div>
+    <ion-input formControlName="firstName" placeholder="Nome"></ion-input>
+    <div class="error-message" *ngIf="userFormGroup.get('firstName').invalid && (userFormGroup.get('firstName').dirty || userFormGroup.get('firstName').touched) && userFormGroup.get('firstName').errors.required">Nome obbligatorio.</div>
+    <ion-input formControlName="lastName" placeholder="Cognome"></ion-input>
+    <div class="error-message" *ngIf="userFormGroup.get('lastName').invalid && (userFormGroup.get('lastName').dirty || userFormGroup.get('lastName').touched) && userFormGroup.get('lastName').errors.required">Cognome obbligatorio.</div>
+</div>

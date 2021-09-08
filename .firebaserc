@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "softwareuno-pasti"
+  },
+  "targets": {
+    "softwareuno-pasti": {
+      "hosting": {
+        "app": [
+          "softwareuno-pasti"
+        ]
+      }
+    }
   }
 }

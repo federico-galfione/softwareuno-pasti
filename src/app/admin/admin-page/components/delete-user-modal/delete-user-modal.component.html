@@ -1,0 +1,16 @@
+<div modal-default-content 
+  [successButton]="{
+    type: 'danger',
+    fill: true,
+    title: 'Elimina'
+  }"
+  [cancelButton]="{
+    type: 'danger',
+    fill: false,
+    title: 'Annulla'
+  }"
+  (buttonClicked)="closeModal($event)"
+>
+  <h3>Elimina utente</h3>
+  <div class="subtitle">Vuoi davvero eliminare l'utente <span class="name">{{selectedUser?.firstName}} {{selectedUser?.lastName}}</span>?</div>
+</div>

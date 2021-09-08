@@ -1,0 +1,15 @@
+@import "mixins";
+
+.container {
+  font-size: 2rem;
+  margin: 0 var(--current-space-3) 0 var(--current-space-3);
+  h3 {
+    margin-bottom: var(--space-2);
+  }
+  ion-item {
+    --border-width: 1px;
+    --border-radius: 30px;
+    --border-color: var(--ion-color-secondary);
+    max-width: 360px;
+  }
+}

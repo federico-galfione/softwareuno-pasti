@@ -1,0 +1,90 @@
+<ion-content>
+  <app-external-container class="desktop" [multiplier]="40">
+      <app-default-page [removeMargins]="mediaSvc.isSmartphone" color="secondary" sectionTitle="Fine ordinazioni" title="Menù" subtitle="Inserisci i piatti del giorno.">
+        <div class="dishes" [formGroup]="pageForm">
+          <app-dishes-list 
+            #primiList
+            [editMode]="!(this.todayMenu$ | async) && !(this.isOrdersEnded$ | async)"
+            [selectable]="!(this.todayMenu$ | async) && !(this.isOrdersEnded$ | async)"
+            formControlName="primi"
+            [dishesHints]="(primiUsualDishes$ | async)?.hints"
+            title="Primi" 
+            (rightButtonClicked)="goToUsual('primi')"
+            [addDishesFormOptions]="{
+              title: 'Aggiungi i primi',
+              subtitle: 'Inserisci i primi nel menù del giorno',
+              showUsualDishes: true
+            }"><div rightText>Piatti ricorrenti</div></app-dishes-list>
+          <app-dishes-list 
+            #secondiList
+            [editMode]="!(this.todayMenu$ | async) && !(this.isOrdersEnded$ | async)"
+            [selectable]="!(this.todayMenu$ | async) && !(this.isOrdersEnded$ | async)"
+            formControlName="secondi"
+            [dishesHints]="(secondiUsualDishes$ | async)?.hints"
+            title="Secondi" 
+            (rightButtonClicked)="goToUsual('secondi')"
+            [addDishesFormOptions]="{
+              title: 'Aggiungi i secondi',
+              subtitle: 'Inserisci i secondi nel menù del giorno',
+              showUsualDishes: true
+            }"><div rightText>Piatti ricorrenti</div></app-dishes-list>
+          <app-dishes-list 
+            #contorniList
+            [editMode]="!(this.todayMenu$ | async) && !(this.isOrdersEnded$ | async)"
+            [selectable]="!(this.todayMenu$ | async) && !(this.isOrdersEnded$ | async)"
+            formControlName="contorni"
+            [dishesHints]="(contorniUsualDishes$ | async)?.hints"
+            title="Contorni" 
+            (rightButtonClicked)="goToUsual('contorni')"
+            [addDishesFormOptions]="{
+              title: 'Aggiungi i contorni',
+              subtitle: 'Inserisci i contorni nel menù del giorno',
+              showUsualDishes: true
+            }"><div rightText>Piatti ricorrenti</div></app-dishes-list>
+          <app-dishes-list 
+            #pizzeList
+            [editMode]="!(this.todayMenu$ | async) && !(this.isOrdersEnded$ | async)"
+            [selectable]="!(this.todayMenu$ | async) && !(this.isOrdersEnded$ | async)"
+            formControlName="pizze"
+            [dishesHints]="(pizzeUsualDishes$ | async)?.hints"
+            title="Pizze" 
+            (rightButtonClicked)="goToUsual('pizze')"
+            [addDishesFormOptions]="{
+              title: 'Aggiungi le pizze',
+              subtitle: 'Inserisci le pizze nel menù del giorno',
+              showUsualDishes: true
+            }"><div rightText>Piatti ricorrenti</div></app-dishes-list>
+        </div>  
+        <div *ngIf="!(this.todayMenu$ | async) && !(this.isOrdersEnded$ | async)" class="buttons-container">
+          <ion-button class="send-button" (click)="sendMenu()">Invia</ion-button>
+        </div>
+        <div *ngIf="(this.isOrdersEnded$ | async)" class="buttons-container">
+          <ion-button class="send-button" mode="md" (click)="goToOrders()"><ion-icon slot="end" name="arrow-forward-outline"></ion-icon>Ordini</ion-button>
+        </div>
+      </app-default-page>
+  </app-external-container>
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button size="small" color="secondary">
+      <ion-icon name="menu-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="goToSettings()" color="light">
+        <ion-icon name="settings-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="logout()" color="light">
+        <ion-icon name="exit-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+  <ion-fab *ngIf="
+    primiList.selectedDishes.length || secondiList.selectedDishes.length || contorniList.selectedDishes.length || pizzeList.selectedDishes.length
+  "
+  @enterFromRightAnimation
+  (click)="deleteSelectedDishes()"
+  vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="danger">
+      <ion-icon name="trash-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+

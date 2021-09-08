@@ -1,0 +1,31 @@
+@import 'mixins';
+.segment{
+    display: flex;
+    border: 1px solid var(--ion-color-tertiary);
+    border-radius: 2000px;
+    overflow: hidden;
+    @include respond-to('very-small'){
+        margin-bottom: var(--space-1);
+    }
+    .button{
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--space-2);
+        cursor: pointer;
+        @include respond-to('very-small'){
+            padding: var(--space-1);
+        }
+        font-size: 2rem;
+        color: var(--ion-color-tertiary);
+        .text{
+            font-weight: bold;
+            margin-left: var(--space-1);
+            display: none;
+            @include respond-to('desktop'){
+                display: block;
+            }
+        }
+    }
+}

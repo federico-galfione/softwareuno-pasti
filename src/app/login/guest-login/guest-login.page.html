@@ -1,0 +1,32 @@
+<ion-content [fullscreen]="true">
+  <app-external-container class="tablet" [multiplier]="28">
+      <div class="title-background">
+        <div class="white-background">
+        </div>
+        <div class="shape">
+          <div stain-one-icon></div>
+        </div>
+      </div>
+      <div class="title-container">
+        <div class="icon">
+          <div logo-icon></div>
+        </div>
+        <div class="text">
+          <div class="softwareuno">Softwareuno</div>
+          <div class="pasti">Pasti</div>
+        </div>
+      </div>
+      <div class="message">
+        <h1>Errore!</h1>
+        <p>C'è stato un problema durante l'accesso come ospite. Richiedi nuovamente il link ad uno dei dipendenti Softwareuno.</p>
+      </div>
+      <div class="submit-container">
+        <div class="shape-container">
+          <div stain-two-icon></div>
+        </div>
+        <div class="button-container">
+          <ion-button mode="md" (click)="goToLogin()">Indietro</ion-button>
+        </div>
+      </div>
+  </app-external-container>
+</ion-content>

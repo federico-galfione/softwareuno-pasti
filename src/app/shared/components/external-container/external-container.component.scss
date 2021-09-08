@@ -1,0 +1,43 @@
+@import 'mixins';
+:host{
+  display: block;
+  --max-width-multiplier: 23;
+  @include flex($position: relative, $align-items: center);
+  width: 100%;
+  min-height: 100%;
+  background-color: transparent;
+  &.tablet{
+    @include respond-to('tablet') {
+      padding: 64px;
+    }
+    .page{
+      @include respond-to('tablet') {
+        min-height: 0px;
+        box-shadow: var(--default-box-shadow);
+        border-radius: 20px;
+        overflow:hidden
+      }
+    }
+  }
+  &.desktop{
+    @include respond-to('desktop') {
+      padding: 64px;
+    }
+    .page{
+      @include respond-to('desktop') {
+        min-height: 0px;
+        box-shadow: var(--default-box-shadow);
+        border-radius: 20px;
+        overflow:hidden
+      }
+    }
+  }
+  .page{
+    @include flex($position: relative);
+    @include dimensions($width:100%, $max-width: calc(var(--space-3) * var(--max-width-multiplier)), $min-height: 100vh);
+    width: 100%;
+    margin: auto;
+    background-color: white;
+    flex-direction: column;
+  }
+}

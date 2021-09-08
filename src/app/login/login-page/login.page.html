@@ -1,0 +1,38 @@
+<ion-content [fullscreen]="true">
+  <app-external-container class="tablet" [multiplier]="28">
+      <div class="title-background">
+        <div class="white-background">
+        </div>
+        <div class="shape">
+          <div stain-one-icon></div>
+        </div>
+      </div>
+      <div class="title-container">
+        <div class="icon">
+          <div logo-icon></div>
+        </div>
+        <div class="text">
+          <div class="softwareuno">Softwareuno</div>
+          <div class="pasti">Pasti</div>
+        </div>
+      </div>
+      <div [formGroup]="loginForm" class="login-form-container">
+        <h1>Login</h1>
+        <div class="input-container">
+          <ion-input formControlName="email" placeholder="Email"></ion-input>
+        </div>
+        <div class="input-container">
+          <ion-input formControlName="password" type="password" placeholder="Password"></ion-input>
+          <ion-button mode="md" size="small" fill="clear" slot="end" (click)="forgotPassword()">DIMENTICATA?</ion-button>
+        </div>
+      </div>
+      <div class="submit-container">
+        <div class="shape-container">
+          <div stain-two-icon></div>
+        </div>
+        <div class="button-container">
+          <ion-button mode="md" (click)="login()">Accedi</ion-button>
+        </div>
+      </div>
+  </app-external-container>
+</ion-content>

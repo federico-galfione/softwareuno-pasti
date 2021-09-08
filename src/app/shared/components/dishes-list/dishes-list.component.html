@@ -1,0 +1,33 @@
+<div class="title-container">
+  <h3 class="title" *ngIf="title">{{title}}</h3>
+  <div class="right-text" (click)="rightButtonClicked.emit()">
+    <ng-content select="[rightText]"></ng-content>
+  </div>
+</div>
+<div class="dishes-container">
+  <div [@listAnimation]="value.length" [ngClass]="{'dishes': true, 'not-scrollable': value.length === 0}">
+    <ion-card *ngIf="editMode" class="add-dish card ion-activatable" (click)="openAddDishesModal()">
+      <div add-outline-icon></div>
+      <div class="text">Aggiungi<br>Piatti</div>
+      <ion-ripple-effect></ion-ripple-effect>
+    </ion-card>
+    <ng-container>
+      <ion-card class="card placeholder" *ngIf="value.length === 0 && editMode">
+        Es.<br>
+        Pasta alla carbonara
+      </ion-card>
+      <ion-card class="card placeholder" *ngIf="value.length === 0 && editMode">
+        Es.<br>
+        Pasta alla carbonara
+      </ion-card>
+      <ion-card class="card placeholder" *ngIf="value.length === 0 && !editMode">
+        Non ci sono piatti
+      </ion-card>
+    </ng-container>
+    <ion-card (click)="toggleDish(dish)" [ngClass]="{'card': true, 'dish': true, 'ion-activatable': this.selectable}" @itemsAnimation *ngFor="let dish of (dishes$ | async); trackBy: trackByName">
+      {{dish.name | firstCharUppercase}}
+      <ion-ripple-effect></ion-ripple-effect>
+      <div check-icon *ngIf="dish.selected" @selectionAnimation class="selection-tick"></div>
+    </ion-card>
+  </div>
+</div>

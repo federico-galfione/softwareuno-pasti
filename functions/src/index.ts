@@ -2,7 +2,7 @@ import * as cors from "cors";
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import * as nodemailer from "nodemailer";
-import {mailData} from "./mail-data";
+import { mailData } from "./mail-data";
 
 admin.initializeApp();
 // import * as admin from "firebase-admin";
@@ -462,7 +462,7 @@ function createOrdersString(orders: RestAndTakeawayOrders) {
       if (dish !== "contorni") {
         currDishType.forEach((value, key: string) => {
           ordersString +=
-            value + "x " + key.charAt(0).toUpperCase() + key.slice(1) + "\n";
+            value + "x " + key.charAt(0).toUpperCase() + key.slice(1) + "<br>";
         });
       } else {
         currDishType.forEach((value, key: string) => {
@@ -476,7 +476,7 @@ function createOrdersString(orders: RestAndTakeawayOrders) {
               "x " +
               key.charAt(0).toUpperCase() +
               key.slice(1) +
-              "\n";
+              "<br>";
           }
           if (contorni.abbondanti > 0) {
             ordersString +=
@@ -484,7 +484,7 @@ function createOrdersString(orders: RestAndTakeawayOrders) {
               "x " +
               key.charAt(0).toUpperCase() +
               key.slice(1) +
-              " (Abbondante)\n";
+              " (Abbondante)<br>";
           }
         });
       }

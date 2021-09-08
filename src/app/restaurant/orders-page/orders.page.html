@@ -15,15 +15,14 @@
                                             <ion-note color="secondary" slot="start">x{{dish.value}}</ion-note>                             
                                         </ion-item>
                                         <ng-template #contorni>
-                                            <ion-item lines="none" class="ion-no-padding">
-                                                <ng-container *ngIf="dish.value['normali'] > 0">
+                                            <ion-item lines="none" class="ion-no-padding" *ngIf="dish.value['normali'] > 0">
                                                     <ion-note color="secondary" slot="start">x{{dish.value['normali']}}</ion-note>  
                                                     <ion-label>{{dish.key | titlecase}}</ion-label>  
-                                                </ng-container>
-                                                <ng-container *ngIf="dish.value['abbondanti'] > 0">
-                                                    <ion-note color="secondary" slot="start">x{{dish.value['abbondanti']}}</ion-note>  
-                                                    <ion-label>{{dish.key | titlecase}} (Abbondante)</ion-label>  
-                                                </ng-container>
+                                            </ion-item>
+                                            <ion-item lines="none" class="ion-no-padding"  *ngIf="dish.value['abbondanti'] > 0">
+                                                <ion-note color="secondary" slot="start">x{{dish.value['abbondanti']}}</ion-note>  
+                                                <ion-label>{{dish.key | titlecase}}</ion-label>  
+                                                <ion-chip><ion-label>Abb.</ion-label></ion-chip>
                                             </ion-item>
                                         </ng-template>
                                     </ng-container>

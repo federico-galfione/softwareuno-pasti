@@ -31,6 +31,7 @@
             }
             ion-list{
                 ion-item{
+                    position: relative;
                     --padding-start: var(--space-2);
                     --padding-end: var(--space-2);
                     --min-height: 12px;
@@ -40,9 +41,19 @@
                     }
                     ion-note{
                         margin: 0;
+                        padding: var(--space-1) var(--space-1) var(--space-1) 0;
                         font-size: 2rem;
-                        padding-top: var(--space-1);
-                        padding-bottom: var(--space-1);
+                    }
+                    ion-chip{
+                        position: absolute;
+                        margin-top: auto;
+                        margin-bottom: auto;
+                        right: 0;
+                        --background: var(--ion-color-primary);
+                        --color: var(--ion-color-light);
+                        ion-label{
+                            font-weight: bold;
+                        }
                     }
                 }
             }     

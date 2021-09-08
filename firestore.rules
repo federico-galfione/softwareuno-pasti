@@ -41,7 +41,8 @@ service cloud.firestore {
       }
     }
     match /users/{user} {
-    	allow read, write: if getRole("ADMIN");
+    	allow write: if getRole("ADMIN");
+      allow read: if true;
     }
     match /users/{userId} {
     	allow read, update, delete: if (getRole("ADMIN") || request.auth.uid == userId);

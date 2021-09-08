@@ -71,7 +71,7 @@ export class EmployeePage extends BasePageFormDirective {
 - Primo / Contorno (opzionale)
 - Secondo / Contorno (opzionale)
 - Pizza
-- 2 Contorni o 1 Contorno (Abbondante o no)`}, false)
+- 2 Contorni o 1 Contorno (Abbondanti o no)`}, false)
           return false;
         }
         return true;
@@ -124,13 +124,9 @@ export class EmployeePage extends BasePageFormDirective {
     this.pageForm.get('takeAway').setValue(!this.pageForm.get('takeAway')?.value)
   }
 
-  toggleAbbondante(){
-    this.pageForm.get('abbondante').setValue(!this.pageForm.get('abbondante')?.value)
-  }
-
   saveOrder(){
     let currentValue = this.pageForm.value;
-    currentValue.abbondante = currentValue.abbondante && (currentValue.contorni.length === 1) && [...currentValue.primi, ...currentValue.secondi, ...currentValue.pizze].length <= 0;
+    currentValue.abbondante = currentValue.abbondante && [...currentValue.primi.filter(x => x.selected), ...currentValue.secondi.filter(x => x.selected), ...currentValue.pizze.filter(x => x.selected)].length <= 0;
     this.employeeSvc.saveOrder(currentValue).subscribe();
   }
 

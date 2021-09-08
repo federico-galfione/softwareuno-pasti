@@ -11,7 +11,7 @@ Inoltre si può salvare nella home di tablet e smartphones.
 ### Salvare in home Android
 1. Accedere da Chrome [all'applicazione](https://softwareuno-pasti.web.app/).
 2. Cliccare sul messaggio che apparirà a fondo pagina chiedendo di installare l'app.<br><br>
-![share-icon](./docs_images/android-add-home-screen-1.jpg | width=200)<br><br>
+![share-icon](./docs_images/android-add-home-screen-1.jpg)<br><br>
 3. Cliccare su installa.<br><br>
 ![share-icon](./docs_images/android-add-home-screen-2.jpg)<br><br>
 4. Ora si può accedere all'app dal menù delle applicazioni.<br><br>

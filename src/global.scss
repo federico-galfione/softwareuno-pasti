@@ -103,6 +103,7 @@ html {
     }
     --height: auto !important;
     --border-radius: 30px !important;
+    
     .modal-wrapper {
       max-height: 100% !important;
       overflow: auto !important;
@@ -122,5 +123,8 @@ html {
   .error-label {
     font-size: 1.5rem;
     color: var(--ion-color-danger);
+  }
+  div{
+    color: var(--ion-color-dark);
   }
 }

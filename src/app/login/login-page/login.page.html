@@ -19,10 +19,10 @@
       <div [formGroup]="loginForm" class="login-form-container">
         <h1>Login</h1>
         <div class="input-container">
-          <ion-input formControlName="email" placeholder="Email"></ion-input>
+          <ion-input formControlName="email" name="email" placeholder="Email"></ion-input>
         </div>
         <div class="input-container">
-          <ion-input formControlName="password" type="password" placeholder="Password"></ion-input>
+          <ion-input formControlName="password" name="password" type="password" placeholder="Password"></ion-input>
           <ion-button mode="md" size="small" fill="clear" slot="end" (click)="forgotPassword()">DIMENTICATA?</ion-button>
         </div>
       </div>

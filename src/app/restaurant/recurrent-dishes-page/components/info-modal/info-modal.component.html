@@ -7,12 +7,12 @@
   (buttonClicked)="closeModal()"
   >
   <h3 class="popup-title">{{infoModalType === 'fissiInfo' ? 'Piatti fissi' : 'Piatti Frequenti'}}</h3>
-  <div *ngIf="infoModalType === 'fissiInfo'" class="text">
+  <div *ngIf="infoModalType === 'fissiInfo'" class="text black-text">
     I piatti fissi sono tutti quei piatti che si trovano ogni giorno all'interno del menù (Es. pasta in bianco).<br>
     Questi verranno inseriti automaticamente nel menù ogni giorno.<br>
     Nel caso non fossero disponibili, è comunque possibile eliminarli durante la creazione del menù.
   </div>
-  <div *ngIf="infoModalType === 'frequentiInfo'" class="text">
+  <div *ngIf="infoModalType === 'frequentiInfo'" class="text black-text">
     I piatti frequenti sono piatti che vengono riproposti non ogni giorno, ma comunque con una certa frequenza.<br>
     Quando si proverà ad aggiungere un piatto, verranno proposti come scelta i piatti frequenti e saranno semplicemente selezionabili.<br>
     Questo per semplificarne l'inserimento nel menù.

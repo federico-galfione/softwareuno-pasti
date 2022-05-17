@@ -98,7 +98,7 @@ export const deleteGuests = functions.pubsub
     });
 
 export const sendEmail = functions.pubsub
-    .schedule("every 1 minutes from 11:00 to 14:00")
+    .schedule("every 15 minutes from 8:00 to 13:00")
     .timeZone("Europe/Rome")
     .onRun(async () => {
       const currentTime = new Date();
